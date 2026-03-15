@@ -6,7 +6,7 @@ author: "Argo Studio"
 tags: ["Photography Business", "Client Management", "Workflow", "Booking"]
 pillar: "client-workflow-automation"
 keywords: ["photography client management", "photography workflow automation", "photography client portal", "photography booking system", "photography lead management"]
-draft: true
+draft: false
 ---
 
 There is a moment most photographers recognize. You finish a session, deliver the gallery, collect payment — and then the client disappears. Not because they were unhappy. Because no one followed up.

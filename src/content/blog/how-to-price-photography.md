@@ -6,7 +6,7 @@ author: "Argo Studio"
 tags: ["Photography Business", "Pricing", "Packages"]
 pillar: "photography-pricing"
 keywords: ["how to price photography", "photography pricing guide", "photography packages and pricing", "photography pricing calculator"]
-draft: true
+draft: false
 ---
 
 You booked 47 sessions last year, edited until your eyes crossed, and still had trouble covering expenses in January. The camera bag got upgraded. The pricing did not.
