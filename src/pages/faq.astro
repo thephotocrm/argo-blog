@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import FAQ from '../components/FAQ.astro';
+import SignupCTA from '../components/SignupCTA.astro';
+
+const faqs = [
+  {
+    question: 'What is Argo Studio?',
+    answer: 'Argo Studio is a business management tool built specifically for photographers. It handles contracts, invoices, scheduling, client communication, and gallery delivery in one place — designed around the way photographers actually work.',
+  },
+  {
+    question: 'How is Argo different from HoneyBook or Dubsado?',
+    answer: 'HoneyBook and Dubsado serve all creative professionals. Argo is built exclusively for photographers, which means photography-specific workflows, shot list management, gallery integration, and terminology that matches how you already think about your business.',
+  },
+  {
+    question: 'Do I need a CRM if I only shoot 20 weddings a year?',
+    answer: 'Twenty weddings means twenty contracts, forty or more client touchpoints, and hundreds of emails. A CRM designed for photographers can cut your admin time by more than half, even at that volume. The question is less about how many shoots you have and more about how much of your week goes to email and spreadsheets.',
+  },
+  {
+    question: 'What does Argo Studio cost?',
+    answer: 'Visit argostudio.co/pricing for current plans. Argo is priced for working photographers — not enterprise teams or agencies.',
+  },
+  {
+    question: 'Can I import my data from another CRM?',
+    answer: 'Yes. Argo supports importing client data, contracts, and invoices from most major platforms. The migration process is guided and typically takes less than an hour.',
+  },
+  {
+    question: 'What is the Creator Code program?',
+    answer: 'The Creator Code program pays photographers 75% of the first month revenue for each referral, and 30% recurring after that. It is built for photographers who want to recommend tools they actually use, not run affiliate marketing campaigns.',
+  },
+  {
+    question: 'Does Argo integrate with gallery delivery platforms?',
+    answer: 'Argo connects with Pic-Time, ShootProof, CloudSpot, and Pixieset. Your client portal can link directly to their gallery, keeping everything in one workflow.',
+  },
+  {
+    question: 'Is there a free trial?',
+    answer: 'Yes. You can try Argo Studio with no credit card required. Visit argostudio.co to get started.',
+  },
+];
+---
+
+<Base
+  title="FAQ — Argo Studio"
+  description="Common questions about Argo Studio, the photography business management tool built for working photographers."
+  keywords={['photography crm faq', 'argo studio questions', 'photography business software']}
+>
+  <div class="container">
+    <section class="faq-page">
+      <p class="overline">Questions</p>
+      <h1>Frequently Asked Questions</h1>
+      <p class="faq-intro">
+        Straightforward answers about what Argo does, who it is for, and how it works.
+      </p>
+
+      <FAQ items={faqs} />
+
+      <SignupCTA
+        heading="Still have questions?"
+        text="We are happy to walk you through how Argo fits your workflow. No sales pitch — just a conversation."
+        buttonText="Get in touch"
+      />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .faq-page {
+    padding: 3rem 0;
+  }
+  .faq-page h1 {
+    margin-top: 0.5rem;
+  }
+  .faq-intro {
+    margin-top: 1rem;
+    color: var(--color-slate);
+    font-size: 1.1rem;
+    max-width: 520px;
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import FAQ from '../../components/FAQ.astro';
+import SignupCTA from '../../components/SignupCTA.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages
+    .filter((p) => p.data.type === 'city' || p.data.type === 'niche')
+    .map((page) => ({
+      params: { slug: page.data.slug },
+      props: { page },
+    }));
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<Base
+  title={page.data.title}
+  description={page.data.description}
+  keywords={page.data.keywords}
+>
+  <div class="container">
+    <article class="programmatic-page">
+      <header>
+        <p class="overline">{page.data.type === 'city' ? 'Local' : 'Niche'}</p>
+        <h1>{page.data.title}</h1>
+        <p class="page-desc">{page.data.description}</p>
+      </header>
+
+      <div class="page-content">
+        <Content />
+      </div>
+
+      <SignupCTA />
+    </article>
+  </div>
+</Base>
+
+<style>
+  .programmatic-page { padding: 3rem 0; }
+  .programmatic-page header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(0,0,0,0.06); }
+  .programmatic-page h1 { margin-top: 0.5rem; }
+  .page-desc { margin-top: 1rem; color: var(--color-slate); font-size: 1.1rem; max-width: 560px; }
+  .page-content { font-size: 1.05rem; }
+  .page-content :global(p) { margin-bottom: 1.25rem; }
+  .page-content :global(ul) { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+  .page-content :global(li) { margin-bottom: 0.5rem; }
+  .page-content :global(table) { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+  .page-content :global(th) { text-align: left; padding: 0.75rem; border-bottom: 2px solid var(--color-night); font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; }
+  .page-content :global(td) { padding: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); }
+</style>

@@ -1,0 +1,33 @@
+# Argo Studio
+
+> Photography business management built by photographers, for photographers.
+
+Argo Studio (argostudio.co) is a SaaS tool that handles contracts, invoices, scheduling, client communication, and gallery delivery for professional photographers. Unlike general-purpose CRMs, Argo is designed specifically around photography workflows.
+
+## Key Features
+- Client portal with questionnaires and timeline sharing
+- Contract and invoice automation
+- Session scheduling and calendar integration
+- Gallery delivery integration (Pic-Time, ShootProof, CloudSpot, Pixieset)
+- Shot list management
+- Automated payment reminders and follow-ups
+
+## Who It's For
+- Wedding photographers
+- Portrait and family photographers
+- Commercial and product photographers
+- Any photographer running a client-based business
+
+## Creator Code Program
+Argo's referral program for photographers: 75% of first month revenue, 30% recurring lifetime commission.
+
+## Key Pages
+- Main site: https://argostudio.co
+- Pricing: https://argostudio.co/pricing
+- Blog: https://blog.argostudio.co
+- FAQ: https://blog.argostudio.co/faq
+- Pricing Calculator: https://blog.argostudio.co/tools/pricing-calculator
+- ROI Calculator: https://blog.argostudio.co/tools/roi-calculator
+
+## Contact
+- Website: https://argostudio.co

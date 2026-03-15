@@ -1,0 +1,205 @@
+---
+import Base from '../../layouts/Base.astro';
+import FAQ from '../../components/FAQ.astro';
+import SignupCTA from '../../components/SignupCTA.astro';
+
+const faqs = [
+  {
+    question: 'How much time does a photography CRM actually save?',
+    answer: 'Most photographers spend 8-15 hours per week on admin tasks like emails, invoicing, scheduling, and contract management. A purpose-built CRM typically reduces that by 50-65%, freeing up 4-10 hours per week for shooting, editing, or simply not working.',
+  },
+  {
+    question: 'Is a CRM worth it for part-time photographers?',
+    answer: 'If you book more than 5 clients per month, the time savings from automated contracts, invoicing, and scheduling typically pay for the subscription within the first week of use. Part-time photographers often benefit the most because their time is the scarcest resource.',
+  },
+  {
+    question: 'What admin tasks can Argo automate?',
+    answer: 'Argo automates contract sending, invoice generation, payment reminders, booking confirmations, questionnaire delivery, and follow-up emails. The goal is to handle the repetitive communication so you can focus on the creative and client-facing work.',
+  },
+];
+---
+
+<Base
+  title="Photography CRM ROI Calculator — Free Tool"
+  description="Calculate how much time and money a photography CRM could save your business each month. See your projected ROI with this free calculator."
+  keywords={['photography crm roi', 'crm roi calculator', 'photography business software roi', 'is a crm worth it photographers']}
+>
+  <div class="container">
+    <section class="tool-page">
+      <p class="overline">Free Tool</p>
+      <h1>Photography CRM ROI Calculator</h1>
+      <p class="tool-intro">
+        See what your admin time is actually costing you — and what you could save with the right tools in place.
+      </p>
+
+      <div class="calculator" id="roi-calculator">
+        <div class="calc-group">
+          <label for="admin-hours">Hours per week on admin tasks</label>
+          <input type="number" id="admin-hours" min="1" max="40" value="10" />
+        </div>
+
+        <div class="calc-group">
+          <label for="hourly-rate">Your effective hourly rate ($)</label>
+          <input type="number" id="hourly-rate" min="10" value="75" step="5" />
+        </div>
+
+        <div class="calc-group">
+          <label for="clients-month">Clients per month</label>
+          <input type="number" id="clients-month" min="1" max="100" value="8" />
+        </div>
+
+        <div class="calc-group">
+          <label for="current-tools">Current monthly tool costs ($)</label>
+          <input type="number" id="current-tools" min="0" value="50" step="5" />
+        </div>
+
+        <button id="calc-roi" type="button">Calculate ROI</button>
+
+        <div class="results" id="roi-results" style="display:none;">
+          <h3>Your Projected Savings</h3>
+          <div class="result-grid">
+            <div class="result-card">
+              <p class="overline">Hours Saved / Month</p>
+              <p class="result-value" id="hours-saved">—</p>
+            </div>
+            <div class="result-card">
+              <p class="overline">Value of Time Saved</p>
+              <p class="result-value" id="money-saved">—</p>
+            </div>
+            <div class="result-card">
+              <p class="overline">Annual ROI</p>
+              <p class="result-value" id="annual-roi">—</p>
+            </div>
+            <div class="result-card">
+              <p class="overline">Break-Even</p>
+              <p class="result-value" id="break-even">—</p>
+            </div>
+          </div>
+          <p class="result-note" id="roi-note"></p>
+        </div>
+      </div>
+
+      <div class="tool-content">
+        <h2>The hidden cost of manual admin</h2>
+        <p>
+          Every hour spent copying client details into a spreadsheet, chasing invoice payments, or manually sending booking confirmations is an hour that could have gone toward a paid shoot, portfolio development, or rest. For most photographers, admin work is the largest unpaid line item in their business.
+        </p>
+        <p>
+          The real cost is not just the time itself — it is the cognitive load. Switching between email, a calendar app, a separate invoicing tool, and a shared drive for contracts fragments your attention. A single tool that handles the full client lifecycle reduces that friction significantly.
+        </p>
+
+        <h2>What 60% time savings looks like</h2>
+        <p>
+          If you currently spend 10 hours per week on admin, cutting that by 60% gives you 6 hours back. Over a month, that is 24 hours — roughly three full working days. Over a year, more than 300 hours. That is time for an extra 10-15 paid sessions, a personal project, or simply not working on Sunday evenings.
+        </p>
+      </div>
+
+      <FAQ items={faqs} />
+
+      <SignupCTA
+        heading="See the difference for yourself"
+        text="Try Argo Studio free and find out how much admin time you can get back."
+      />
+    </section>
+  </div>
+</Base>
+
+<script>
+  document.getElementById('calc-roi')?.addEventListener('click', () => {
+    const adminHours = parseFloat((document.getElementById('admin-hours') as HTMLInputElement).value) || 10;
+    const hourlyRate = parseFloat((document.getElementById('hourly-rate') as HTMLInputElement).value) || 75;
+    const currentTools = parseFloat((document.getElementById('current-tools') as HTMLInputElement).value) || 0;
+
+    const timeSavedWeekly = adminHours * 0.6;
+    const timeSavedMonthly = Math.round(timeSavedWeekly * 4.33);
+    const moneySavedMonthly = Math.round(timeSavedWeekly * 4.33 * hourlyRate);
+    const argoCost = 29; // approximate monthly cost
+    const netMonthlySaving = moneySavedMonthly - argoCost + currentTools;
+    const annualRoi = netMonthlySaving * 12;
+    const breakEvenDays = argoCost > 0 ? Math.ceil(argoCost / (moneySavedMonthly / 30)) : 1;
+
+    const fmt = (n: number) => '$' + n.toLocaleString();
+
+    document.getElementById('hours-saved')!.textContent = timeSavedMonthly + 'h';
+    document.getElementById('money-saved')!.textContent = fmt(moneySavedMonthly) + '/mo';
+    document.getElementById('annual-roi')!.textContent = fmt(annualRoi);
+    document.getElementById('break-even')!.textContent = breakEvenDays + ' days';
+    document.getElementById('roi-results')!.style.display = 'block';
+    document.getElementById('roi-note')!.textContent =
+      `Assumes 60% reduction in admin time with Argo ($${argoCost}/mo). Your current tools cost $${currentTools}/mo would be replaced.`;
+  });
+</script>
+
+<style>
+  .tool-page { padding: 3rem 0; }
+  .tool-page h1 { margin-top: 0.5rem; }
+  .tool-intro {
+    margin-top: 1rem;
+    color: var(--color-slate);
+    font-size: 1.1rem;
+    max-width: 520px;
+  }
+  .calculator {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px;
+  }
+  .calc-group {
+    margin-bottom: 1.25rem;
+  }
+  .calc-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+  }
+  .calc-group input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+  }
+  #calc-roi {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--color-fleece-gold);
+    color: var(--color-night);
+    border: none;
+    border-radius: 3px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+  #calc-roi:hover { opacity: 0.9; }
+  .results { margin-top: 1.5rem; }
+  .results h3 { margin-bottom: 1rem; }
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+  .result-card {
+    padding: 1rem;
+    background: var(--color-frost);
+    border-radius: 3px;
+    text-align: center;
+  }
+  .result-value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+  }
+  .result-note {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--color-slate);
+  }
+  .tool-content { margin-top: 3rem; }
+  .tool-content p { margin-bottom: 1.25rem; }
+</style>

@@ -1,0 +1,155 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 12);
+---
+
+<Base
+  title="Argo Studio Blog — Photography Business Resources"
+  description="Practical guides, pricing strategies, and workflow tips for photographers who run their own business."
+>
+  <section class="hero">
+    <div class="container">
+      <p class="overline">Resources for Photographers</p>
+      <h1>Run your photography business with fewer moving parts</h1>
+      <p class="hero-sub">
+        Guides, strategies, and tools from photographers who have been where you are.
+      </p>
+    </div>
+  </section>
+
+  <section class="posts-grid">
+    <div class="container-wide">
+      {posts.length > 0 ? (
+        <div class="grid">
+          {posts.map((post) => (
+            <a href={`/blog/${post.id}`} class="post-card">
+              <p class="overline">{post.data.tags?.[0] || 'Photography Business'}</p>
+              <h3>{post.data.title}</h3>
+              <p class="post-desc">{post.data.description}</p>
+              <time datetime={post.data.date}>
+                {new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </time>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p>Content is on its way. Check back soon.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="resources">
+    <div class="container-wide">
+      <h2>Free Tools</h2>
+      <div class="tools-grid">
+        <a href="/tools/pricing-calculator" class="tool-card">
+          <p class="overline">Calculator</p>
+          <h3>Photography Pricing Calculator</h3>
+          <p>Figure out what to charge based on your market, experience, and overhead.</p>
+        </a>
+        <a href="/tools/roi-calculator" class="tool-card">
+          <p class="overline">Calculator</p>
+          <h3>ROI Calculator</h3>
+          <p>See how much time and money a photography CRM could save you each month.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding: 4rem 0 3rem;
+    text-align: center;
+  }
+  .hero h1 {
+    max-width: 580px;
+    margin: 0.5rem auto 0;
+  }
+  .hero-sub {
+    margin-top: 1rem;
+    color: var(--color-slate);
+    font-size: 1.1rem;
+  }
+  .posts-grid {
+    padding: 2rem 0 3rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .post-card {
+    display: block;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    color: var(--color-night);
+    transition: border-color 0.15s;
+  }
+  .post-card:hover {
+    border-color: var(--color-fleece-gold);
+    text-decoration: none;
+  }
+  .post-card h3 {
+    margin-top: 0.35rem;
+    font-size: 1.15rem;
+  }
+  .post-desc {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-slate);
+    line-height: 1.5;
+  }
+  .post-card time {
+    display: block;
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-slate);
+  }
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-slate);
+  }
+  .resources {
+    padding: 2rem 0 3rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .resources h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .tool-card {
+    display: block;
+    padding: 1.5rem;
+    background: var(--color-deep-water);
+    border-radius: 4px;
+    color: var(--color-parchment);
+  }
+  .tool-card:hover { text-decoration: none; opacity: 0.95; }
+  .tool-card h3 {
+    margin-top: 0.35rem;
+    font-size: 1.1rem;
+    color: var(--color-parchment);
+  }
+  .tool-card p:last-child {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-starlight);
+  }
+</style>

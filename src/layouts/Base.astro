@@ -1,0 +1,236 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedDate?: string;
+  keywords?: string[];
+  jsonLd?: object;
+}
+
+const {
+  title,
+  description,
+  image = '/og-images/default.png',
+  type = 'website',
+  publishedDate,
+  keywords = [],
+  jsonLd,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SEOHead
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      url={canonicalUrl.href}
+      publishedDate={publishedDate}
+      keywords={keywords}
+      jsonLd={jsonLd}
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style is:global>
+      :root {
+        --color-night: #0b0f1a;
+        --color-deep-water: #141829;
+        --color-fleece-gold: #c9a227;
+        --color-pale-gold: #e2cc6b;
+        --color-starlight: #d4cabb;
+        --color-parchment: #f0ebe1;
+        --color-frost: #f7f5f0;
+        --color-slate: #6b7280;
+        --color-compass-blue: #4a6fa5;
+        --font-display: 'Instrument Serif', serif;
+        --font-body: 'DM Sans', sans-serif;
+        --font-mono: 'Space Mono', monospace;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-body);
+        color: var(--color-night);
+        background: var(--color-frost);
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1, h2, h3, h4 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        line-height: 1.2;
+      }
+
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; }
+      h3 { font-size: 1.35rem; margin-top: 2rem; margin-bottom: 0.75rem; }
+
+      a {
+        color: var(--color-compass-blue);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code, pre {
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+      }
+
+      .overline {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-fleece-gold);
+      }
+
+      .container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      .container-wide {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container-wide">
+        <nav>
+          <a href="/" class="logo">Argo Studio</a>
+          <div class="nav-links">
+            <a href="/blog">Blog</a>
+            <a href="/tools/pricing-calculator">Tools</a>
+            <a href="/faq">FAQ</a>
+            <a href="https://argostudio.co" class="nav-cta" rel="noopener">Get Started</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container-wide">
+        <div class="footer-grid">
+          <div>
+            <p class="overline">Argo Studio</p>
+            <p>Business management built for photographers.</p>
+          </div>
+          <div>
+            <p class="overline">Resources</p>
+            <ul>
+              <li><a href="/blog">Blog</a></li>
+              <li><a href="/tools/pricing-calculator">Pricing Calculator</a></li>
+              <li><a href="/tools/roi-calculator">ROI Calculator</a></li>
+              <li><a href="/faq">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="overline">Product</p>
+            <ul>
+              <li><a href="https://argostudio.co" rel="noopener">Main Site</a></li>
+              <li><a href="https://argostudio.co/pricing" rel="noopener">Pricing</a></li>
+              <li><a href="https://argostudio.co/signup" rel="noopener">Sign Up</a></li>
+            </ul>
+          </div>
+        </div>
+        <p class="footer-copy">&copy; {new Date().getFullYear()} Argo Studio. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <style>
+      .site-header {
+        padding: 1.25rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        background: var(--color-frost);
+      }
+      .site-header nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        font-family: var(--font-display);
+        font-size: 1.35rem;
+        color: var(--color-night);
+      }
+      .logo:hover { text-decoration: none; }
+      .nav-links {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+      .nav-links a {
+        font-size: 0.9rem;
+        color: var(--color-slate);
+      }
+      .nav-cta {
+        background: var(--color-fleece-gold);
+        color: var(--color-night);
+        padding: 0.5rem 1.25rem;
+        border-radius: 3px;
+        font-weight: 500;
+      }
+      .nav-cta:hover { text-decoration: none; opacity: 0.9; }
+      .site-footer {
+        margin-top: 4rem;
+        padding: 3rem 0 2rem;
+        background: var(--color-night);
+        color: var(--color-starlight);
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+      .footer-grid ul {
+        list-style: none;
+        margin-top: 0.5rem;
+      }
+      .footer-grid li { margin-bottom: 0.35rem; }
+      .footer-grid a { color: var(--color-starlight); font-size: 0.9rem; }
+      .footer-copy {
+        font-size: 0.8rem;
+        color: var(--color-slate);
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding-top: 1.5rem;
+      }
+      @media (max-width: 640px) {
+        .footer-grid { grid-template-columns: 1fr; }
+        .nav-links { gap: 1rem; }
+      }
+    </style>
+  </body>
+</html>

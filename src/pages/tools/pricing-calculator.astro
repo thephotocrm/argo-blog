@@ -1,0 +1,251 @@
+---
+import Base from '../../layouts/Base.astro';
+import FAQ from '../../components/FAQ.astro';
+import SignupCTA from '../../components/SignupCTA.astro';
+
+const faqs = [
+  {
+    question: 'How does this photography pricing calculator work?',
+    answer: 'The calculator uses your market size, years of experience, photography niche, monthly overhead, and income goals to suggest session rates and package pricing. The formula accounts for regional cost of living, niche demand, and experience-based premium adjustments.',
+  },
+  {
+    question: 'Should I charge per hour or per session?',
+    answer: 'Most successful photographers charge per session or per package rather than hourly. Hourly pricing penalizes efficiency — the faster and better you get, the less you earn. Session-based pricing lets you price for value delivered, not time spent.',
+  },
+  {
+    question: 'How often should I raise my photography prices?',
+    answer: 'Review your pricing at least once a year, ideally before your busy season. If you are consistently booking out more than 80% of your availability, that is a strong signal your prices are below market.',
+  },
+  {
+    question: 'What is a good profit margin for photography?',
+    answer: 'A healthy photography business typically aims for a 30-50% profit margin after all expenses (gear, software, insurance, marketing, taxes). If your margin is below 25%, your pricing likely needs adjustment.',
+  },
+];
+---
+
+<Base
+  title="Photography Pricing Calculator — Free Tool"
+  description="Calculate what to charge for photography sessions based on your market, experience, niche, and overhead. Free pricing tool for photographers."
+  keywords={['photography pricing calculator', 'how to price photography', 'photography session pricing', 'photographer rate calculator']}
+>
+  <div class="container">
+    <section class="tool-page">
+      <p class="overline">Free Tool</p>
+      <h1>Photography Pricing Calculator</h1>
+      <p class="tool-intro">
+        Figure out what to charge based on where you shoot, how long you have been doing this, and what it costs to keep your business running.
+      </p>
+
+      <div class="calculator" id="pricing-calculator">
+        <div class="calc-group">
+          <label for="market">Market size</label>
+          <select id="market">
+            <option value="small">Small city / rural</option>
+            <option value="medium" selected>Mid-size city</option>
+            <option value="large">Major metro</option>
+          </select>
+        </div>
+
+        <div class="calc-group">
+          <label for="experience">Years of experience</label>
+          <input type="number" id="experience" min="0" max="40" value="3" />
+        </div>
+
+        <div class="calc-group">
+          <label for="niche">Primary niche</label>
+          <select id="niche">
+            <option value="wedding">Wedding</option>
+            <option value="portrait" selected>Portrait / Family</option>
+            <option value="commercial">Commercial / Product</option>
+            <option value="event">Event</option>
+            <option value="real-estate">Real Estate</option>
+            <option value="newborn">Newborn / Maternity</option>
+            <option value="boudoir">Boudoir</option>
+            <option value="headshot">Headshot / Branding</option>
+          </select>
+        </div>
+
+        <div class="calc-group">
+          <label for="overhead">Monthly overhead ($)</label>
+          <input type="number" id="overhead" min="0" value="1500" step="100" />
+        </div>
+
+        <div class="calc-group">
+          <label for="income">Desired annual income ($)</label>
+          <input type="number" id="income" min="0" value="60000" step="5000" />
+        </div>
+
+        <button id="calculate" type="button">Calculate pricing</button>
+
+        <div class="results" id="results" style="display:none;">
+          <h3>Suggested Pricing</h3>
+          <div class="result-grid">
+            <div class="result-card">
+              <p class="overline">Session Rate</p>
+              <p class="result-value" id="session-rate">—</p>
+            </div>
+            <div class="result-card">
+              <p class="overline">Basic Package</p>
+              <p class="result-value" id="basic-pkg">—</p>
+            </div>
+            <div class="result-card">
+              <p class="overline">Standard Package</p>
+              <p class="result-value" id="standard-pkg">—</p>
+            </div>
+            <div class="result-card">
+              <p class="overline">Premium Package</p>
+              <p class="result-value" id="premium-pkg">—</p>
+            </div>
+          </div>
+          <p class="result-note" id="result-note"></p>
+        </div>
+      </div>
+
+      <div class="tool-content">
+        <h2>How to think about photography pricing</h2>
+        <p>
+          Pricing is the single most impactful decision in a photography business, and it is the one most photographers get wrong early on. Undercharging does not just cut into your income — it shapes how clients perceive your work, attracts the wrong bookings, and makes the business unsustainable long-term.
+        </p>
+        <p>
+          The calculator above gives you a data-informed starting point. It factors in your local market (a wedding photographer in Manhattan has different baseline costs than one in rural Tennessee), your experience level, niche demand, and the real cost of running your business each month.
+        </p>
+
+        <h2>The cost-plus method</h2>
+        <p>
+          Start with your costs. Add up everything: gear maintenance, software subscriptions, insurance, marketing spend, vehicle costs, second shooter fees, editing time, and taxes. That is your floor. Your session rate needs to clear that floor and leave room for the income you need.
+        </p>
+        <p>
+          The formula: (annual overhead + desired income) divided by the number of sessions you can realistically shoot per year. Most photographers overestimate their capacity. Account for editing time, travel, consultations, and the weeks you simply will not book.
+        </p>
+
+        <h2>Market positioning</h2>
+        <p>
+          Your price communicates something before a client ever sees your portfolio. Photographers in the bottom quartile of their market compete on price. Photographers in the top quartile compete on experience, consistency, and trust. Where you position yourself determines who contacts you.
+        </p>
+        <p>
+          Research what other photographers in your area and niche charge. Not to copy them, but to understand the landscape. If every wedding photographer in your city charges between $3,000 and $6,000, pricing yourself at $800 does not make you competitive — it makes you invisible to the clients who value photography enough to pay for it.
+        </p>
+      </div>
+
+      <FAQ items={faqs} />
+
+      <SignupCTA
+        heading="Track your pricing and bookings in one place"
+        text="Argo Studio helps you manage proposals, contracts, and invoices — so you can spend less time on admin and more time behind the camera."
+      />
+    </section>
+  </div>
+</Base>
+
+<script>
+  const marketFactors: Record<string, number> = { small: 0.75, medium: 1.0, large: 1.35 };
+  const nicheFactors: Record<string, number> = {
+    wedding: 1.4, portrait: 1.0, commercial: 1.3, event: 0.9,
+    'real-estate': 0.8, newborn: 1.1, boudoir: 1.15, headshot: 1.05,
+  };
+
+  document.getElementById('calculate')?.addEventListener('click', () => {
+    const market = (document.getElementById('market') as HTMLSelectElement).value;
+    const experience = parseInt((document.getElementById('experience') as HTMLInputElement).value) || 1;
+    const niche = (document.getElementById('niche') as HTMLSelectElement).value;
+    const overhead = parseFloat((document.getElementById('overhead') as HTMLInputElement).value) || 0;
+    const income = parseFloat((document.getElementById('income') as HTMLInputElement).value) || 0;
+
+    const expFactor = 1 + Math.min(experience, 20) * 0.04;
+    const mFactor = marketFactors[market] || 1.0;
+    const nFactor = nicheFactors[niche] || 1.0;
+
+    const annualCosts = overhead * 12;
+    const estimatedSessions = niche === 'wedding' ? 25 : 60;
+    const baseRate = ((annualCosts + income) / estimatedSessions) * 1.15;
+    const sessionRate = Math.round(baseRate * mFactor * nFactor * expFactor / 25) * 25;
+
+    const basic = Math.round(sessionRate * 0.8 / 25) * 25;
+    const standard = sessionRate;
+    const premium = Math.round(sessionRate * 1.6 / 25) * 25;
+
+    const fmt = (n: number) => '$' + n.toLocaleString();
+
+    document.getElementById('session-rate')!.textContent = fmt(sessionRate);
+    document.getElementById('basic-pkg')!.textContent = fmt(basic);
+    document.getElementById('standard-pkg')!.textContent = fmt(standard);
+    document.getElementById('premium-pkg')!.textContent = fmt(premium);
+    document.getElementById('results')!.style.display = 'block';
+    document.getElementById('result-note')!.textContent =
+      `Based on ~${estimatedSessions} sessions/year in a ${market} market with ${experience} year${experience === 1 ? '' : 's'} of experience.`;
+  });
+</script>
+
+<style>
+  .tool-page { padding: 3rem 0; }
+  .tool-page h1 { margin-top: 0.5rem; }
+  .tool-intro {
+    margin-top: 1rem;
+    color: var(--color-slate);
+    font-size: 1.1rem;
+    max-width: 520px;
+  }
+  .calculator {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px;
+  }
+  .calc-group {
+    margin-bottom: 1.25rem;
+  }
+  .calc-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+  }
+  .calc-group input, .calc-group select {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+  }
+  #calculate {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--color-fleece-gold);
+    color: var(--color-night);
+    border: none;
+    border-radius: 3px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+  #calculate:hover { opacity: 0.9; }
+  .results { margin-top: 1.5rem; }
+  .results h3 { margin-bottom: 1rem; }
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+  .result-card {
+    padding: 1rem;
+    background: var(--color-frost);
+    border-radius: 3px;
+    text-align: center;
+  }
+  .result-value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+  }
+  .result-note {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--color-slate);
+  }
+  .tool-content { margin-top: 3rem; }
+  .tool-content p { margin-bottom: 1.25rem; }
+</style>

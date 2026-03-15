@@ -1,0 +1,175 @@
+---
+import Base from './Base.astro';
+import SignupCTA from '../components/SignupCTA.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date: string;
+  author?: string;
+  tags?: string[];
+  keywords?: string[];
+  image?: string;
+  pillar?: string;
+}
+
+const {
+  title,
+  description,
+  date,
+  author = 'Argo Studio',
+  tags = [],
+  keywords = [],
+  image,
+  pillar,
+} = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description: description,
+  datePublished: date,
+  author: { '@type': 'Organization', name: 'Argo Studio' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Argo Studio',
+    logo: { '@type': 'ImageObject', url: 'https://argostudio.co/logo.png' },
+  },
+};
+---
+
+<Base
+  title={title}
+  description={description}
+  type="article"
+  publishedDate={date}
+  keywords={keywords}
+  image={image}
+  jsonLd={articleSchema}
+>
+  <article class="blog-post">
+    <div class="container">
+      <header class="post-header">
+        <p class="overline">{tags.length > 0 ? tags[0] : 'Photography Business'}</p>
+        <h1>{title}</h1>
+        <div class="post-meta">
+          <span>{author}</span>
+          <span class="separator">·</span>
+          <time datetime={date}>{formattedDate}</time>
+        </div>
+      </header>
+
+      <div class="post-content">
+        <slot />
+      </div>
+
+      <SignupCTA />
+
+      <footer class="post-footer">
+        {tags.length > 0 && (
+          <div class="post-tags">
+            {tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        )}
+      </footer>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .blog-post {
+    padding: 3rem 0;
+  }
+  .post-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .post-header h1 {
+    margin-top: 0.5rem;
+    max-width: 600px;
+  }
+  .post-meta {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-slate);
+  }
+  .separator {
+    margin: 0 0.5rem;
+  }
+  .post-content {
+    font-size: 1.05rem;
+  }
+  .post-content :global(p) {
+    margin-bottom: 1.25rem;
+  }
+  .post-content :global(ul), .post-content :global(ol) {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  .post-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+  .post-content :global(blockquote) {
+    border-left: 3px solid var(--color-fleece-gold);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    background: rgba(201, 162, 39, 0.04);
+    border-radius: 0 3px 3px 0;
+  }
+  .post-content :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+  .post-content :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    margin: 1.5rem 0;
+  }
+  .post-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+  .post-content :global(th) {
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 2px solid var(--color-night);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .post-content :global(td) {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .post-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .post-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 3px;
+    color: var(--color-slate);
+  }
+</style>

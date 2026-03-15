@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SignupCTA from '../../components/SignupCTA.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages
+    .filter((p) => p.data.type === 'integration')
+    .map((page) => ({
+      params: { slug: page.data.slug },
+      props: { page },
+    }));
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<Base
+  title={page.data.title}
+  description={page.data.description}
+  keywords={page.data.keywords}
+>
+  <div class="container">
+    <article class="integration-page">
+      <header>
+        <p class="overline">Integration</p>
+        <h1>{page.data.title}</h1>
+        <p class="page-desc">{page.data.description}</p>
+      </header>
+      <div class="page-content">
+        <Content />
+      </div>
+      <SignupCTA heading="Connect your tools with Argo" text="Argo Studio integrates with the platforms you already use. Set up takes minutes." />
+    </article>
+  </div>
+</Base>
+
+<style>
+  .integration-page { padding: 3rem 0; }
+  .integration-page header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(0,0,0,0.06); }
+  .integration-page h1 { margin-top: 0.5rem; }
+  .page-desc { margin-top: 1rem; color: var(--color-slate); font-size: 1.1rem; max-width: 560px; }
+  .page-content { font-size: 1.05rem; }
+  .page-content :global(p) { margin-bottom: 1.25rem; }
+</style>

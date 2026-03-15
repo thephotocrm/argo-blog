@@ -1,0 +1,61 @@
+---
+interface Props {
+  heading?: string;
+  text?: string;
+  buttonText?: string;
+  buttonUrl?: string;
+}
+
+const {
+  heading = 'Ready to simplify your photography business?',
+  text = 'Argo Studio handles contracts, invoices, scheduling, and client communication — so you can focus on the work that matters.',
+  buttonText = 'Try Argo Studio',
+  buttonUrl = 'https://argostudio.co/signup',
+} = Astro.props;
+---
+
+<section class="signup-cta">
+  <div class="cta-inner">
+    <h2>{heading}</h2>
+    <p>{text}</p>
+    <a href={buttonUrl} class="cta-button" rel="noopener">{buttonText}</a>
+  </div>
+</section>
+
+<style>
+  .signup-cta {
+    margin-top: 3rem;
+    padding: 2.5rem;
+    background: var(--color-deep-water);
+    border-radius: 4px;
+  }
+  .cta-inner {
+    text-align: center;
+  }
+  .signup-cta h2 {
+    color: var(--color-parchment);
+    font-size: 1.5rem;
+    margin-top: 0;
+  }
+  .signup-cta p {
+    color: var(--color-starlight);
+    margin-top: 0.75rem;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-button {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.75rem 2rem;
+    background: var(--color-fleece-gold);
+    color: var(--color-night);
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  .cta-button:hover {
+    text-decoration: none;
+    opacity: 0.9;
+  }
+</style>
