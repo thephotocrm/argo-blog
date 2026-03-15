@@ -1,0 +1,136 @@
+---
+export const prerender = false;
+
+const error = Astro.url.searchParams.get('error');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin Login — Argo Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --color-night: #0b0f1a;
+        --color-deep-water: #141829;
+        --color-fleece-gold: #c9a227;
+        --color-pale-gold: #e2cc6b;
+        --color-starlight: #d4cabb;
+        --color-parchment: #f0ebe1;
+        --color-frost: #f7f5f0;
+        --color-slate: #6b7280;
+        --font-display: 'Instrument Serif', serif;
+        --font-body: 'DM Sans', sans-serif;
+        --font-mono: 'Space Mono', monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: var(--font-body);
+        background: var(--color-night);
+        color: var(--color-starlight);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .login-card {
+        background: var(--color-deep-water);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 3px;
+        padding: 2.5rem;
+        width: 100%;
+        max-width: 380px;
+      }
+      .login-card h1 {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: var(--color-parchment);
+        margin-bottom: 0.5rem;
+      }
+      .overline {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-fleece-gold);
+        margin-bottom: 1.5rem;
+        display: block;
+      }
+      .error {
+        background: rgba(220, 38, 38, 0.15);
+        border: 1px solid rgba(220, 38, 38, 0.3);
+        color: #fca5a5;
+        font-size: 0.85rem;
+        padding: 0.6rem 0.8rem;
+        border-radius: 3px;
+        margin-bottom: 1rem;
+      }
+      label {
+        font-size: 0.85rem;
+        color: var(--color-slate);
+        display: block;
+        margin-bottom: 0.4rem;
+      }
+      input[type="password"] {
+        width: 100%;
+        padding: 0.6rem 0.8rem;
+        background: var(--color-night);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        color: var(--color-parchment);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        outline: none;
+      }
+      input[type="password"]:focus {
+        border-color: var(--color-fleece-gold);
+      }
+      button {
+        width: 100%;
+        margin-top: 1.25rem;
+        padding: 0.65rem;
+        background: var(--color-fleece-gold);
+        color: var(--color-night);
+        border: none;
+        border-radius: 3px;
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      button:hover { opacity: 0.9; }
+      .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 1.25rem;
+        font-size: 0.8rem;
+        color: var(--color-slate);
+        text-decoration: none;
+      }
+      .back-link:hover { color: var(--color-starlight); }
+    </style>
+  </head>
+  <body>
+    <div class="login-card">
+      <span class="overline">Admin</span>
+      <h1>Argo Studio</h1>
+      {error && <p class="error">Invalid password. Try again.</p>}
+      <form method="POST" action="/api/auth">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autofocus />
+        <button type="submit">Sign In</button>
+      </form>
+      <a href="/" class="back-link">Back to blog</a>
+    </div>
+  </body>
+</html>

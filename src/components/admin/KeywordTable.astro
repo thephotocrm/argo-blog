@@ -1,0 +1,129 @@
+---
+interface Keyword {
+  keyword: string;
+  volume: number;
+  difficulty: string;
+  cluster: string;
+  priority: string;
+  status: string;
+  intent: string;
+}
+
+interface Props {
+  keywords: Keyword[];
+}
+
+const { keywords } = Astro.props;
+
+// Sort: high priority first, then by volume
+const sorted = [...keywords].sort((a, b) => {
+  const priorityOrder = { high: 0, medium: 1, low: 2 };
+  const pDiff = (priorityOrder[a.priority as keyof typeof priorityOrder] || 2) - (priorityOrder[b.priority as keyof typeof priorityOrder] || 2);
+  if (pDiff !== 0) return pDiff;
+  return b.volume - a.volume;
+});
+---
+
+<section class="panel">
+  <h2>Keyword Queue</h2>
+  <p class="subtitle">{keywords.length} keywords tracked across {new Set(keywords.map(k => k.cluster)).size} clusters</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Keyword</th>
+          <th>Volume</th>
+          <th>Difficulty</th>
+          <th>Intent</th>
+          <th>Cluster</th>
+          <th>Priority</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sorted.map(kw => (
+          <tr>
+            <td><code>{kw.keyword}</code></td>
+            <td class="mono">{kw.volume.toLocaleString()}</td>
+            <td><span class={`badge diff-${kw.difficulty}`}>{kw.difficulty}</span></td>
+            <td class="mono">{kw.intent}</td>
+            <td class="mono">{kw.cluster}</td>
+            <td><span class={`badge pri-${kw.priority}`}>{kw.priority}</span></td>
+            <td><span class={`badge status-${kw.status}`}>{kw.status.replace('_', ' ')}</span></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+  .panel {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0 0 0.25rem 0;
+  }
+  .subtitle {
+    font-size: 0.8rem;
+    color: var(--color-slate);
+    margin-bottom: 1rem;
+  }
+  .table-scroll {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    min-width: 700px;
+  }
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.45rem 0.6rem;
+    color: var(--color-starlight);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .mono { font-family: var(--font-mono); font-size: 0.75rem; }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .diff-low { background: rgba(34, 197, 94, 0.15); color: #86efac; }
+  .diff-medium { background: rgba(201, 162, 39, 0.15); color: var(--color-pale-gold); }
+  .diff-high { background: rgba(220, 38, 38, 0.15); color: #fca5a5; }
+  .pri-high { background: rgba(201, 162, 39, 0.2); color: var(--color-fleece-gold); }
+  .pri-medium { background: rgba(107, 114, 128, 0.2); color: var(--color-starlight); }
+  .pri-low { background: rgba(107, 114, 128, 0.1); color: var(--color-slate); }
+  .status-not_started { background: rgba(107, 114, 128, 0.15); color: var(--color-slate); }
+  .status-in_progress { background: rgba(74, 111, 165, 0.2); color: #93bbee; }
+  .status-published { background: rgba(34, 197, 94, 0.15); color: #86efac; }
+</style>

@@ -1,0 +1,168 @@
+---
+interface PageRow {
+  path: string;
+  sessions: number;
+  pageviews: number;
+  avgDuration: number;
+}
+
+interface SourceRow {
+  channel: string;
+  sessions: number;
+  pageviews: number;
+}
+
+interface Props {
+  topPages?: PageRow[];
+  sources?: SourceRow[];
+  error?: string;
+}
+
+const { topPages, sources, error } = Astro.props;
+
+// Calculate max for bar widths
+const maxPageviews = topPages ? Math.max(...topPages.map(p => p.pageviews), 1) : 1;
+const maxSourceSessions = sources ? Math.max(...sources.map(s => s.sessions), 1) : 1;
+---
+
+<section class="panel">
+  <h2>Traffic Overview</h2>
+  <p class="subtitle">Google Analytics · Last 28 days</p>
+
+  {error ? (
+    <div class="notice">
+      <p>{error}</p>
+    </div>
+  ) : !topPages ? (
+    <div class="notice">
+      <p>GA4 not configured. Set up Google Analytics to see traffic data.</p>
+    </div>
+  ) : (
+    <div class="traffic-grid">
+      <div>
+        <h3>Top Pages</h3>
+        {topPages.length === 0 ? (
+          <p class="empty">No page data yet</p>
+        ) : (
+          <div class="bar-list">
+            {topPages.slice(0, 10).map(page => (
+              <div class="bar-row">
+                <div class="bar-label" title={page.path}>{page.path}</div>
+                <div class="bar-track">
+                  <div class="bar-fill" style={`width: ${(page.pageviews / maxPageviews) * 100}%`}></div>
+                </div>
+                <div class="bar-value">{page.pageviews}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div>
+        <h3>Traffic Sources</h3>
+        {!sources || sources.length === 0 ? (
+          <p class="empty">No source data yet</p>
+        ) : (
+          <div class="bar-list">
+            {sources.map(source => (
+              <div class="bar-row">
+                <div class="bar-label">{source.channel}</div>
+                <div class="bar-track">
+                  <div class="bar-fill source-fill" style={`width: ${(source.sessions / maxSourceSessions) * 100}%`}></div>
+                </div>
+                <div class="bar-value">{source.sessions}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )}
+</section>
+
+<style>
+  .panel {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0 0 0.25rem 0;
+  }
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0 0 0.75rem 0;
+  }
+  .subtitle {
+    font-size: 0.8rem;
+    color: var(--color-slate);
+    margin-bottom: 1rem;
+  }
+  .notice {
+    background: rgba(107, 114, 128, 0.1);
+    border: 1px solid rgba(107, 114, 128, 0.2);
+    border-radius: 3px;
+    padding: 1rem;
+    color: var(--color-slate);
+    font-size: 0.85rem;
+  }
+  .empty { color: var(--color-slate); font-size: 0.85rem; }
+  .traffic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 768px) {
+    .traffic-grid { grid-template-columns: 1fr; }
+  }
+  .bar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 50px;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .bar-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-starlight);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bar-track {
+    height: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: var(--color-fleece-gold);
+    border-radius: 2px;
+    min-width: 2px;
+    opacity: 0.7;
+  }
+  .source-fill {
+    background: var(--color-compass-blue);
+  }
+  .bar-value {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    text-align: right;
+  }
+</style>

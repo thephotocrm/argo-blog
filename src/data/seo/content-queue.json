@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-15",
+  "items": [
+    {
+      "slug": "how-to-price-photography",
+      "title": "How to Price Photography: A Practical Guide for Working Photographers",
+      "content_type": "cluster",
+      "pillar": "photography-pricing",
+      "keyword": "how to price photography",
+      "status": "pending_review",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/how-to-price-photography.md",
+      "created_at": "2026-03-15",
+      "word_count": 1350
+    },
+    {
+      "slug": "photography-client-management",
+      "title": "Photography Client Management: From First Inquiry to Gallery Delivery",
+      "content_type": "cluster",
+      "pillar": "client-workflow-automation",
+      "keyword": "photography client management",
+      "status": "pending_review",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/photography-client-management.md",
+      "created_at": "2026-03-15",
+      "word_count": 1400
+    },
+    {
+      "slug": "honeybook-vs-dubsado-for-photographers",
+      "title": "HoneyBook vs Dubsado for Photographers: An Honest Comparison",
+      "content_type": "cluster",
+      "pillar": "photography-crm-comparison",
+      "keyword": "honeybook vs dubsado for photographers",
+      "status": "pending_review",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/honeybook-vs-dubsado-for-photographers.md",
+      "created_at": "2026-03-15",
+      "word_count": 1350
+    }
+  ]
+}

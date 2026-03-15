@@ -1,0 +1,124 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} — Argo Admin</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style is:global>
+      :root {
+        --color-night: #0b0f1a;
+        --color-deep-water: #141829;
+        --color-fleece-gold: #c9a227;
+        --color-pale-gold: #e2cc6b;
+        --color-starlight: #d4cabb;
+        --color-parchment: #f0ebe1;
+        --color-frost: #f7f5f0;
+        --color-slate: #6b7280;
+        --color-compass-blue: #4a6fa5;
+        --font-display: 'Instrument Serif', serif;
+        --font-body: 'DM Sans', sans-serif;
+        --font-mono: 'Space Mono', monospace;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: var(--font-body);
+        background: var(--color-night);
+        color: var(--color-starlight);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <div class="admin-brand">
+          <a href="/admin" class="admin-logo">Argo Studio</a>
+          <span class="admin-badge">Admin</span>
+        </div>
+        <nav class="admin-nav">
+          <a href="/" class="admin-link">Blog</a>
+          <a href="/admin/login" class="admin-link logout">Sign Out</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <slot />
+    </main>
+
+    <style>
+      .admin-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 0.75rem 1.5rem;
+        background: var(--color-deep-water);
+      }
+      .admin-header-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .admin-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .admin-logo {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        color: var(--color-parchment);
+        text-decoration: none;
+      }
+      .admin-badge {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-fleece-gold);
+        background: rgba(201, 162, 39, 0.1);
+        padding: 0.2rem 0.5rem;
+        border-radius: 2px;
+      }
+      .admin-nav {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      .admin-link {
+        font-size: 0.8rem;
+        color: var(--color-slate);
+        text-decoration: none;
+      }
+      .admin-link:hover { color: var(--color-starlight); }
+      .admin-link.logout {
+        color: var(--color-slate);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 0.3rem 0.75rem;
+        border-radius: 3px;
+      }
+      .admin-main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+      }
+    </style>
+  </body>
+</html>

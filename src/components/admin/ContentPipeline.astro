@@ -1,0 +1,176 @@
+---
+interface Props {
+  statusCounts: { not_started: number; in_progress: number; published: number };
+  contentItems: Array<{
+    slug: string;
+    title: string;
+    keyword: string;
+    status: string;
+    created_at: string;
+    word_count: number;
+  }>;
+}
+
+const { statusCounts, contentItems } = Astro.props;
+const total = statusCounts.not_started + statusCounts.in_progress + statusCounts.published;
+---
+
+<section class="panel">
+  <h2>Content Pipeline</h2>
+
+  <div class="pipeline-bar">
+    {statusCounts.published > 0 && (
+      <div class="bar-segment published" style={`flex: ${statusCounts.published}`}>
+        <span>{statusCounts.published}</span>
+      </div>
+    )}
+    {statusCounts.in_progress > 0 && (
+      <div class="bar-segment in-progress" style={`flex: ${statusCounts.in_progress}`}>
+        <span>{statusCounts.in_progress}</span>
+      </div>
+    )}
+    {statusCounts.not_started > 0 && (
+      <div class="bar-segment not-started" style={`flex: ${statusCounts.not_started}`}>
+        <span>{statusCounts.not_started}</span>
+      </div>
+    )}
+  </div>
+
+  <div class="pipeline-legend">
+    <span class="legend-item"><span class="dot published"></span> Published</span>
+    <span class="legend-item"><span class="dot in-progress"></span> In Progress</span>
+    <span class="legend-item"><span class="dot not-started"></span> Not Started</span>
+    <span class="legend-total">{total} keywords total</span>
+  </div>
+
+  {contentItems.length > 0 && (
+    <div class="content-queue">
+      <h3>Content Queue</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Keyword</th>
+            <th>Status</th>
+            <th>Words</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {contentItems.map(item => (
+            <tr>
+              <td class="title-cell">{item.title}</td>
+              <td><code>{item.keyword}</code></td>
+              <td><span class={`badge ${item.status}`}>{item.status.replace('_', ' ')}</span></td>
+              <td class="mono">{item.word_count.toLocaleString()}</td>
+              <td class="mono">{item.created_at}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</section>
+
+<style>
+  .panel {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0 0 1rem 0;
+  }
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 1.5rem 0 0.75rem 0;
+  }
+  .pipeline-bar {
+    display: flex;
+    height: 28px;
+    border-radius: 3px;
+    overflow: hidden;
+    gap: 2px;
+  }
+  .bar-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-night);
+    min-width: 28px;
+  }
+  .bar-segment.published { background: var(--color-fleece-gold); }
+  .bar-segment.in-progress { background: var(--color-pale-gold); }
+  .bar-segment.not-started { background: var(--color-slate); color: var(--color-frost); }
+  .pipeline-legend {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--color-starlight);
+    align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.35rem; }
+  .legend-total { margin-left: auto; color: var(--color-slate); font-family: var(--font-mono); font-size: 0.7rem; }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .dot.published { background: var(--color-fleece-gold); }
+  .dot.in-progress { background: var(--color-pale-gold); }
+  .dot.not-started { background: var(--color-slate); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  td {
+    padding: 0.5rem 0.75rem;
+    color: var(--color-starlight);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  .title-cell { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+  }
+  .mono { font-family: var(--font-mono); font-size: 0.75rem; }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge.pending_review { background: rgba(201, 162, 39, 0.15); color: var(--color-pale-gold); }
+  .badge.published { background: rgba(34, 197, 94, 0.15); color: #86efac; }
+  .badge.draft { background: rgba(107, 114, 128, 0.2); color: var(--color-starlight); }
+</style>
