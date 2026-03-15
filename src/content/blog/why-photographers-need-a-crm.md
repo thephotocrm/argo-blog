@@ -6,6 +6,7 @@ author: "Argo Studio"
 tags: ["Photography Business", "CRM", "Workflow"]
 pillar: "photography-crm-comparison"
 keywords: ["photography crm", "do photographers need a crm", "photography business software"]
+image: "https://images.unsplash.com/photo-1452457750107-cd084dce177d?w=800&q=80"
 draft: false
 ---
 

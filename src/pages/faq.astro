@@ -44,14 +44,18 @@ const faqs = [
   description="Common questions about Argo Studio, the photography business management tool built for working photographers."
   keywords={['photography crm faq', 'argo studio questions', 'photography business software']}
 >
-  <div class="container">
-    <section class="faq-page">
+  <section class="faq-hero">
+    <div class="container">
       <p class="overline">Questions</p>
       <h1>Frequently Asked Questions</h1>
       <p class="faq-intro">
         Straightforward answers about what Argo does, who it is for, and how it works.
       </p>
+    </div>
+  </section>
 
+  <div class="container">
+    <section class="faq-content">
       <FAQ items={faqs} />
 
       <SignupCTA
@@ -64,16 +68,23 @@ const faqs = [
 </Base>
 
 <style>
-  .faq-page {
-    padding: 3rem 0;
+  .faq-hero {
+    padding: 3.5rem 0 2.5rem;
+    background: var(--color-card-bg);
+    border-bottom: 1px solid var(--color-border);
   }
-  .faq-page h1 {
+  .faq-hero h1 {
     margin-top: 0.5rem;
+    font-size: 2.5rem;
   }
   .faq-intro {
     margin-top: 1rem;
     color: var(--color-slate);
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     max-width: 520px;
+    line-height: 1.6;
+  }
+  .faq-content {
+    padding: 2rem 0 3rem;
   }
 </style>

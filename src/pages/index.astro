@@ -4,36 +4,91 @@ import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 12);
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const featuredPost = posts[0];
+const gridPosts = posts.slice(1, 10);
+const recentPosts = posts.slice(0, 4);
 ---
 
 <Base
   title="Argo Studio Blog — Photography Business Resources"
   description="Practical guides, pricing strategies, and workflow tips for photographers who run their own business."
 >
-  <section class="hero">
-    <div class="container">
-      <p class="overline">Resources for Photographers</p>
-      <h1>Run your photography business with fewer moving parts</h1>
-      <p class="hero-sub">
-        Guides, strategies, and tools from photographers who have been where you are.
-      </p>
+  <!-- Hero section with featured post -->
+  <section class="hero-featured">
+    <div class="container-wide">
+      <div class="hero-content">
+        <div class="hero-text">
+          <p class="overline">Resources for Photographers</p>
+          <h1>Inspiration for your photography business</h1>
+          <p class="hero-sub">
+            Guides, strategies, and tools from photographers who have been where you are.
+          </p>
+          <a href="/tools/pricing-calculator" class="hero-cta">Start planning your business</a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="posts-grid">
-    <div class="container-wide">
-      {posts.length > 0 ? (
-        <div class="grid">
-          {posts.map((post) => (
-            <a href={`/blog/${post.id}`} class="post-card">
-              <p class="overline">{post.data.tags?.[0] || 'Photography Business'}</p>
-              <h3>{post.data.title}</h3>
-              <p class="post-desc">{post.data.description}</p>
-              <time datetime={post.data.date}>
-                {new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+  <!-- Featured large post -->
+  {featuredPost && (
+    <section class="featured-post-section">
+      <div class="container-wide">
+        <a href={`/blog/${featuredPost.id}`} class="featured-card">
+          <div class="featured-image">
+            <div class="featured-image-placeholder" style={featuredPost.data.image ? `background-image: url(${featuredPost.data.image}); background-size: cover; background-position: center;` : ''}>
+              <span class="featured-tag">{featuredPost.data.tags?.[0] || 'Photography Business'}</span>
+            </div>
+          </div>
+          <div class="featured-details">
+            <h2 class="featured-title">{featuredPost.data.title}</h2>
+            <p class="featured-desc">{featuredPost.data.description}</p>
+            <div class="featured-meta">
+              <span class="featured-author">{featuredPost.data.author || 'Argo Studio'}</span>
+              <span class="meta-sep">·</span>
+              <time datetime={featuredPost.data.date}>
+                {new Date(featuredPost.data.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
               </time>
+            </div>
+            <span class="view-post">View Post →</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <!-- Blog post grid -->
+  <section class="posts-section">
+    <div class="container-wide">
+      <div class="section-header">
+        <h2>Latest Articles</h2>
+      </div>
+      {gridPosts.length > 0 ? (
+        <div class="posts-grid">
+          {gridPosts.map((post) => (
+            <a href={`/blog/${post.id}`} class="post-card">
+              <div class="card-image">
+                <div class="card-image-placeholder" style={post.data.image ? `background-image: url(${post.data.image}); background-size: cover; background-position: center;` : ''}>
+                  <span class="card-category">{post.data.tags?.[0] || 'Photography Business'}</span>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card-tags">
+                  {post.data.tags?.slice(0, 2).map((tag: string) => (
+                    <span class="card-tag">{tag}</span>
+                  ))}
+                </div>
+                <h3>{post.data.title}</h3>
+                <p class="card-desc">{post.data.description}</p>
+                <div class="card-footer">
+                  <span class="card-author">{post.data.author || 'Argo Studio'}</span>
+                  <time datetime={post.data.date}>
+                    {new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </time>
+                </div>
+                <span class="card-link">View Post →</span>
+              </div>
             </a>
           ))}
         </div>
@@ -45,16 +100,26 @@ const posts = (await getCollection('blog'))
     </div>
   </section>
 
-  <section class="resources">
+  <!-- Tools section -->
+  <section class="tools-section">
     <div class="container-wide">
-      <h2>Free Tools</h2>
+      <div class="tools-header">
+        <h2>Free Tools</h2>
+        <p class="tools-sub">Plan your photography business with data-driven calculators</p>
+      </div>
       <div class="tools-grid">
         <a href="/tools/pricing-calculator" class="tool-card">
+          <div class="tool-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="11" y2="10"/><line x1="13" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="11" y2="14"/><line x1="13" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+          </div>
           <p class="overline">Calculator</p>
           <h3>Photography Pricing Calculator</h3>
           <p>Figure out what to charge based on your market, experience, and overhead.</p>
         </a>
         <a href="/tools/roi-calculator" class="tool-card">
+          <div class="tool-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 21H4.6c-.56 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C3 20.24 3 19.96 3 19.4V3"/><path d="m7 14 4-4 4 4 6-6"/></svg>
+          </div>
           <p class="overline">Calculator</p>
           <h3>ROI Calculator</h3>
           <p>See how much time and money a photography CRM could save you each month.</p>
@@ -65,91 +130,290 @@ const posts = (await getCollection('blog'))
 </Base>
 
 <style>
-  .hero {
+  /* Hero */
+  .hero-featured {
     padding: 4rem 0 3rem;
-    text-align: center;
+    background: var(--color-card-bg);
+    border-bottom: 1px solid var(--color-border);
   }
-  .hero h1 {
-    max-width: 580px;
-    margin: 0.5rem auto 0;
+  .hero-content {
+    max-width: 700px;
+  }
+  .hero-text h1 {
+    font-size: 3.25rem;
+    line-height: 1.1;
+    margin-top: 0.75rem;
+    letter-spacing: -0.02em;
   }
   .hero-sub {
+    margin-top: 1.25rem;
+    color: var(--color-slate);
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 500px;
+  }
+  .hero-cta {
+    display: inline-block;
+    margin-top: 1.75rem;
+    padding: 0.85rem 2rem;
+    background: var(--color-fleece-gold);
+    color: var(--color-night);
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: opacity 0.15s;
+  }
+  .hero-cta:hover {
+    text-decoration: none;
+    opacity: 0.9;
+  }
+
+  /* Featured post */
+  .featured-post-section {
+    padding: 3rem 0;
+  }
+  .featured-card {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2.5rem;
+    color: var(--color-night);
+    transition: transform 0.2s;
+  }
+  .featured-card:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+  }
+  .featured-image-placeholder {
+    background: linear-gradient(135deg, var(--color-deep-water) 0%, #2a2f4a 100%);
+    border-radius: 8px;
+    height: 400px;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+  }
+  .featured-tag {
+    background: var(--color-fleece-gold);
+    color: var(--color-night);
+    padding: 0.35rem 0.85rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .featured-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 0;
+  }
+  .featured-title {
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .featured-desc {
     margin-top: 1rem;
     color: var(--color-slate);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
   }
-  .posts-grid {
-    padding: 2rem 0 3rem;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
-  .post-card {
-    display: block;
-    padding: 1.5rem;
-    background: white;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    color: var(--color-night);
-    transition: border-color 0.15s;
-  }
-  .post-card:hover {
-    border-color: var(--color-fleece-gold);
-    text-decoration: none;
-  }
-  .post-card h3 {
-    margin-top: 0.35rem;
-    font-size: 1.15rem;
-  }
-  .post-desc {
-    margin-top: 0.5rem;
+  .featured-meta {
+    margin-top: 1.5rem;
     font-size: 0.9rem;
     color: var(--color-slate);
-    line-height: 1.5;
   }
-  .post-card time {
-    display: block;
-    margin-top: 0.75rem;
+  .featured-author {
+    font-weight: 700;
+    color: var(--color-night);
+  }
+  .meta-sep { margin: 0 0.5rem; }
+  .view-post {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-weight: 700;
+    color: var(--color-fleece-gold);
+    font-size: 1rem;
+  }
+
+  /* Posts grid */
+  .posts-section {
+    padding: 2rem 0 4rem;
+  }
+  .section-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-night);
+  }
+  .section-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    color: var(--color-night);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--color-border);
+  }
+  .post-card:hover {
+    text-decoration: none;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  }
+  .card-image-placeholder {
+    background: linear-gradient(135deg, var(--color-deep-water) 0%, #2a2f4a 100%);
+    height: 220px;
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+  }
+  .card-category {
+    background: rgba(255,255,255,0.15);
+    color: var(--color-parchment);
+    padding: 0.25rem 0.65rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(4px);
+  }
+  .card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .card-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .card-tag {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-fleece-gold);
+  }
+  .card-body h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+  .card-desc {
+    margin-top: 0.65rem;
+    font-size: 0.9rem;
+    color: var(--color-slate);
+    line-height: 1.55;
+    flex: 1;
+  }
+  .card-footer {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
     color: var(--color-slate);
   }
+  .card-author {
+    font-weight: 600;
+    color: var(--color-night);
+  }
+  .card-link {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 700;
+    color: var(--color-fleece-gold);
+    font-size: 0.9rem;
+  }
+
+  /* Tools */
+  .tools-section {
+    padding: 3rem 0 4rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .tools-header {
+    margin-bottom: 2rem;
+  }
+  .tools-header h2 {
+    margin: 0;
+    font-size: 1.75rem;
+  }
+  .tools-sub {
+    margin-top: 0.5rem;
+    color: var(--color-slate);
+    font-size: 1rem;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .tool-card {
+    display: block;
+    padding: 2rem;
+    background: var(--color-deep-water);
+    border-radius: 8px;
+    color: var(--color-parchment);
+    transition: transform 0.2s;
+  }
+  .tool-card:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+  }
+  .tool-icon {
+    color: var(--color-fleece-gold);
+    margin-bottom: 1rem;
+  }
+  .tool-card h3 {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--color-parchment);
+  }
+  .tool-card p:last-child {
+    margin-top: 0.65rem;
+    font-size: 0.9rem;
+    color: var(--color-starlight);
+    line-height: 1.55;
+  }
+
   .empty-state {
     text-align: center;
     padding: 3rem;
     color: var(--color-slate);
   }
-  .resources {
-    padding: 2rem 0 3rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+
+  @media (max-width: 1024px) {
+    .posts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .featured-card {
+      grid-template-columns: 1fr;
+    }
+    .featured-image-placeholder {
+      height: 280px;
+    }
   }
-  .resources h2 {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-  }
-  .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-  .tool-card {
-    display: block;
-    padding: 1.5rem;
-    background: var(--color-deep-water);
-    border-radius: 4px;
-    color: var(--color-parchment);
-  }
-  .tool-card:hover { text-decoration: none; opacity: 0.95; }
-  .tool-card h3 {
-    margin-top: 0.35rem;
-    font-size: 1.1rem;
-    color: var(--color-parchment);
-  }
-  .tool-card p:last-child {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--color-starlight);
+
+  @media (max-width: 640px) {
+    .hero-text h1 {
+      font-size: 2.25rem;
+    }
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+    .featured-title {
+      font-size: 1.75rem;
+    }
   }
 </style>

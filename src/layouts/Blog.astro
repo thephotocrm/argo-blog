@@ -1,6 +1,7 @@
 ---
 import Base from './Base.astro';
 import SignupCTA from '../components/SignupCTA.astro';
+import { getCollection } from 'astro:content';
 
 interface Props {
   title: string;
@@ -30,6 +31,16 @@ const formattedDate = new Date(date).toLocaleDateString('en-US', {
   day: 'numeric',
 });
 
+const readTime = '5 min read';
+
+const allPosts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const relatedPosts = allPosts
+  .filter((p) => p.data.title !== title)
+  .slice(0, 4);
+
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -54,58 +65,316 @@ const articleSchema = {
   image={image}
   jsonLd={articleSchema}
 >
-  <article class="blog-post">
-    <div class="container">
-      <header class="post-header">
-        <p class="overline">{tags.length > 0 ? tags[0] : 'Photography Business'}</p>
-        <h1>{title}</h1>
-        <div class="post-meta">
-          <span>{author}</span>
-          <span class="separator">·</span>
-          <time datetime={date}>{formattedDate}</time>
-        </div>
-      </header>
-
-      <div class="post-content">
-        <slot />
-      </div>
-
-      <SignupCTA />
-
-      <footer class="post-footer">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="container-wide">
+      <nav class="breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep">›</span>
         {tags.length > 0 && (
-          <div class="post-tags">
-            {tags.map((tag) => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
+          <>
+            <a href="/blog">{tags[0]}</a>
+            <span class="breadcrumb-sep">›</span>
+          </>
         )}
-      </footer>
+        <span class="breadcrumb-current">{title.length > 50 ? title.slice(0, 50) + '…' : title}</span>
+      </nav>
+    </div>
+  </div>
+
+  <article class="blog-post">
+    <div class="container-wide">
+      <div class="post-layout">
+        <!-- Main content -->
+        <div class="post-main">
+          <!-- Post header -->
+          <header class="post-header">
+            <div class="post-tags-header">
+              {tags.map((tag) => (
+                <span class="header-tag">{tag}</span>
+              ))}
+            </div>
+            <h1>{title}</h1>
+            <p class="post-subtitle">{description}</p>
+            <div class="post-meta-bar">
+              <div class="author-info">
+                <div class="author-avatar">
+                  <span>{author.charAt(0)}</span>
+                </div>
+                <div>
+                  <span class="author-name">by {author}</span>
+                  <div class="meta-details">
+                    <span class="read-time">{readTime}</span>
+                    <span class="meta-dot">·</span>
+                    <time datetime={date}>{formattedDate}</time>
+                  </div>
+                </div>
+              </div>
+              <div class="share-icons">
+                <button class="share-btn" aria-label="Share on Twitter" onclick={`window.open('https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=' + encodeURIComponent(window.location.href), '_blank')`}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </button>
+                <button class="share-btn" aria-label="Share on Facebook" onclick={`window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank')`}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <!-- Hero image -->
+          <div class="post-hero-image">
+            {image ? (
+              <img src={image} alt={title} class="hero-image-real" loading="eager" />
+            ) : (
+              <div class="hero-image-placeholder"></div>
+            )}
+          </div>
+
+          <!-- Post content -->
+          <div class="post-content">
+            <slot />
+          </div>
+
+          <!-- Share bar -->
+          <div class="share-bar">
+            <span class="share-label">Share this article</span>
+            <div class="share-buttons">
+              <button class="share-button" onclick="window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Tweet
+              </button>
+              <button class="share-button" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                Share
+              </button>
+            </div>
+          </div>
+
+          <SignupCTA />
+
+          <footer class="post-footer">
+            {tags.length > 0 && (
+              <div class="post-tags">
+                {tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            )}
+          </footer>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="post-sidebar">
+          <!-- Newsletter -->
+          <div class="sidebar-card sidebar-newsletter">
+            <h4>Newsletter</h4>
+            <p>Subscribe and receive photography business tips every week.</p>
+            <form action="https://argostudio.co/signup" method="get">
+              <input type="email" placeholder="Enter your email" required />
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
+
+          <!-- Latest posts -->
+          <div class="sidebar-card">
+            <h4>Latest Articles</h4>
+            <div class="sidebar-posts">
+              {relatedPosts.map((p) => (
+                <a href={`/blog/${p.id}`} class="sidebar-post">
+                  <div class="sidebar-post-thumb"></div>
+                  <div>
+                    <p class="sidebar-post-title">{p.data.title}</p>
+                    <time datetime={p.data.date}>
+                      {new Date(p.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </time>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   </article>
+
+  <!-- You may also like -->
+  {relatedPosts.length > 0 && (
+    <section class="related-section">
+      <div class="container-wide">
+        <h2>You May Also Like</h2>
+        <div class="related-grid">
+          {relatedPosts.slice(0, 3).map((p) => (
+            <a href={`/blog/${p.id}`} class="related-card">
+              <div class="related-image"></div>
+              <div class="related-body">
+                <div class="related-tags">
+                  {p.data.tags?.slice(0, 2).map((tag: string) => (
+                    <span class="related-tag">{tag}</span>
+                  ))}
+                </div>
+                <h3>{p.data.title}</h3>
+                <div class="related-meta">
+                  <time datetime={p.data.date}>
+                    {new Date(p.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </time>
+                  <span class="read-time">{readTime}</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </Base>
 
 <style>
-  .blog-post {
-    padding: 3rem 0;
+  /* Breadcrumb */
+  .breadcrumb-bar {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-card-bg);
   }
-  .post-header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  }
-  .post-header h1 {
-    margin-top: 0.5rem;
-    max-width: 600px;
-  }
-  .post-meta {
-    margin-top: 1rem;
-    font-size: 0.9rem;
+  .breadcrumb {
+    font-size: 0.8rem;
     color: var(--color-slate);
   }
-  .separator {
-    margin: 0 0.5rem;
+  .breadcrumb a {
+    color: var(--color-slate);
   }
+  .breadcrumb a:hover {
+    color: var(--color-fleece-gold);
+  }
+  .breadcrumb-sep {
+    margin: 0 0.4rem;
+    color: var(--color-slate);
+  }
+  .breadcrumb-current {
+    color: var(--color-night);
+  }
+
+  /* Layout */
+  .blog-post {
+    padding: 2.5rem 0;
+  }
+  .post-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 3rem;
+  }
+
+  /* Header */
+  .post-header {
+    margin-bottom: 2rem;
+  }
+  .post-tags-header {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .header-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-fleece-gold);
+    background: rgba(201, 162, 39, 0.1);
+    padding: 0.3rem 0.75rem;
+    border-radius: 3px;
+  }
+  .post-header h1 {
+    font-size: 2.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .post-subtitle {
+    margin-top: 1rem;
+    font-size: 1.15rem;
+    color: var(--color-slate);
+    line-height: 1.6;
+  }
+  .post-meta-bar {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-fleece-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-night);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .author-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .meta-details {
+    font-size: 0.8rem;
+    color: var(--color-slate);
+    margin-top: 0.15rem;
+  }
+  .read-time {
+    font-family: var(--font-accent);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--color-slate);
+  }
+  .meta-dot { margin: 0 0.35rem; }
+  .share-icons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .share-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-slate);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .share-btn:hover {
+    background: var(--color-night);
+    color: var(--color-parchment);
+    border-color: var(--color-night);
+  }
+
+  /* Hero image */
+  .post-hero-image {
+    margin-bottom: 2.5rem;
+  }
+  .hero-image-real {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .hero-image-placeholder {
+    height: 360px;
+    background: linear-gradient(135deg, var(--color-deep-water) 0%, #2a2f4a 100%);
+    border-radius: 8px;
+  }
+
+  /* Content */
   .post-content {
     font-size: 1.05rem;
   }
@@ -119,12 +388,19 @@ const articleSchema = {
   .post-content :global(li) {
     margin-bottom: 0.5rem;
   }
+  .post-content :global(h2) {
+    font-size: 1.65rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
   .post-content :global(blockquote) {
     border-left: 3px solid var(--color-fleece-gold);
     padding: 1rem 1.5rem;
     margin: 1.5rem 0;
     background: rgba(201, 162, 39, 0.04);
-    border-radius: 0 3px 3px 0;
+    border-radius: 0 4px 4px 0;
   }
   .post-content :global(blockquote p:last-child) {
     margin-bottom: 0;
@@ -132,7 +408,7 @@ const articleSchema = {
   .post-content :global(img) {
     max-width: 100%;
     height: auto;
-    border-radius: 3px;
+    border-radius: 8px;
     margin: 1.5rem 0;
   }
   .post-content :global(table) {
@@ -152,12 +428,53 @@ const articleSchema = {
   }
   .post-content :global(td) {
     padding: 0.75rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid var(--color-border);
   }
+
+  /* Share bar */
+  .share-bar {
+    margin-top: 2.5rem;
+    padding: 1.25rem 0;
+    border-top: 2px solid var(--color-night);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .share-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .share-buttons {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .share-button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--color-night);
+    transition: all 0.15s;
+  }
+  .share-button:hover {
+    background: var(--color-night);
+    color: var(--color-parchment);
+    border-color: var(--color-night);
+  }
+
+  /* Footer */
   .post-footer {
-    margin-top: 3rem;
+    margin-top: 2rem;
     padding-top: 1.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-top: 1px solid var(--color-border);
   }
   .post-tags {
     display: flex;
@@ -167,9 +484,194 @@ const articleSchema = {
   .tag {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    padding: 0.25rem 0.75rem;
+    padding: 0.3rem 0.85rem;
     background: rgba(0, 0, 0, 0.04);
     border-radius: 3px;
     color: var(--color-slate);
+  }
+
+  /* Sidebar */
+  .post-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .sidebar-card {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+  .sidebar-card h4 {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .sidebar-newsletter p {
+    font-size: 0.9rem;
+    color: var(--color-slate);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  .sidebar-newsletter input {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .sidebar-newsletter button {
+    width: 100%;
+    padding: 0.65rem;
+    background: var(--color-fleece-gold);
+    color: var(--color-night);
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: opacity 0.15s;
+  }
+  .sidebar-newsletter button:hover { opacity: 0.9; }
+
+  .sidebar-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .sidebar-post {
+    display: flex;
+    gap: 0.75rem;
+    color: var(--color-night);
+    transition: opacity 0.15s;
+  }
+  .sidebar-post:hover {
+    text-decoration: none;
+    opacity: 0.8;
+  }
+  .sidebar-post-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, var(--color-deep-water) 0%, #2a2f4a 100%);
+    flex-shrink: 0;
+  }
+  .sidebar-post-title {
+    font-weight: 700;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .sidebar-post time {
+    font-size: 0.75rem;
+    color: var(--color-slate);
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  /* Related posts */
+  .related-section {
+    padding: 3rem 0 4rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .related-section h2 {
+    margin: 0 0 2rem;
+    font-size: 1.75rem;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    color: var(--color-night);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .related-card:hover {
+    text-decoration: none;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  }
+  .related-image {
+    height: 180px;
+    background: linear-gradient(135deg, var(--color-deep-water) 0%, #2a2f4a 100%);
+  }
+  .related-body {
+    padding: 1.25rem;
+  }
+  .related-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .related-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-fleece-gold);
+  }
+  .related-body h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+  .related-meta {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--color-slate);
+  }
+
+  @media (max-width: 1024px) {
+    .post-layout {
+      grid-template-columns: 1fr;
+    }
+    .post-sidebar {
+      flex-direction: row;
+      gap: 1.5rem;
+    }
+    .sidebar-card {
+      flex: 1;
+    }
+    .related-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .post-header h1 {
+      font-size: 1.85rem;
+    }
+    .post-meta-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .post-sidebar {
+      flex-direction: column;
+    }
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-image-placeholder {
+      height: 220px;
+    }
   }
 </style>

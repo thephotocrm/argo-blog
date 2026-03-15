@@ -42,35 +42,57 @@ const faqSchema = {
   .faq-section {
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 2px solid var(--color-night);
+  }
+  .faq-section h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
   }
   .faq-list {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
   }
   .faq-item {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+    padding: 1.15rem 0;
   }
   .faq-item summary {
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1.05rem;
     list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: color 0.15s;
+  }
+  .faq-item summary:hover {
+    color: var(--color-fleece-gold);
   }
   .faq-item summary::before {
     content: '+';
-    display: inline-block;
-    width: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: rgba(201, 162, 39, 0.1);
     font-family: var(--font-mono);
     color: var(--color-fleece-gold);
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: background 0.15s;
   }
   .faq-item[open] summary::before {
     content: '−';
+    background: var(--color-fleece-gold);
+    color: var(--color-night);
   }
   .faq-item p {
     margin-top: 0.75rem;
-    padding-left: 1.5rem;
+    padding-left: 2.5rem;
     color: var(--color-slate);
     line-height: 1.7;
+    font-size: 0.95rem;
   }
 </style>

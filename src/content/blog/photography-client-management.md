@@ -6,6 +6,7 @@ author: "Argo Studio"
 tags: ["Photography Business", "Client Management", "Workflow", "Booking"]
 pillar: "client-workflow-automation"
 keywords: ["photography client management", "photography workflow automation", "photography client portal", "photography booking system", "photography lead management"]
+image: "https://images.unsplash.com/photo-1487537708572-3c850b5e856e?w=800&q=80"
 draft: false
 ---
 

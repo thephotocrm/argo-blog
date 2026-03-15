@@ -6,6 +6,7 @@ author: "Argo Studio"
 tags: ["Photography Business", "Comparisons", "Workflow", "Argo Studio"]
 pillar: "photography-crm-comparison"
 keywords: ["honeybook vs dubsado for photographers", "honeybook alternative for photographers", "dubsado alternative", "best crm for wedding photographers", "argo studio for photographers"]
+image: "https://images.unsplash.com/photo-1610473068514-276d33c606dd?w=800&q=80"
 draft: false
 ---
 

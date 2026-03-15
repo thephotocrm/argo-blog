@@ -6,6 +6,7 @@ author: "Argo Studio"
 tags: ["Photography Business", "Pricing", "Packages"]
 pillar: "photography-pricing"
 keywords: ["how to price photography", "photography pricing guide", "photography packages and pricing", "photography pricing calculator"]
+image: "https://images.unsplash.com/photo-1471999796791-874f5de3b3f4?w=800&q=80"
 draft: false
 ---
 
