@@ -2,20 +2,125 @@
   "version": "1.0",
   "lastUpdated": "2026-03-16",
   "tasks": [
-    { "id": 1, "task": "Create scholarship page ($500 Photography Scholarship)", "category": "link_bait", "status": "open", "priority": "high", "notes": "" },
-    { "id": 2, "task": "Create 'Photography Industry Statistics 2026' data page", "category": "link_bait", "status": "open", "priority": "high", "notes": "" },
-    { "id": 3, "task": "Create author bio pages with Person schema", "category": "eeat", "status": "open", "priority": "high", "notes": "" },
-    { "id": 4, "task": "Set up Google Business Profile (service area)", "category": "local_seo", "status": "open", "priority": "high", "notes": "" },
-    { "id": 5, "task": "Create YouTube channel + first tutorial video", "category": "video_seo", "status": "open", "priority": "medium", "notes": "" },
-    { "id": 6, "task": "Pitch founder as guest on 3 photography podcasts", "category": "authority", "status": "open", "priority": "medium", "notes": "" },
-    { "id": 7, "task": "Research and buy 2-3 expired photography domains for 301 redirects", "category": "greyhat", "status": "open", "priority": "medium", "notes": "" },
-    { "id": 8, "task": "Seed brand searches: share 'argo studio vs honeybook' search prompts in communities", "category": "greyhat", "status": "open", "priority": "medium", "notes": "" },
-    { "id": 9, "task": "Create LinkedIn newsletter for cross-posting blog content", "category": "distribution", "status": "open", "priority": "high", "notes": "" },
-    { "id": 10, "task": "Set up Medium publication with canonical tags", "category": "distribution", "status": "open", "priority": "high", "notes": "" },
-    { "id": 11, "task": "Add FAQ sections + FAQPage schema to all blog posts", "category": "rich_results", "status": "open", "priority": "high", "notes": "" },
-    { "id": 12, "task": "Add HowTo schema to instructional blog posts", "category": "rich_results", "status": "open", "priority": "medium", "notes": "" },
-    { "id": 13, "task": "Fill Organization schema sameAs with real social URLs", "category": "eeat", "status": "open", "priority": "high", "notes": "" },
-    { "id": 14, "task": "Add dateModified to Article schema + update old posts", "category": "freshness", "status": "open", "priority": "medium", "notes": "" },
-    { "id": 15, "task": "Create 'What is Argo Studio?' entity page for AI citation", "category": "ai_seo", "status": "open", "priority": "medium", "notes": "" }
+    {
+      "id": 1,
+      "task": "Create scholarship page ($500 Photography Scholarship)",
+      "category": "link_bait",
+      "status": "done",
+      "priority": "high",
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "task": "Create 'Photography Industry Statistics 2026' data page",
+      "category": "link_bait",
+      "status": "open",
+      "priority": "high",
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "task": "Create author bio pages with Person schema",
+      "category": "eeat",
+      "status": "open",
+      "priority": "high",
+      "notes": ""
+    },
+    {
+      "id": 4,
+      "task": "Set up Google Business Profile (service area)",
+      "category": "local_seo",
+      "status": "open",
+      "priority": "high",
+      "notes": ""
+    },
+    {
+      "id": 5,
+      "task": "Create YouTube channel + first tutorial video",
+      "category": "video_seo",
+      "status": "open",
+      "priority": "medium",
+      "notes": ""
+    },
+    {
+      "id": 6,
+      "task": "Pitch founder as guest on 3 photography podcasts",
+      "category": "authority",
+      "status": "open",
+      "priority": "medium",
+      "notes": ""
+    },
+    {
+      "id": 7,
+      "task": "Research and buy 2-3 expired photography domains for 301 redirects",
+      "category": "greyhat",
+      "status": "open",
+      "priority": "medium",
+      "notes": ""
+    },
+    {
+      "id": 8,
+      "task": "Seed brand searches: share 'argo studio vs honeybook' search prompts in communities",
+      "category": "greyhat",
+      "status": "open",
+      "priority": "medium",
+      "notes": ""
+    },
+    {
+      "id": 9,
+      "task": "Create LinkedIn newsletter for cross-posting blog content",
+      "category": "distribution",
+      "status": "open",
+      "priority": "high",
+      "notes": ""
+    },
+    {
+      "id": 10,
+      "task": "Set up Medium publication with canonical tags",
+      "category": "distribution",
+      "status": "open",
+      "priority": "high",
+      "notes": ""
+    },
+    {
+      "id": 11,
+      "task": "Add FAQ sections + FAQPage schema to all blog posts",
+      "category": "rich_results",
+      "status": "open",
+      "priority": "high",
+      "notes": ""
+    },
+    {
+      "id": 12,
+      "task": "Add HowTo schema to instructional blog posts",
+      "category": "rich_results",
+      "status": "open",
+      "priority": "medium",
+      "notes": ""
+    },
+    {
+      "id": 13,
+      "task": "Fill Organization schema sameAs with real social URLs",
+      "category": "eeat",
+      "status": "open",
+      "priority": "high",
+      "notes": ""
+    },
+    {
+      "id": 14,
+      "task": "Add dateModified to Article schema + update old posts",
+      "category": "freshness",
+      "status": "open",
+      "priority": "medium",
+      "notes": ""
+    },
+    {
+      "id": 15,
+      "task": "Create 'What is Argo Studio?' entity page for AI citation",
+      "category": "ai_seo",
+      "status": "open",
+      "priority": "medium",
+      "notes": ""
+    }
   ]
 }
