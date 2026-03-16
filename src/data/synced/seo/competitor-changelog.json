@@ -5,6 +5,160 @@
     {
       "date": "2026-03-16",
       "competitor": "HoneyBook",
+      "week": "W12",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Homepage headline shifted to 'Manage every client, project, and payment all in one place' — positioning as 'the leading CRM platform for small businesses'. AI section retained with email drafts, project recaps, business trends, meeting notetaker. Claims 100K+ businesses, 20hrs saved/week, $12B+ payments processed, 90% invoices paid on time.",
+          "previous_value": "AI-powered client relationship platform (W11 snapshot)",
+          "new_value": "Leading CRM platform for small businesses. 100K+ businesses. $12B+ payments processed.",
+          "strategic_note": "HoneyBook now claims 100K+ businesses (up from unspecified). The $12B+ payments processed stat is a powerful trust signal. They're balancing AI differentiation with CRM authority positioning."
+        },
+        {
+          "type": "feature",
+          "description": "March 2026 product update: Tap to Pay for in-person payments, service charges on invoices, timeline blocks in Smart Files, custom project views. Published ~March 12.",
+          "previous_value": "Standard online payments only",
+          "new_value": "Tap to Pay (in-person), service charges on invoices, timeline blocks, custom project views",
+          "strategic_note": "Tap to Pay is significant — HoneyBook now handles in-person payments, expanding beyond online-only. Service charges let users pass processing fees to clients. Argo should track if photographers adopt these."
+        },
+        {
+          "type": "pricing",
+          "description": "No changes from last week. Starter $29/mo, Essentials $49/mo (25% off $59), Premium $109/mo (25% off $129). Monthly: $36/$49/$109.",
+          "previous_value": "Same as W11",
+          "new_value": "Unchanged",
+          "strategic_note": "25% discount still running — may be permanent or long-term promotional pricing."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "Dubsado",
+      "week": "W12",
+      "changes": [
+        {
+          "type": "content",
+          "description": "New blog post: 'How to Never Miss a Lead Again (even when you're with a client)' — cites stat that responding within 5 min makes you 21x more likely to book vs 30 min wait. 78% hire first responder.",
+          "previous_value": "General lead capture content",
+          "new_value": "Data-driven lead response time article with compelling stats",
+          "strategic_note": "Dubsado using hard data to sell automation features. These stats would work perfectly in Argo's automation content too — cite and counter-position."
+        },
+        {
+          "type": "feature",
+          "description": "New lead magnets added: 'Day 1 Checklist for Creative Entrepreneurs' and 'Sustainable Growth Guide for Creatives' — gated resources for top-of-funnel capture.",
+          "previous_value": "Blog-only content",
+          "new_value": "Gated downloadable resources for lead capture",
+          "strategic_note": "Dubsado building email list via lead magnets. Argo should consider photographer-specific downloadable guides as lead gen."
+        },
+        {
+          "type": "pricing",
+          "description": "No changes. Starter $335/yr, Premier $525/yr. Add-on pricing unchanged.",
+          "previous_value": "Same as W11",
+          "new_value": "Unchanged",
+          "strategic_note": "Stable pricing."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "Pixieset",
+      "week": "W12",
+      "changes": [
+        {
+          "type": "content",
+          "description": "Two new blog posts this week: '12 Essential Things to Include in Your Photography Contract' (March 2) and '10+ Iconic Photography Websites Built with Pixieset' (March 12). Contract post is 9 min read — substantial SEO piece.",
+          "previous_value": "Gallery-focused content",
+          "new_value": "Expanding into business management content (contracts, website showcases). High-quality photography contract guide directly competes with potential Argo content.",
+          "strategic_note": "IMPORTANT: Pixieset now publishing photography contract content — this was identified as a key content gap for Argo. They're moving faster on this topic. Argo needs to publish contract content soon or lose ground."
+        },
+        {
+          "type": "feature",
+          "description": "Pixieset partnered with Jose Villa and Joel Serrato for WPPI 2026 'The It Party' — major photography industry event sponsorship.",
+          "previous_value": "Online-only marketing",
+          "new_value": "WPPI 2026 event sponsorship with elite wedding photographers",
+          "strategic_note": "Pixieset investing in high-end wedding photography community. Event sponsorship builds brand credibility that's hard to replicate online. Argo should monitor WPPI outcomes."
+        },
+        {
+          "type": "pricing",
+          "description": "No changes. Free → $8 → $16 → $24 → $40/mo (annual). Monthly +25%.",
+          "previous_value": "Same as W11",
+          "new_value": "Unchanged",
+          "strategic_note": "Stable pricing."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "ShootProof",
+      "week": "W12",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "No significant changes. Still 'Emotional Support Software for Photographers'. Stats updated: $3.48M in session fees via booking. Questionnaires still 'Coming Soon'.",
+          "previous_value": "Same messaging as W11",
+          "new_value": "Unchanged. Questionnaires still in preview.",
+          "strategic_note": "ShootProof's questionnaires feature has been 'coming soon' for at least 2 weeks. May indicate development delays."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "Bloom.io",
+      "week": "W12",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Headline now 'Manage clients. Stand out. Grow faster.' Tagline adds 'Get clients, manage leads, invoice, and fulfill projects with a professionalism that makes you stand out.' Same influencer endorsements. Pricing page still JS-rendered (no content accessible).",
+          "previous_value": "All-in-one business workspace for pro services",
+          "new_value": "Manage clients. Stand out. Grow faster. Focus on professionalism/standing out.",
+          "strategic_note": "Bloom refining messaging toward differentiation ('stand out') vs just efficiency. Pricing remains opaque via web fetch — needs browser visit."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "17hats",
+      "week": "W12",
+      "changes": [
+        {
+          "type": "pricing",
+          "description": "No changes. $60/mo, $600/yr, $800/2yr. 50% off first purchase promo still active.",
+          "previous_value": "Same as W11",
+          "new_value": "Unchanged",
+          "strategic_note": "Persistent 50% off promo suggests it may be a permanent acquisition strategy."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "Sprout Studio",
+      "week": "W12",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Still returning 403 Forbidden. Two consecutive weeks of inaccessibility via automated tools.",
+          "previous_value": "403 Forbidden (W11)",
+          "new_value": "Still 403 Forbidden",
+          "strategic_note": "Persistent 403 could indicate aggressive bot protection or site issues. If the latter, Sprout Studio users may be looking for alternatives. Worth a manual browser check."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "VSCO Workspace (Tave)",
+      "week": "W12",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "vsco.co/workspace blocked by Cloudflare — cannot access automated. tave.com still redirects. Old Tave URLs still returning 410 errors.",
+          "previous_value": "Accessible last week",
+          "new_value": "Cloudflare-blocked. Old Tave URLs still broken.",
+          "strategic_note": "VSCO adding Cloudflare protection suggests increased traffic/security focus. Tave migration content opportunity remains — confused users hitting dead links."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "HoneyBook",
       "changes": [
         {
           "type": "messaging",

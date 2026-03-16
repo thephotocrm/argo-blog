@@ -112,7 +112,7 @@
       "description": "Monday morning pipeline report: full summary saved to pipeline-reports/",
       "enabled": true,
       "createdAtMs": 1773350433008,
-      "updatedAtMs": 1773636516525,
+      "updatedAtMs": 1773666052258,
       "schedule": {
         "kind": "cron",
         "expr": "0 8 * * 1",
@@ -131,15 +131,14 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773666000000,
-        "lastRunAtMs": 1773636465902,
+        "nextRunAtMs": 1774270800000,
+        "lastRunAtMs": 1773666000005,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 50623,
+        "lastDurationMs": 52253,
         "lastDelivered": true,
         "lastDeliveryStatus": "delivered",
-        "consecutiveErrors": 0,
-        "runningAtMs": 1773666000003
+        "consecutiveErrors": 0
       }
     },
     {
@@ -253,7 +252,7 @@
       "description": "Weekly competitor changelog and content gap analysis",
       "enabled": true,
       "createdAtMs": 1773778800000,
-      "updatedAtMs": 1773636465894,
+      "updatedAtMs": 1773666314222,
       "schedule": {
         "kind": "cron",
         "expr": "0 8 * * 1",
@@ -272,15 +271,14 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773666000000,
-        "lastRunAtMs": 1773636250208,
+        "nextRunAtMs": 1774270800000,
+        "lastRunAtMs": 1773666052258,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 215686,
+        "lastDurationMs": 261964,
         "lastDelivered": true,
         "lastDeliveryStatus": "delivered",
-        "consecutiveErrors": 0,
-        "runningAtMs": 1773666000003
+        "consecutiveErrors": 0
       }
     },
     {
