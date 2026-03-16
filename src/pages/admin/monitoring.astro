@@ -234,27 +234,25 @@ const jsonReports = Object.entries(jsonFiles)
 <style>
   .page-header { margin-bottom: 1.5rem; }
   .page-header h1 {
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     font-size: 1.75rem;
-    font-weight: 400;
+    font-weight: 600;
     color: var(--color-parchment);
   }
   .subtitle {
-    font-family: var(--font-mono);
     font-size: 0.7rem;
     color: var(--color-slate);
     margin-top: 0.25rem;
   }
   .section { margin-bottom: 2.5rem; }
   .section-title {
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     font-size: 1.1rem;
-    font-weight: 400;
+    font-weight: 600;
     color: var(--color-parchment);
     margin-bottom: 0.75rem;
   }
   .section-note {
-    font-family: var(--font-mono);
     font-size: 0.65rem;
     color: var(--color-slate);
     margin-bottom: 0.75rem;
@@ -267,18 +265,18 @@ const jsonReports = Object.entries(jsonFiles)
     align-items: center;
     gap: 0.6rem;
     background: var(--color-deep-water);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     padding: 0.6rem 0.75rem;
   }
   .check-item.done { opacity: 0.5; }
   .check-toggle {
     width: 22px;
     height: 22px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid var(--color-border);
     border-radius: 3px;
     background: transparent;
-    color: #86efac;
+    color: #2a9d5c;
     font-size: 0.75rem;
     cursor: pointer;
     display: flex;
@@ -287,8 +285,8 @@ const jsonReports = Object.entries(jsonFiles)
     flex-shrink: 0;
   }
   .check-toggle.checked {
-    background: rgba(134,239,172,0.1);
-    border-color: rgba(134,239,172,0.3);
+    background: rgba(58,201,119,0.1);
+    border-color: rgba(58,201,119,0.4);
   }
   .check-content { display: flex; align-items: center; gap: 0.5rem; flex: 1; }
   .check-text {
@@ -297,12 +295,12 @@ const jsonReports = Object.entries(jsonFiles)
   }
   .check-item.done .check-text { text-decoration: line-through; }
   .check-cat {
-    font-family: var(--font-mono);
     font-size: 0.55rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-slate);
-    background: rgba(107,114,128,0.1);
+    background: rgba(108,117,125,0.08);
     padding: 0.1rem 0.35rem;
     border-radius: 2px;
   }
@@ -315,44 +313,44 @@ const jsonReports = Object.entries(jsonFiles)
     font-size: 0.75rem;
   }
   .data-table th {
-    font-family: var(--font-mono);
     font-size: 0.6rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-slate);
     text-align: left;
     padding: 0.5rem 0.6rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--color-border);
     white-space: nowrap;
   }
   .data-table td {
     padding: 0.4rem 0.6rem;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--color-border-light);
     color: var(--color-starlight);
     vertical-align: top;
   }
-  .mono { font-family: var(--font-mono); font-size: 0.65rem; }
+  .mono { font-size: 0.65rem; font-weight: 500; }
   .small { font-size: 0.6rem; }
-  .position { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-slate); }
-  .position.pos-found { color: #86efac; }
+  .position { font-size: 0.7rem; font-weight: 500; color: var(--color-slate); }
+  .position.pos-found { color: #2a9d5c; }
   .badge {
     display: inline-block;
-    font-family: var(--font-mono);
     font-size: 0.55rem;
+    font-weight: 600;
     padding: 0.1rem 0.4rem;
     border-radius: 2px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  .badge.priority-high { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
-  .badge.priority-medium { background: rgba(107,114,128,0.15); color: var(--color-slate); }
-  .badge.priority-low { background: rgba(107,114,128,0.08); color: var(--color-slate); }
-  .badge.diff-low { background: rgba(134,239,172,0.1); color: #86efac; }
-  .badge.diff-medium { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
-  .badge.diff-high { background: rgba(239,68,68,0.15); color: #ef4444; }
-  .badge.cited { background: rgba(134,239,172,0.1); color: #86efac; }
-  .badge.not-cited { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
-  .badge.none { background: rgba(107,114,128,0.08); color: var(--color-slate); }
+  .badge.priority-high { background: rgba(24,165,148,0.12); color: var(--color-fleece-gold); }
+  .badge.priority-medium { background: rgba(108,117,125,0.1); color: var(--color-slate); }
+  .badge.priority-low { background: rgba(108,117,125,0.06); color: var(--color-slate); }
+  .badge.diff-low { background: rgba(58,201,119,0.12); color: #2a9d5c; }
+  .badge.diff-medium { background: rgba(255,159,0,0.12); color: #cc7f00; }
+  .badge.diff-high { background: rgba(255,94,94,0.12); color: #d94444; }
+  .badge.cited { background: rgba(58,201,119,0.12); color: #2a9d5c; }
+  .badge.not-cited { background: rgba(255,159,0,0.12); color: #cc7f00; }
+  .badge.none { background: rgba(108,117,125,0.06); color: var(--color-slate); }
   .competitors-cell { min-width: 250px; }
   .comp-row {
     display: flex;
@@ -361,14 +359,14 @@ const jsonReports = Object.entries(jsonFiles)
     margin-bottom: 0.15rem;
   }
   .comp-pos {
-    font-family: var(--font-mono);
     font-size: 0.6rem;
+    font-weight: 600;
     color: var(--color-slate);
     flex-shrink: 0;
   }
   .comp-link {
     font-size: 0.65rem;
-    color: var(--color-compass-blue);
+    color: #0d99ff;
     text-decoration: none;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -381,10 +379,11 @@ const jsonReports = Object.entries(jsonFiles)
   /* Competitor blocks */
   .competitor-block {
     background: var(--color-deep-water);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     padding: 1rem;
     margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .competitor-header {
     display: flex;
@@ -393,33 +392,32 @@ const jsonReports = Object.entries(jsonFiles)
     margin-bottom: 0.75rem;
   }
   .competitor-name {
-    font-family: var(--font-body);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--color-parchment);
   }
   .competitor-date {
-    font-family: var(--font-mono);
     font-size: 0.65rem;
     color: var(--color-slate);
   }
   .changes-list { display: flex; flex-direction: column; gap: 0.5rem; }
   .change-item {
-    border-left: 2px solid rgba(255,255,255,0.06);
+    border-left: 2px solid var(--color-border);
     padding-left: 0.75rem;
   }
   .change-type {
-    font-family: var(--font-mono);
     font-size: 0.55rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     display: inline-block;
     margin-bottom: 0.25rem;
   }
-  .type-messaging { color: var(--color-compass-blue); }
+  .type-messaging { color: #0d99ff; }
   .type-pricing { color: var(--color-fleece-gold); }
-  .type-content { color: #86efac; }
-  .type-feature { color: var(--color-pale-gold); }
+  .type-content { color: #2a9d5c; }
+  .type-feature { color: #cc7f00; }
   .change-desc {
     font-size: 0.75rem;
     color: var(--color-starlight);
@@ -428,7 +426,7 @@ const jsonReports = Object.entries(jsonFiles)
   .strategic-note {
     font-size: 0.7rem;
     color: var(--color-fleece-gold);
-    background: rgba(201,162,39,0.08);
+    background: rgba(24,165,148,0.06);
     padding: 0.4rem 0.6rem;
     border-radius: 3px;
     margin-top: 0.35rem;
@@ -442,22 +440,22 @@ const jsonReports = Object.entries(jsonFiles)
     gap: 0.4rem;
   }
   .report-link {
-    font-family: var(--font-mono);
     font-size: 0.7rem;
-    color: var(--color-compass-blue);
+    color: #0d99ff;
     text-decoration: none;
     padding: 0.3rem 0.6rem;
-    border: 1px solid rgba(74,111,165,0.2);
+    border: 1px solid rgba(13,153,255,0.3);
     border-radius: 3px;
   }
-  .report-link:hover { background: rgba(74,111,165,0.1); }
+  .report-link:hover { background: rgba(13,153,255,0.06); }
 
   /* Report body */
   .report-section {
     background: var(--color-deep-water);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .report-body {
     font-size: 0.8rem;
@@ -467,9 +465,9 @@ const jsonReports = Object.entries(jsonFiles)
   .report-body :global(h1),
   .report-body :global(h2),
   .report-body :global(h3) {
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     color: var(--color-parchment);
-    font-weight: 400;
+    font-weight: 600;
     margin: 1rem 0 0.5rem;
   }
   .report-body :global(h1) { font-size: 1.25rem; }
@@ -482,16 +480,18 @@ const jsonReports = Object.entries(jsonFiles)
   .report-body :global(code) {
     font-family: var(--font-mono);
     font-size: 0.7rem;
-    background: rgba(0,0,0,0.3);
+    background: var(--color-frost);
+    color: var(--color-parchment);
     padding: 0.1rem 0.3rem;
     border-radius: 2px;
   }
   .report-body :global(pre) {
-    background: rgba(0,0,0,0.3);
+    background: var(--color-frost);
     padding: 0.75rem;
     border-radius: 3px;
     overflow-x: auto;
     margin-bottom: 0.75rem;
+    color: var(--color-starlight);
   }
   .report-body :global(table) {
     width: 100%;
@@ -503,21 +503,21 @@ const jsonReports = Object.entries(jsonFiles)
   .report-body :global(td) {
     text-align: left;
     padding: 0.4rem 0.6rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--color-border);
   }
   .report-body :global(th) {
-    font-family: var(--font-mono);
     font-size: 0.6rem;
+    font-weight: 600;
     text-transform: uppercase;
     color: var(--color-slate);
   }
   .report-body :global(strong) { color: var(--color-parchment); }
-  .report-body :global(a) { color: var(--color-compass-blue); }
+  .report-body :global(a) { color: #0d99ff; }
 
   .json-block {
     font-family: var(--font-mono);
     font-size: 0.65rem;
-    background: rgba(0,0,0,0.3);
+    background: var(--color-frost);
     padding: 0.75rem;
     border-radius: 3px;
     overflow-x: auto;

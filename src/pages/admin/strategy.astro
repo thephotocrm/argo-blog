@@ -422,14 +422,14 @@ const platformComposeUrls: Record<string, string> = {
 <style>
   .page-header { margin-bottom: 1.5rem; }
   .page-header h1 {
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     font-size: 1.75rem;
-    font-weight: 400;
+    font-weight: 600;
     color: var(--color-parchment);
   }
   .subtitle {
-    font-family: var(--font-mono);
     font-size: 0.7rem;
+    font-weight: 500;
     color: var(--color-slate);
     margin-top: 0.25rem;
   }
@@ -441,18 +441,18 @@ const platformComposeUrls: Record<string, string> = {
     gap: 0.5rem;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--color-border);
   }
   .section-nav a {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-slate);
     text-decoration: none;
     padding: 0.3rem 0.6rem;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 3px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     transition: all 0.15s;
   }
   .section-nav a:hover {
@@ -466,9 +466,9 @@ const platformComposeUrls: Record<string, string> = {
     scroll-margin-top: 8rem;
   }
   .section-title {
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     font-size: 1.1rem;
-    font-weight: 400;
+    font-weight: 600;
     color: var(--color-parchment);
     margin-bottom: 0.75rem;
   }
@@ -481,23 +481,25 @@ const platformComposeUrls: Record<string, string> = {
   }
   .mini-stat {
     background: var(--color-deep-water);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     padding: 0.6rem 1rem;
     text-align: center;
     min-width: 80px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .mini-num {
     display: block;
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     font-size: 1.3rem;
+    font-weight: 600;
     color: var(--color-parchment);
   }
   .mini-num.gold { color: var(--color-fleece-gold); }
-  .mini-num.green { color: #86efac; }
-  .mini-num.blue { color: var(--color-compass-blue); }
+  .mini-num.green { color: #2a9d5c; }
+  .mini-num.blue { color: #0d99ff; }
   .mini-label {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.6rem;
     color: var(--color-slate);
     text-transform: uppercase;
@@ -514,21 +516,22 @@ const platformComposeUrls: Record<string, string> = {
     font-size: 0.8rem;
   }
   .data-table th {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.65rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-slate);
     text-align: left;
     padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid var(--color-border);
   }
   .data-table td {
     padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid var(--color-border-light);
     color: var(--color-starlight);
   }
-  .data-table tr:hover { background: rgba(255,255,255,0.02); }
+  .data-table tr:hover { background: rgba(0,0,0,0.02); }
   .name-cell {
     font-weight: 500;
     color: var(--color-parchment);
@@ -545,7 +548,7 @@ const platformComposeUrls: Record<string, string> = {
   .text-muted { color: var(--color-slate); }
   .text-sm { font-size: 0.65rem; }
   .link-ext {
-    color: var(--color-compass-blue);
+    color: #0d99ff;
     text-decoration: none;
     font-size: 0.75rem;
   }
@@ -553,40 +556,41 @@ const platformComposeUrls: Record<string, string> = {
 
   /* Badges */
   .badge {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.6rem;
+    font-weight: 500;
     padding: 0.15rem 0.4rem;
-    border-radius: 2px;
+    border-radius: 0.375rem;
     text-transform: uppercase;
     letter-spacing: 0.03em;
     white-space: nowrap;
   }
-  .badge.gold { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
-  .badge.blue { background: rgba(74,111,165,0.15); color: var(--color-compass-blue); }
-  .badge.green { background: rgba(134,239,172,0.1); color: #86efac; text-decoration: none; }
-  .badge.slate { background: rgba(107,114,128,0.15); color: var(--color-slate); }
-  .badge.red { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .badge.gold { background: rgba(24,165,148,0.12); color: var(--color-fleece-gold); }
+  .badge.blue { background: rgba(13,153,255,0.12); color: #0d99ff; }
+  .badge.green { background: rgba(58,201,119,0.12); color: #2a9d5c; text-decoration: none; }
+  .badge.slate { background: rgba(108,117,125,0.1); color: var(--color-slate); }
+  .badge.red { background: rgba(255,94,94,0.12); color: #d94444; }
 
   /* Buttons */
   .btn {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.65rem;
     background: transparent;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid var(--color-border);
     color: var(--color-starlight);
     padding: 0.3rem 0.6rem;
-    border-radius: 3px;
+    border-radius: 0.375rem;
     cursor: pointer;
     transition: all 0.15s;
   }
   .btn:hover {
-    background: rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.03);
     border-color: var(--color-fleece-gold);
     color: var(--color-parchment);
   }
   .btn.btn-sm { font-size: 0.6rem; padding: 0.2rem 0.5rem; }
 
-  /* Go Submit button — gold accent for primary action */
+  /* Go Submit button — teal accent for primary action */
   .btn-go {
     border-color: var(--color-fleece-gold);
     color: var(--color-fleece-gold);
@@ -594,7 +598,7 @@ const platformComposeUrls: Record<string, string> = {
     display: inline-block;
   }
   .btn-go:hover {
-    background: rgba(201,162,39,0.15);
+    background: rgba(24,165,148,0.1);
     color: var(--color-fleece-gold);
   }
 
@@ -606,9 +610,10 @@ const platformComposeUrls: Record<string, string> = {
   }
   .outbox-card {
     background: var(--color-deep-water);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     padding: 0.75rem 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .card-header {
     display: flex;
@@ -616,29 +621,30 @@ const platformComposeUrls: Record<string, string> = {
     margin-bottom: 0.4rem;
   }
   .card-domain {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.7rem;
+    font-weight: 600;
     color: var(--color-parchment);
     margin-bottom: 0.2rem;
   }
   .card-url {
     font-size: 0.65rem;
-    color: var(--color-compass-blue);
+    color: #0d99ff;
     text-decoration: none;
     word-break: break-all;
   }
   .card-url:hover { text-decoration: underline; }
   .draft-box {
-    background: rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.04);
-    border-radius: 3px;
+    background: var(--color-frost);
+    border: 1px solid var(--color-border-light);
+    border-radius: 0.375rem;
     padding: 0.5rem;
     margin: 0.5rem 0;
     max-height: 120px;
     overflow-y: auto;
   }
   .draft-text {
-    font-family: var(--font-body);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.7rem;
     color: var(--color-starlight);
     white-space: pre-wrap;
@@ -658,7 +664,7 @@ const platformComposeUrls: Record<string, string> = {
     text-decoration: none;
     transition: color 0.15s;
   }
-  .th-link:hover { color: var(--color-compass-blue); }
+  .th-link:hover { color: #0d99ff; }
   .th-icon {
     font-size: 0.55rem;
     opacity: 0.6;
@@ -668,7 +674,7 @@ const platformComposeUrls: Record<string, string> = {
     text-decoration: none;
   }
   .post-link:hover {
-    color: var(--color-compass-blue);
+    color: #0d99ff;
     text-decoration: underline;
   }
   .btn-copy-url {
@@ -688,8 +694,9 @@ const platformComposeUrls: Record<string, string> = {
     margin-bottom: 1.25rem;
   }
   .task-group-title {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.7rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-parchment);
@@ -698,7 +705,7 @@ const platformComposeUrls: Record<string, string> = {
     align-items: center;
     gap: 0.5rem;
     padding-bottom: 0.3rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid var(--color-border-light);
   }
   .task-group-count {
     font-size: 0.6rem;
@@ -713,12 +720,12 @@ const platformComposeUrls: Record<string, string> = {
   .check-item {
     padding: 0.5rem 0.75rem;
     background: var(--color-deep-water);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     cursor: pointer;
     transition: background 0.15s;
   }
-  .check-item:hover { background: rgba(255,255,255,0.03); }
+  .check-item:hover { background: rgba(0,0,0,0.02); }
   .check-main {
     display: flex;
     align-items: flex-start;
@@ -759,23 +766,24 @@ const platformComposeUrls: Record<string, string> = {
     margin-bottom: 0.5rem;
   }
   .score-num {
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     font-size: 2.5rem;
+    font-weight: 600;
     color: var(--color-fleece-gold);
   }
   .score-slash {
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
     color: var(--color-slate);
   }
   .score-total {
-    font-family: var(--font-display);
+    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
     color: var(--color-slate);
   }
   .eeat-bar {
     height: 6px;
-    background: rgba(255,255,255,0.06);
+    background: var(--color-border-light);
     border-radius: 3px;
     overflow: hidden;
     margin-bottom: 1.25rem;
@@ -788,8 +796,9 @@ const platformComposeUrls: Record<string, string> = {
   }
   .eeat-group { margin-bottom: 1rem; }
   .eeat-cat {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.7rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-parchment);
@@ -807,8 +816,8 @@ const platformComposeUrls: Record<string, string> = {
     text-align: center;
     flex-shrink: 0;
   }
-  .eeat-icon.pass { color: #86efac; }
-  .eeat-icon.fail { color: #ef4444; }
+  .eeat-icon.pass { color: #2a9d5c; }
+  .eeat-icon.fail { color: #d94444; }
   .eeat-check-content {
     flex: 1;
     min-width: 0;
@@ -818,7 +827,6 @@ const platformComposeUrls: Record<string, string> = {
     color: var(--color-starlight);
   }
   .eeat-notes {
-    font-family: var(--font-mono);
     font-size: 0.6rem;
     color: var(--color-slate);
     margin-left: 0.25rem;
@@ -826,9 +834,9 @@ const platformComposeUrls: Record<string, string> = {
   .eeat-action {
     margin-top: 0.3rem;
     padding: 0.35rem 0.5rem;
-    background: rgba(201,162,39,0.06);
+    background: rgba(24,165,148,0.04);
     border-left: 2px solid var(--color-fleece-gold);
-    border-radius: 0 3px 3px 0;
+    border-radius: 0 0.375rem 0.375rem 0;
   }
   .eeat-action-text {
     font-size: 0.7rem;
@@ -837,7 +845,7 @@ const platformComposeUrls: Record<string, string> = {
     line-height: 1.4;
   }
   .eeat-task-link {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.6rem;
     color: var(--color-fleece-gold);
     text-decoration: none;
@@ -855,19 +863,19 @@ const platformComposeUrls: Record<string, string> = {
     color: var(--color-fleece-gold);
   }
   .btn-add-contact:hover {
-    background: rgba(201,162,39,0.15);
+    background: rgba(24,165,148,0.1);
   }
   .review-bar {
     width: 100%;
     height: 4px;
-    background: rgba(255,255,255,0.06);
+    background: var(--color-border-light);
     border-radius: 2px;
     overflow: hidden;
     margin-top: 0.3rem;
   }
   .review-bar-fill {
     height: 100%;
-    background: #86efac;
+    background: #2a9d5c;
     border-radius: 2px;
   }
 
@@ -883,12 +891,12 @@ const platformComposeUrls: Record<string, string> = {
     gap: 0.75rem;
     padding: 0.4rem 0.75rem;
     background: var(--color-deep-water);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     font-size: 0.8rem;
   }
   .velocity-date {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.65rem;
     color: var(--color-slate);
     white-space: nowrap;
@@ -901,7 +909,7 @@ const platformComposeUrls: Record<string, string> = {
     white-space: nowrap;
   }
   .velocity-words {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.65rem;
     color: var(--color-slate);
     white-space: nowrap;
@@ -909,14 +917,14 @@ const platformComposeUrls: Record<string, string> = {
 
   /* Empty state */
   .empty-state {
-    font-family: var(--font-mono);
+    font-family: 'Poppins', sans-serif;
     font-size: 0.7rem;
     color: var(--color-slate);
     padding: 1.5rem;
     text-align: center;
-    background: var(--color-deep-water);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 4px;
+    background: var(--color-frost);
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
   }
 
   @media (max-width: 768px) {

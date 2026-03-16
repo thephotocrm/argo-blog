@@ -62,15 +62,16 @@ const { queries, error } = Astro.props;
 <style>
   .panel {
     background: var(--color-deep-water);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 3px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px var(--color-card-shadow);
   }
   h2 {
     font-family: var(--font-display);
     font-size: 1.25rem;
-    font-weight: 400;
+    font-weight: 600;
     color: var(--color-parchment);
     margin: 0 0 0.25rem 0;
   }
@@ -80,9 +81,9 @@ const { queries, error } = Astro.props;
     margin-bottom: 1rem;
   }
   .notice {
-    background: rgba(107, 114, 128, 0.1);
-    border: 1px solid rgba(107, 114, 128, 0.2);
-    border-radius: 3px;
+    background: var(--color-frost);
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     padding: 1rem;
     color: var(--color-slate);
     font-size: 0.85rem;
@@ -95,22 +96,22 @@ const { queries, error } = Astro.props;
   }
   th {
     text-align: left;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    font-weight: 500;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--color-slate);
     padding: 0.5rem 0.6rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--color-border);
   }
   td {
     padding: 0.45rem 0.6rem;
     color: var(--color-starlight);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--color-border-light);
   }
-  code { font-family: var(--font-mono); font-size: 0.75rem; }
-  .mono { font-family: var(--font-mono); font-size: 0.75rem; }
-  .pos-good { color: #86efac; }
-  .pos-ok { color: var(--color-pale-gold); }
+  code { font-size: 0.8rem; color: var(--color-parchment); }
+  .mono { font-size: 0.8rem; }
+  .pos-good { color: #2a9d5c; }
+  .pos-ok { color: #cc7f00; }
   .pos-low { color: var(--color-slate); }
 </style>

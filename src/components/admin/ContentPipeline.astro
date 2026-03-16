@@ -75,29 +75,30 @@ const total = statusCounts.not_started + statusCounts.in_progress + statusCounts
 <style>
   .panel {
     background: var(--color-deep-water);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 3px;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px var(--color-card-shadow);
   }
   h2 {
     font-family: var(--font-display);
     font-size: 1.25rem;
-    font-weight: 400;
+    font-weight: 600;
     color: var(--color-parchment);
     margin: 0 0 1rem 0;
   }
   h3 {
     font-family: var(--font-display);
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 500;
     color: var(--color-parchment);
     margin: 1.5rem 0 0.75rem 0;
   }
   .pipeline-bar {
     display: flex;
     height: 28px;
-    border-radius: 3px;
+    border-radius: 0.375rem;
     overflow: hidden;
     gap: 2px;
   }
@@ -105,15 +106,15 @@ const total = statusCounts.not_started + statusCounts.in_progress + statusCounts
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--color-night);
+    font-weight: 600;
+    color: #fff;
     min-width: 28px;
   }
   .bar-segment.published { background: var(--color-fleece-gold); }
-  .bar-segment.in-progress { background: var(--color-pale-gold); }
-  .bar-segment.not-started { background: var(--color-slate); color: var(--color-frost); }
+  .bar-segment.in-progress { background: var(--color-info); }
+  .bar-segment.not-started { background: var(--color-slate); }
   .pipeline-legend {
     display: flex;
     gap: 1.25rem;
@@ -123,7 +124,7 @@ const total = statusCounts.not_started + statusCounts.in_progress + statusCounts
     align-items: center;
   }
   .legend-item { display: flex; align-items: center; gap: 0.35rem; }
-  .legend-total { margin-left: auto; color: var(--color-slate); font-family: var(--font-mono); font-size: 0.7rem; }
+  .legend-total { margin-left: auto; color: var(--color-slate); font-size: 0.75rem; }
   .dot {
     width: 8px;
     height: 8px;
@@ -131,7 +132,7 @@ const total = statusCounts.not_started + statusCounts.in_progress + statusCounts
     display: inline-block;
   }
   .dot.published { background: var(--color-fleece-gold); }
-  .dot.in-progress { background: var(--color-pale-gold); }
+  .dot.in-progress { background: var(--color-info); }
   .dot.not-started { background: var(--color-slate); }
   table {
     width: 100%;
@@ -140,37 +141,36 @@ const total = statusCounts.not_started + statusCounts.in_progress + statusCounts
   }
   th {
     text-align: left;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+    font-weight: 500;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--color-slate);
     padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--color-border);
   }
   td {
     padding: 0.5rem 0.75rem;
     color: var(--color-starlight);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--color-border-light);
   }
   .title-cell { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   code {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.8rem;
+    background: rgba(24, 165, 148, 0.08);
+    color: var(--color-fleece-gold);
     padding: 0.15rem 0.4rem;
-    border-radius: 2px;
+    border-radius: 0.25rem;
   }
-  .mono { font-family: var(--font-mono); font-size: 0.75rem; }
+  .mono { font-size: 0.8rem; }
   .badge {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 500;
     padding: 0.2rem 0.5rem;
-    border-radius: 2px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    border-radius: 0.25rem;
+    text-transform: capitalize;
   }
-  .badge.pending_review { background: rgba(201, 162, 39, 0.15); color: var(--color-pale-gold); }
-  .badge.published { background: rgba(34, 197, 94, 0.15); color: #86efac; }
-  .badge.draft { background: rgba(107, 114, 128, 0.2); color: var(--color-starlight); }
+  .badge.pending_review { background: rgba(255, 159, 0, 0.12); color: var(--color-warning); }
+  .badge.published { background: rgba(58, 201, 119, 0.12); color: var(--color-success); }
+  .badge.draft { background: rgba(108, 117, 125, 0.12); color: var(--color-slate); }
 </style>
