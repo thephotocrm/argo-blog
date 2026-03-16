@@ -142,6 +142,6 @@ Pricing based on what competitors charge instead of what the work costs you to d
 
 The hardest part of pricing is not the math. It is holding the line when a potential client asks for a discount, or when a slow month makes you second-guess everything. A clear pricing structure — one built on real numbers, not anxiety — gives you something steady to stand on.
 
-If you are spending more time chasing invoices and managing bookings than refining your pricing strategy, your client workflow might need attention first. [Argo](https://argostudio.co) handles contracts, invoices, scheduling, and follow-ups so you can focus on the work that actually grows your business — behind the camera and in the pricing spreadsheet.
+If you are spending more time chasing invoices and managing bookings than refining your pricing strategy, your client workflow needs attention. [Argo](https://argostudio.co) handles contracts, photography-specific invoicing (second shooter fees, travel charges, and album credits as native line items), scheduling, SMS follow-ups, and built-in gallery delivery — so you can focus on the work that actually grows your business. Every feature is built for photographers, because that is all we do.
 
 Set the course. Trust the numbers. Adjust when the data says to, not when the doubt says to.

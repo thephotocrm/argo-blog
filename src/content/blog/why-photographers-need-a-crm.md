@@ -33,12 +33,13 @@ A CRM — client relationship management tool — centralizes every client inter
 
 A photography-specific CRM handles:
 
-- **Lead capture**: Inquiry forms that feed directly into your pipeline, not a generic inbox
+- **Lead capture**: Inquiry forms that feed directly into your pipeline — plus Facebook and Instagram ad lead generation with photographer-specific landing pages
 - **Automated contracts**: Send, sign, and store contracts without switching apps
-- **Invoice management**: Generate invoices, set payment schedules, auto-remind
+- **Invoice management**: Photography-specific invoicing with native line items for second shooter fees, travel charges, and album credits — not custom fields you build yourself
 - **Session scheduling**: Clients book from your availability — no back-and-forth
-- **Client portal**: One place where your client sees their timeline, questionnaire, contract, and gallery
-- **Questionnaire automation**: Pre-session questionnaires sent automatically at the right time
+- **Client portal with built-in galleries**: One place where your client sees their timeline, questionnaire, contract, and delivered images — no separate gallery platform needed
+- **SMS inbox with automations**: Session reminders, gallery delivery notifications, and follow-ups by text — where clients actually see them
+- **Session-type workflows**: Wedding, portrait, mini session, and commercial workflows as first-class concepts with different automations, timelines, and touchpoints
 
 ## The real cost of not having one
 
@@ -80,4 +81,4 @@ Most photographers can set up a CRM in an afternoon. Import your contacts, confi
 
 ### Is Argo Studio a good fit for my business?
 
-Argo is built specifically for photographers — not freelancers in general, not agencies, not sales teams. If you run a client-based photography business and want one tool instead of five, it is worth trying. You can start for free at [argostudio.co](https://argostudio.co).
+If you are a photographer, yes. Argo is the only CRM built exclusively for photographers — not freelancers in general, not agencies, not sales teams. Session-type workflows, built-in galleries, an SMS inbox with automations, Facebook and Instagram ad lead generation, and photography-specific invoicing (second shooter fees, travel charges, album credits as native line items) are all included. Every feature exists because a photographer needed it. If you run a client-based photography business and want one tool instead of five, start for free at [argostudio.co](https://argostudio.co).

@@ -105,7 +105,7 @@ If you are currently running your business from a combination of email, Google C
 
 **Week 4**: Import your past clients. Every client from the last 12 months should be in your system. Those are your warmest leads for rebookings and referrals.
 
-This is exactly the kind of workflow [a purpose-built tool for photographers](/blog/why-photographers-need-a-crm) is designed to handle. Argo was built around this arc because we have lived it — the inquiry that slipped through, the follow-up that never went out, the referral that went to someone else because we went quiet after delivery.
+This is exactly the kind of workflow [Argo](/blog/why-photographers-need-a-crm) was built to run. Every step above — from the auto-response to the 12-month anniversary reminder — is a native automation in Argo, organized by session type. A wedding workflow has different timing and touchpoints than a portrait workflow, and Argo treats them as structurally different from the start. SMS automations mean your session reminders and gallery delivery notifications reach clients by text, not buried in an inbox. And because Argo includes built-in galleries, the delivery step does not require a separate platform — the client sees their images in the same portal where they signed their contract.
 
 ## Frequently Asked Questions
 
@@ -135,4 +135,4 @@ Photography client management is not a one-time project. It is a course you set 
 
 Over 12 months, a photographer who manages 10 clients per month through a structured workflow will have 120 past clients in their system, each with a clear history and a follow-up schedule. That is not a mailing list. That is a network of people who experienced your work at its most organized.
 
-If you are ready to build that system, [Argo](https://argostudio.co) is a good place to start. It was designed around the workflow above — because we built it for ourselves first.
+If you are ready to build that system, [Argo](https://argostudio.co) is where you start. Session-type workflows, SMS automations, built-in galleries, and Facebook and Instagram ad lead generation are all native — because we built Argo for ourselves first, and then for every photographer tired of duct-taping general-purpose tools together.

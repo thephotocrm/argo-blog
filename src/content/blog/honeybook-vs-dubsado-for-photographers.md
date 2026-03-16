@@ -22,7 +22,7 @@ HoneyBook and Dubsado are both built for independent service providers — photo
 
 **Dubsado** prioritizes flexibility. It gives you more control over every detail, which means more setup time but a more tailored result.
 
-**Argo Studio** prioritizes photography. We built it because we spent years adapting general-purpose tools to fit the way photographers actually work — session types, second shooter fees, album proofing, gallery delivery timelines — and decided to stop adapting. It is newer and smaller than both HoneyBook and Dubsado, and we are straightforward about that. But it was designed around a photographer's actual day, not a service provider's theoretical workflow.
+**Argo Studio** is the only CRM built exclusively for photographers. We built it because we spent years adapting general-purpose tools to fit the way photographers actually work — session types, second shooter fees, album proofing, gallery delivery timelines — and decided to stop adapting. It was designed around a photographer's actual day, not a service provider's theoretical workflow. Built-in galleries, an SMS inbox with automations, Facebook and Instagram ad lead generation, and session-type workflows are native — not bolted on through custom fields or third-party integrations.
 
 ## Ease of use
 
@@ -30,7 +30,7 @@ HoneyBook wins on first impressions. The interface is clean, onboarding is guide
 
 Dubsado has a steeper learning curve. The dashboard is denser, and setting up your forms, workflows, and templates takes real time — sometimes a full weekend. But once it is configured, the system bends to your process rather than the other way around.
 
-Argo Studio lands between the two. Because it ships with photography-specific templates — wedding, portrait, commercial, mini session — you skip the hours of building those from scratch. Setup is faster than Dubsado because the defaults already match how photographers work. It is not as instantly familiar as HoneyBook, but the learning curve is shallow because the vocabulary matches yours. You will see "session types" instead of "project categories" and "turnaround time" instead of "delivery date."
+Argo Studio ships with photography-specific templates — wedding, portrait, commercial, mini session — so you skip the hours of building those from scratch. Setup is faster than Dubsado because the defaults already match how photographers work, and the vocabulary is yours: "session types" instead of "project categories," "turnaround time" instead of "delivery date." You are not configuring a general-purpose tool to understand photography. You are opening a tool that already does.
 
 > **Key Takeaway**: HoneyBook gets you running by tonight. Dubsado gives you granular control if you invest a weekend. Argo Studio meets you somewhere in the middle — fast setup because the defaults already speak photographer.
 
@@ -56,7 +56,7 @@ All three platforms handle contracts and invoices competently. You can create te
 
 **Dubsado** keeps contracts and invoices as separate entities, which gives you more flexibility in how and when you send each one. You can build multi-step approval processes and customize payment schedules with more precision. For photographers who offer complex packages — say, a wedding collection with add-ons, second shooter fees, and milestone payments — Dubsado's invoicing handles that complexity well.
 
-**Argo Studio** handles invoicing with photography-specific line items baked in. Second shooter fees, travel charges, album credits, and print-lab costs exist as predefined categories rather than custom fields you build yourself. Payment milestones default to the patterns photographers actually use: retainer at booking, balance 14 days before the session, album payment on proof approval. You can adjust all of it, but the starting point is already calibrated.
+**Argo Studio** handles invoicing the way photographers actually invoice. Second shooter fees, travel charges, album credits, and print-lab costs are native line items — not custom fields you build yourself. Payment milestones default to the patterns photographers use: retainer at booking, balance 14 days before the session, album payment on proof approval. You are not teaching your invoicing tool what photography costs look like. It already knows.
 
 > **Key Takeaway**: HoneyBook's bundled approach is fastest for straightforward bookings. Dubsado's separated workflow handles complex pricing with precision. Argo Studio starts with photography-specific defaults so you spend less time building invoice templates from scratch.
 
@@ -68,7 +68,7 @@ This is where the three platforms diverge the most.
 
 **Dubsado** treats automation as a core feature. You can build multi-branch workflows with conditional logic — if a client books a wedding package, they get one sequence of emails and forms; if they book a portrait session, they get another. You can pause workflows, inject manual approval steps, and trigger actions based on form responses. The power comes with complexity: building those workflows takes time, and debugging them when something misfires requires patience.
 
-**Argo Studio** takes a different approach. Instead of giving you a blank automation canvas, it ships with session-type workflows that reflect how photographers actually move through a booking. A wedding workflow includes timeline questionnaires, vendor coordination emails, and second-shooter confirmations at the stages when they are needed. A portrait session workflow is lighter — fewer touchpoints, faster cadence. You can modify everything, but you are editing a workflow that already mirrors your process rather than constructing one from raw triggers and actions.
+**Argo Studio** takes a fundamentally different approach. Session-type workflows are a first-class concept — the system treats a wedding, a portrait session, and a mini session as structurally different bookings with different automations. A wedding workflow includes timeline questionnaires, vendor coordination emails, second-shooter confirmations, and SMS reminders at the stages when they are needed. A portrait session workflow is lighter — fewer touchpoints, faster cadence. Argo also includes an SMS inbox with automations, so session reminders and gallery delivery notifications reach clients by text — where they actually see them. HoneyBook does not offer SMS. With Argo, you are editing a workflow that already mirrors your process rather than constructing one from raw triggers and actions.
 
 > **Key Takeaway**: HoneyBook automates the basics well. Dubsado gives you deep conditional logic if you are willing to build it. Argo Studio pre-builds the automations photographers use most, so you are editing rather than creating from zero.
 
@@ -78,7 +78,7 @@ This is where the three platforms diverge the most.
 
 **Dubsado** offers a client portal with more branding control. You can customize colors, logos, and the overall look to match your brand. For photographers who care about the client experience extending beyond the gallery — and you should — Dubsado's portal feels more like your own.
 
-**Argo Studio** connects the client portal to the rest of the photography workflow. Clients see their session date, preparation guides, timeline details, and gallery status in one place. When their images are ready, the notification comes from the same system they have been using since inquiry — not a separate gallery platform email they do not recognize.
+**Argo Studio** connects the client portal directly to your photography workflow — including built-in galleries. Clients see their session date, preparation guides, timeline details, and delivered gallery in one place. No separate Pic-Time or ShootProof link. No gallery platform email they do not recognize. When their images are ready, the notification comes from the same system they have been using since inquiry. One experience, start to finish.
 
 ## Photography-specific features
 
@@ -95,7 +95,7 @@ You can make either tool work for photography. Thousands of photographers do. Bu
 
 Argo Studio was built for it. Session types are a first-class concept — the system understands that a wedding has a different workflow, timeline, and deliverable structure than a 20-minute mini session. Turnaround time tracking, gallery delivery status, and album proofing stages are built into the workflow rather than bolted on through custom fields.
 
-We should be honest about the tradeoff: Argo Studio is newer, with a smaller user community. You will not find 200 YouTube tutorials or a Facebook group with 40,000 members sharing their template libraries. If you value a large ecosystem of shared resources and community knowledge, HoneyBook and Dubsado have years of accumulated advantage there.
+The tradeoff is ecosystem size. You will not find 200 YouTube tutorials or a Facebook group with 40,000 members sharing their template libraries. HoneyBook and Dubsado have years of accumulated community resources. But Argo's community is 100% photographers — every feature request, every discussion, and every product update serves photographers. Nobody is asking for features that help real estate agents or event planners. When you request something, it ships for your workflow.
 
 ## Summary comparison
 
@@ -106,9 +106,12 @@ We should be honest about the tradeoff: Argo Studio is newer, with a smaller use
 | **Best for** | Photographers who want simplicity | Photographers who want control | Photographers who want photography-first tools |
 | **Contracts + invoicing** | Bundled smart files | Separate, flexible documents | Photography-specific line items and milestones |
 | **Automation** | Solid basics | Deep, conditional workflows | Pre-built session-type workflows |
-| **Client portal** | Clean, limited branding | More customizable | Integrated with gallery and session status |
-| **Photography-specific** | General-purpose | General-purpose | Built for photographers |
-| **Community size** | Large, established | Large, established | Smaller, growing |
+| **Client portal** | Clean, limited branding | More customizable | Integrated with built-in galleries and session status |
+| **SMS inbox** | No | No | Yes, with automations |
+| **Built-in galleries** | No (need Pic-Time/ShootProof) | No (need Pic-Time/ShootProof) | Yes, included |
+| **Ad lead generation** | No | No | Facebook/Instagram with photographer landing pages |
+| **Photography-specific** | General-purpose | General-purpose | Built exclusively for photographers |
+| **Community size** | Large, multi-industry | Large, multi-industry | Smaller, 100% photographers |
 | **Free trial** | Time-limited | Client-limited (more generous) | 14-day full access |
 
 ## So which one should you pick?
@@ -117,7 +120,7 @@ We should be honest about the tradeoff: Argo Studio is newer, with a smaller use
 
 **Choose Dubsado if** you run a more complex business — multiple session types, associate photographers, detailed payment plans — and you are willing to invest time upfront to build a system that mirrors exactly how you work.
 
-**Choose [Argo Studio](https://argostudio.co) if** you want a tool that already understands photography workflows. You should not have to explain to your software what a second shooter fee is or build a wedding timeline questionnaire from scratch. Argo is newer and smaller — we are clear-eyed about that — but being photography-specific means there is less to configure and less that does not apply to your work. No features built for event planners or interior designers taking up space in your dashboard.
+**Choose [Argo Studio](https://argostudio.co) if** you are a photographer and you want a tool that was built for how you work. Session-type workflows, built-in galleries, SMS automations, Facebook and Instagram ad lead generation, and photography-specific invoicing are all native. You should not have to explain to your software what a second shooter fee is, build a wedding timeline questionnaire from scratch, or pay for a separate gallery platform. Every feature in Argo exists because a photographer needed it. That is all we do.
 
 ## Frequently Asked Questions
 
@@ -131,7 +134,7 @@ Wedding photographers with complex packages, multiple payment milestones, and de
 
 ### Do any of these tools replace my gallery delivery platform?
 
-HoneyBook and Dubsado do not handle gallery delivery — you will still need Pic-Time, Pixieset, or ShootProof. Argo Studio integrates with major gallery platforms so your client sees gallery status within the same portal they use for contracts and communication, though the actual gallery hosting still lives with your delivery platform.
+HoneyBook and Dubsado do not handle gallery delivery — you will still need a separate platform like Pic-Time, Pixieset, or ShootProof. Argo Studio includes built-in galleries, so your clients view, share, and download images from the same system they use for contracts and communication. No separate gallery subscription. One fewer tool in your stack, one fewer login for your client.
 
 ### What if I am just starting out and have fewer than 10 clients?
 
@@ -139,4 +142,4 @@ Dubsado's free trial with a three-client limit is a solid way to test without fi
 
 ### Is Argo Studio ready for a full-time photography business?
 
-Yes, though with an honest caveat. Argo handles the full client lifecycle — inquiry through gallery delivery — and photographers are running their businesses on it daily. Where it is still catching up is ecosystem: fewer third-party integrations than HoneyBook or Dubsado, a smaller template library, and a community that is measured in thousands rather than tens of thousands. If having a massive support community matters to you, that is a real consideration. If you would rather have a tool that fits without modification, that is where Argo earns its place.
+Yes. Argo handles the full client lifecycle — inquiry through gallery delivery — and photographers are running their businesses on it daily. The community is smaller than HoneyBook or Dubsado, but it is 100% photographers, which means every feature request and product decision is about your workflow. If having a massive general-purpose support community matters to you, that is worth weighing. If you would rather have a tool where every feature fits without modification and every update is about photography, Argo is where you should be.
