@@ -42,7 +42,7 @@
       "description": "Morning follow-up check: drafts follow-ups for due creators, announces for approval",
       "enabled": true,
       "createdAtMs": 1773350428385,
-      "updatedAtMs": 1773636531509,
+      "updatedAtMs": 1773669625101,
       "schedule": {
         "kind": "cron",
         "expr": "0 9 * * *",
@@ -61,15 +61,14 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773669600000,
-        "lastRunAtMs": 1773636516531,
+        "nextRunAtMs": 1773756000000,
+        "lastRunAtMs": 1773669600007,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 14978,
+        "lastDurationMs": 25094,
         "lastDeliveryStatus": "delivered",
         "consecutiveErrors": 0,
-        "lastDelivered": true,
-        "runningAtMs": 1773669600005
+        "lastDelivered": true
       }
     },
     {
