@@ -5,7 +5,7 @@ import Dashboard from '../../components/admin/Dashboard.astro';
 import ContentPipeline from '../../components/admin/ContentPipeline.astro';
 import KeywordTable from '../../components/admin/KeywordTable.astro';
 import ContentDecay from '../../components/admin/ContentDecay.astro';
-import { getContentQueue, getContentLog } from '../../lib/data';
+import { getContentQueue, getContentLog, getKeywordCandidates } from '../../lib/data';
 
 import keywordData from '../../data/seo/keyword-research.json';
 import contentQueue from '../../data/seo/content-queue.json';
@@ -30,6 +30,13 @@ const published = items.filter((i: any) => i.status === 'published');
 const autoApproved = items.filter((i: any) => i.status === 'auto_approved');
 const needsRevision = items.filter((i: any) => i.status === 'needs_revision');
 const logEntries = contentLog.entries || [];
+
+// Keyword candidates
+const candidatesData = getKeywordCandidates();
+const candidates = candidatesData.candidates || [];
+const unvalidated = candidates.filter((c: any) => c.decision === null);
+const included = candidates.filter((c: any) => c.decision === 'include');
+const excluded = candidates.filter((c: any) => c.decision === 'exclude');
 ---
 
 <Dashboard title="Content" activePage="content">
@@ -163,6 +170,53 @@ const logEntries = contentLog.entries || [];
 
   <KeywordTable keywords={keywords} />
 
+  <!-- Keyword Candidates -->
+  <section class="section" id="candidates">
+    <h2 class="section-title">Keyword Candidates</h2>
+    <p class="section-note">{unvalidated.length} unvalidated &middot; {included.length} included &middot; {excluded.length} excluded</p>
+
+    {unvalidated.length > 0 && (
+      <div class="candidates-controls">
+        <button class="btn btn-bulk" id="bulk-include">Include Selected</button>
+        <button class="btn btn-bulk-exclude" id="bulk-exclude">Exclude Selected</button>
+        <button class="btn" id="select-all">Select All</button>
+      </div>
+    )}
+
+    <div class="table-scroll">
+      <table class="data-table" id="candidates-table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="check-all" /></th>
+            <th>Keyword</th>
+            <th>Source</th>
+            <th>Seed</th>
+            <th>Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          {unvalidated.slice(0, 100).map((c: any) => (
+            <tr data-keyword={c.keyword}>
+              <td><input type="checkbox" class="cand-check" data-keyword={c.keyword} /></td>
+              <td class="mono">{c.keyword}</td>
+              <td class="mono small">{c.source}</td>
+              <td class="mono small">{c.seed_keyword}</td>
+              <td>
+                <div class="decision-btns">
+                  <button class="btn btn-sm btn-inc" data-keyword={c.keyword}>Include</button>
+                  <button class="btn btn-sm btn-exc" data-keyword={c.keyword}>Exclude</button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    {unvalidated.length > 100 && (
+      <p class="more-note">Showing first 100 of {unvalidated.length} unvalidated candidates</p>
+    )}
+  </section>
+
   <!-- Preview modal -->
   <div id="preview-modal" class="modal hidden">
     <div class="modal-backdrop"></div>
@@ -223,6 +277,62 @@ const logEntries = contentLog.entries || [];
   document.querySelectorAll('.btn-publish').forEach(btn => {
     btn.addEventListener('click', () => updateStatus((btn as HTMLElement).dataset.slug!, 'published'));
   });
+
+  // Keyword candidates
+  document.querySelectorAll('.btn-inc').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const keyword = (btn as HTMLElement).dataset.keyword!;
+      await updateCandidates([{ keyword, decision: 'include' }]);
+    });
+  });
+
+  document.querySelectorAll('.btn-exc').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const keyword = (btn as HTMLElement).dataset.keyword!;
+      await updateCandidates([{ keyword, decision: 'exclude' }]);
+    });
+  });
+
+  document.getElementById('check-all')?.addEventListener('change', (e) => {
+    const checked = (e.target as HTMLInputElement).checked;
+    document.querySelectorAll('.cand-check').forEach(cb => {
+      (cb as HTMLInputElement).checked = checked;
+    });
+  });
+
+  document.getElementById('select-all')?.addEventListener('click', () => {
+    document.querySelectorAll('.cand-check').forEach(cb => {
+      (cb as HTMLInputElement).checked = true;
+    });
+  });
+
+  document.getElementById('bulk-include')?.addEventListener('click', async () => {
+    const updates = getSelectedKeywords().map(kw => ({ keyword: kw, decision: 'include' }));
+    if (updates.length === 0) return alert('No keywords selected');
+    await updateCandidates(updates);
+  });
+
+  document.getElementById('bulk-exclude')?.addEventListener('click', async () => {
+    const updates = getSelectedKeywords().map(kw => ({ keyword: kw, decision: 'exclude' }));
+    if (updates.length === 0) return alert('No keywords selected');
+    await updateCandidates(updates);
+  });
+
+  function getSelectedKeywords(): string[] {
+    return Array.from(document.querySelectorAll('.cand-check:checked'))
+      .map(cb => (cb as HTMLElement).dataset.keyword!)
+      .filter(Boolean);
+  }
+
+  async function updateCandidates(updates: Array<{ keyword: string; decision: string }>) {
+    const res = await fetch('/api/keyword-candidates', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ updates })
+    });
+    if (res.ok) location.reload();
+    else alert('Update failed');
+  }
 </script>
 
 <style>
@@ -361,4 +471,34 @@ const logEntries = contentLog.entries || [];
   }
   .modal-body h3 { color: var(--color-parchment); margin: 1rem 0 0.5rem; font-size: 1rem; }
   .modal-body p { margin-bottom: 0.75rem; }
+
+  /* Keyword candidates */
+  .section-note {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    margin-bottom: 0.75rem;
+  }
+  .table-scroll { overflow-x: auto; }
+  .small { font-size: 0.6rem; }
+  .candidates-controls {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
+  .btn-bulk { border-color: rgba(134,239,172,0.3); color: #86efac; }
+  .btn-bulk-exclude { border-color: rgba(239,68,68,0.3); color: #ef4444; }
+  .btn-sm { font-size: 0.6rem; padding: 0.2rem 0.4rem; }
+  .btn-inc { border-color: rgba(134,239,172,0.3); color: #86efac; }
+  .btn-exc { border-color: rgba(239,68,68,0.3); color: #ef4444; }
+  .decision-btns { display: flex; gap: 0.25rem; }
+  .more-note {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    margin-top: 0.5rem;
+  }
+  input[type="checkbox"] {
+    accent-color: var(--color-fleece-gold);
+  }
 </style>

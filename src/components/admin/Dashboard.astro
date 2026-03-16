@@ -7,17 +7,10 @@ interface Props {
 const { title, activePage = 'overview' } = Astro.props;
 
 const tabs = [
-  { id: 'overview', label: 'Overview', href: '/admin' },
+  { id: 'overview', label: 'Command Center', href: '/admin' },
   { id: 'content', label: 'Content', href: '/admin/content' },
-  { id: 'authority', label: 'Authority', href: '/admin/authority' },
-  { id: 'creators', label: 'Creators', href: '/admin/creators' },
-  { id: 'rankings', label: 'Rankings', href: '/admin/rankings' },
-  { id: 'seo', label: 'SEO Intel', href: '/admin/seo' },
-  { id: 'distribution', label: 'Distribution', href: '/admin/distribution' },
-  { id: 'technical', label: 'Technical', href: '/admin/technical' },
-  { id: 'competitors', label: 'Competitors', href: '/admin/competitors' },
-  { id: 'reports', label: 'Reports', href: '/admin/reports' },
-  { id: 'system', label: 'System', href: '/admin/system' },
+  { id: 'outreach', label: 'Outreach', href: '/admin/outreach' },
+  { id: 'monitoring', label: 'Monitoring', href: '/admin/monitoring' },
 ];
 ---
 

@@ -3,24 +3,10 @@ export const prerender = false;
 
 import Dashboard from '../../components/admin/Dashboard.astro';
 import StatsCards from '../../components/admin/StatsCards.astro';
-import AlertStrip from '../../components/admin/AlertStrip.astro';
-import CronHeatmap from '../../components/admin/CronHeatmap.astro';
-import ContentPipeline from '../../components/admin/ContentPipeline.astro';
-import RankingTable from '../../components/admin/RankingTable.astro';
-import TrafficChart from '../../components/admin/TrafficChart.astro';
-import KeywordTable from '../../components/admin/KeywordTable.astro';
 
-import { getContentQueue, getAuthorityOutbox, getCreators, getCronJobs, getKeywordResearch, getKeywordCandidates, getIndexingStatus, getGscHistory } from '../../lib/data';
+import { getContentQueue, getAuthorityOutbox, getCreators, getCronJobs, getKeywordCandidates, getIndexingStatus, getGscHistory } from '../../lib/data';
 
 import keywordData from '../../data/seo/keyword-research.json';
-import contentQueue from '../../data/seo/content-queue.json';
-
-// Load dashboard JSON files
-import alertsData from '../../data/seo/dashboard/alerts.json';
-import cronStatusData from '../../data/seo/dashboard/cron-status.json';
-import algoData from '../../data/seo/dashboard/algo-updates.json';
-import distData from '../../data/seo/dashboard/distribution.json';
-import siData from '../../data/seo/dashboard/self-improvement.json';
 
 // Count published blog posts
 import { getCollection } from 'astro:content';
@@ -43,13 +29,7 @@ const unvalidated = (candidates.candidates || []).filter((c: any) => c.decision 
 const cronJobs = cronData.jobs || [];
 const cronErrors = cronJobs.filter((j: any) => j.state?.lastRunStatus === 'error').length;
 
-// Keyword summary
 const keywords = keywordData.keywords;
-const statusCounts = {
-  not_started: keywords.filter(k => k.status === 'not_started').length,
-  in_progress: keywords.filter(k => k.status === 'in_progress').length,
-  published: keywords.filter(k => k.status === 'published').length,
-};
 
 // Fetch GSC data (server-side)
 let gscData: any = null;
@@ -61,33 +41,7 @@ try {
   }
 } catch {}
 
-// Fetch GA4 data (server-side)
-let ga4Data: any = null;
-try {
-  const ga4Url = new URL('/api/ga4', Astro.url.origin);
-  const ga4Res = await fetch(ga4Url);
-  if (ga4Res.ok) {
-    ga4Data = await ga4Res.json();
-  }
-} catch {}
-
-// Compute SEO engine stats
-const cronRuns = cronStatusData?.data?.runs || [];
-const now = new Date();
-const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-const recentRuns = cronRuns.filter((r: any) => r.timestamp && new Date(r.timestamp) > oneDayAgo);
-const cronStatus = recentRuns.length > 0 ? {
-  succeeded: recentRuns.filter((r: any) => r.status === 'success').length,
-  total: recentRuns.length,
-} : null;
-
-const algoStatus = algoData?.data?.status === 'active_update' ? 'Update Detected'
-  : algoData?.data?.status === 'monitoring' ? 'Monitoring'
-  : algoData?.data?.status === 'normal' ? 'Normal'
-  : null;
-
-const distributionQueue = distData?.data?.funnel?.pending ?? null;
-const systemHealth = siData?.data?.systemHealthScore ?? null;
+const hasActions = pendingReviews > 0 || pendingOutbox > 0 || noOutreach > 0 || unvalidated > 0 || cronErrors > 0;
 ---
 
 <Dashboard title="Dashboard" activePage="overview">
@@ -96,70 +50,29 @@ const systemHealth = siData?.data?.systemHealthScore ?? null;
     <p class="last-updated">Data as of {keywordData.lastUpdated}</p>
   </div>
 
-  {(pendingReviews > 0 || pendingOutbox > 0 || noOutreach > 0 || unvalidated > 0) && (
-    <div class="action-bar">
-      {pendingReviews > 0 && <a href="/admin/content" class="action-badge gold">{pendingReviews} posts to review</a>}
-      {pendingOutbox > 0 && <a href="/admin/authority" class="action-badge blue">{pendingOutbox} outbox drafts</a>}
-      {noOutreach > 0 && <a href="/admin/creators" class="action-badge green">{noOutreach} creators need outreach</a>}
-      {unvalidated > 0 && <a href="/admin/seo" class="action-badge slate">{unvalidated} keyword candidates</a>}
-      {cronErrors > 0 && <span class="action-badge red">{cronErrors} cron errors</span>}
-    </div>
-  )}
-
-  <div class="cron-grid">
-    <h2 class="section-title">Cron Jobs</h2>
-    <div class="cron-cards">
-      {cronJobs.map((job: any) => {
-        const st = job.state || {};
-        const isOk = st.lastRunStatus === 'ok';
-        const isErr = st.lastRunStatus === 'error';
-        const lastRun = st.lastRunAtMs ? new Date(st.lastRunAtMs).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Never';
-        const nextRun = st.nextRunAtMs ? new Date(st.nextRunAtMs).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
-        return (
-          <div class:list={['cron-card', { 'cron-ok': isOk, 'cron-err': isErr }]}>
-            <div class="cron-name">{job.name}</div>
-            <div class="cron-status">{isOk ? 'OK' : isErr ? 'ERROR' : st.lastRunStatus || 'unknown'}</div>
-            <div class="cron-meta">Last: {lastRun}</div>
-            <div class="cron-meta">Next: {nextRun}</div>
-          </div>
-        );
-      })}
-    </div>
+  <!-- Action Queue -->
+  <div class="action-bar">
+    {hasActions ? (
+      <>
+        {pendingReviews > 0 && <a href="/admin/content" class="action-badge gold">{pendingReviews} posts to review</a>}
+        {pendingOutbox > 0 && <a href="/admin/outreach" class="action-badge blue">{pendingOutbox} outreach drafts</a>}
+        {noOutreach > 0 && <a href="/admin/outreach#creators" class="action-badge green">{noOutreach} creators need outreach</a>}
+        {unvalidated > 0 && <a href="/admin/content#candidates" class="action-badge slate">{unvalidated} keyword candidates</a>}
+        {cronErrors > 0 && <span class="action-badge red">{cronErrors} cron errors</span>}
+      </>
+    ) : (
+      <span class="action-badge all-clear">All clear</span>
+    )}
   </div>
 
-  <div class="pipeline-funnel">
-    <h2 class="section-title">Creator Pipeline</h2>
-    <div class="funnel-stages">
-      {(() => {
-        const c = creators.creators || [];
-        const stages = [
-          { name: 'Discovered', count: c.length },
-          { name: 'Qualified', count: c.filter((x: any) => x.outreachStatus === 'qualified' || x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length },
-          { name: 'Outreach Sent', count: c.filter((x: any) => x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length },
-          { name: 'Converted', count: c.filter((x: any) => x.outreachStatus === 'converted').length },
-        ];
-        return stages.map((s) => (
-          <div class="funnel-stage">
-            <div class="funnel-count">{s.count}</div>
-            <div class="funnel-label">{s.name}</div>
-          </div>
-        ));
-      })()}
-    </div>
-  </div>
-
+  <!-- Quick Stats -->
   <StatsCards
     gscTotals={gscData?.totals}
-    ga4Totals={ga4Data?.totals}
     publishedPosts={publishedPosts}
     totalKeywords={keywords.length}
-    systemHealth={systemHealth}
-    cronStatus={cronStatus}
-    algoStatus={algoStatus}
-    distributionQueue={distributionQueue}
   />
 
-  {/* Google Indexing Status + GSC Trends */}
+  <!-- Google Indexing + GSC Trends -->
   <div class="two-col" style="margin-bottom: 1.5rem;">
     <div class="indexing-card">
       <h2 class="section-title">Google Indexing</h2>
@@ -251,28 +164,49 @@ const systemHealth = siData?.data?.systemHealthScore ?? null;
     </div>
   </div>
 
-  <AlertStrip alerts={alertsData?.data?.items} />
-
-  <CronHeatmap runs={cronStatusData?.data?.runs} />
-
-  <ContentPipeline
-    statusCounts={statusCounts}
-    contentItems={contentQueue.items}
-  />
-
-  <div class="two-col">
-    <RankingTable
-      queries={gscData?.topQueries}
-      error={gscData?.error}
-    />
-    <TrafficChart
-      topPages={ga4Data?.topPages}
-      sources={ga4Data?.sources}
-      error={ga4Data?.error}
-    />
+  <!-- Creator Pipeline Funnel -->
+  <div class="pipeline-funnel">
+    <h2 class="section-title">Creator Pipeline</h2>
+    <div class="funnel-stages">
+      {(() => {
+        const c = creators.creators || [];
+        const stages = [
+          { name: 'Discovered', count: c.length },
+          { name: 'Qualified', count: c.filter((x: any) => x.outreachStatus === 'qualified' || x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length },
+          { name: 'Outreach Sent', count: c.filter((x: any) => x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length },
+          { name: 'Converted', count: c.filter((x: any) => x.outreachStatus === 'converted').length },
+        ];
+        return stages.map((s) => (
+          <div class="funnel-stage">
+            <div class="funnel-count">{s.count}</div>
+            <div class="funnel-label">{s.name}</div>
+          </div>
+        ));
+      })()}
+    </div>
   </div>
 
-  <KeywordTable keywords={keywords} />
+  <!-- Cron Jobs -->
+  <div class="cron-grid">
+    <h2 class="section-title">Cron Jobs</h2>
+    <div class="cron-cards">
+      {cronJobs.map((job: any) => {
+        const st = job.state || {};
+        const isOk = st.lastRunStatus === 'ok';
+        const isErr = st.lastRunStatus === 'error';
+        const lastRun = st.lastRunAtMs ? new Date(st.lastRunAtMs).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Never';
+        const nextRun = st.nextRunAtMs ? new Date(st.nextRunAtMs).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+        return (
+          <div class:list={['cron-card', { 'cron-ok': isOk, 'cron-err': isErr }]}>
+            <div class="cron-name">{job.name}</div>
+            <div class="cron-status">{isOk ? 'OK' : isErr ? 'ERROR' : st.lastRunStatus || 'unknown'}</div>
+            <div class="cron-meta">Last: {lastRun}</div>
+            <div class="cron-meta">Next: {nextRun}</div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
 </Dashboard>
 
 <style>
@@ -308,6 +242,7 @@ const systemHealth = siData?.data?.systemHealthScore ?? null;
   .action-badge.green { background: rgba(134,239,172,0.1); color: #86efac; }
   .action-badge.slate { background: rgba(107,114,128,0.15); color: var(--color-slate); }
   .action-badge.red { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .action-badge.all-clear { background: rgba(134,239,172,0.08); color: #86efac; }
   .section-title {
     font-family: var(--font-display);
     font-size: 1.1rem;

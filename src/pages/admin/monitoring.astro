@@ -2,27 +2,73 @@
 export const prerender = false;
 
 import Dashboard from '../../components/admin/Dashboard.astro';
-import { getLatestSerpSnapshot, getLatestContentGaps, getCompetitorChangelog, getKeywordCandidates } from '../../lib/data';
+import { getTechSeoTasks, getLatestSerpSnapshot, getLatestContentGaps, getCompetitorChangelog } from '../../lib/data';
+import { marked } from 'marked';
 
+const techSeoTasks = getTechSeoTasks();
 const serp = getLatestSerpSnapshot();
 const gaps = getLatestContentGaps();
 const competitors = getCompetitorChangelog();
-const candidatesData = getKeywordCandidates();
 
+const tasks = techSeoTasks.tasks || [];
 const keywords = serp.keywords || [];
 const gapsList = gaps.gaps || [];
 const entries = competitors.entries || [];
-const candidates = candidatesData.candidates || [];
-const unvalidated = candidates.filter((c: any) => c.decision === null);
-const included = candidates.filter((c: any) => c.decision === 'include');
-const excluded = candidates.filter((c: any) => c.decision === 'exclude');
+
+// Load reports via glob
+const mdFiles = import.meta.glob('../../data/synced/seo/reports/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const jsonFiles = import.meta.glob('../../data/synced/seo/reports/*.json', { eager: true }) as Record<string, { default: any }>;
+
+const reports = Object.entries(mdFiles)
+  .map(([path, raw]) => {
+    const name = path.split('/').pop() || '';
+    return {
+      name,
+      displayName: name.replace(/\.md$/, '').replace(/-/g, ' '),
+      html: raw ? marked(raw) : null,
+    };
+  })
+  .sort((a, b) => b.name.localeCompare(a.name));
+
+const jsonReports = Object.entries(jsonFiles)
+  .map(([path, mod]) => {
+    const name = path.split('/').pop() || '';
+    return {
+      name,
+      displayName: name.replace(/\.json$/, '').replace(/-/g, ' '),
+      data: (mod as any).default || mod,
+    };
+  })
+  .sort((a, b) => b.name.localeCompare(a.name));
 ---
 
-<Dashboard title="SEO Intelligence" activePage="seo">
+<Dashboard title="Monitoring" activePage="monitoring">
   <div class="page-header">
-    <h1>SEO Intelligence</h1>
-    <p class="subtitle">{keywords.length} tracked keywords &middot; {gapsList.length} content gaps &middot; {unvalidated.length}/{candidates.length} candidates unvalidated</p>
+    <h1>Monitoring</h1>
+    <p class="subtitle">{tasks.filter((t: any) => t.status !== 'done').length} open SEO issues &middot; {keywords.length} tracked keywords &middot; {reports.length + jsonReports.length} reports</p>
   </div>
+
+  <!-- Tech SEO Checklist -->
+  <section class="section">
+    <h2 class="section-title">Tech SEO Issues</h2>
+    <div class="checklist">
+      {tasks.map((task: any) => (
+        <div class:list={['check-item', { done: task.status === 'done' }]} data-id={task.id}>
+          <button
+            class:list={['check-toggle', { checked: task.status === 'done' }]}
+            data-id={task.id}
+            data-status={task.status}
+          >
+            {task.status === 'done' ? '&#10003;' : ''}
+          </button>
+          <div class="check-content">
+            <span class="check-text">{task.issue}</span>
+            <span class="check-cat">{task.category}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
 
   <!-- SERP Positions -->
   {keywords.length > 0 && (
@@ -99,7 +145,7 @@ const excluded = candidates.filter((c: any) => c.decision === 'exclude');
     </section>
   )}
 
-  <!-- Competitor Timeline -->
+  <!-- Competitor Intelligence -->
   {entries.length > 0 && (
     <section class="section">
       <h2 class="section-title">Competitor Intelligence</h2>
@@ -125,111 +171,64 @@ const excluded = candidates.filter((c: any) => c.decision === 'exclude');
     </section>
   )}
 
-  <!-- Keyword Candidates -->
-  <section class="section">
-    <h2 class="section-title">Keyword Candidates</h2>
-    <p class="section-note">{unvalidated.length} unvalidated &middot; {included.length} included &middot; {excluded.length} excluded</p>
-
-    {unvalidated.length > 0 && (
-      <div class="candidates-controls">
-        <button class="btn btn-bulk" id="bulk-include">Include Selected</button>
-        <button class="btn btn-bulk-exclude" id="bulk-exclude">Exclude Selected</button>
-        <button class="btn" id="select-all">Select All</button>
+  <!-- Report navigation -->
+  {(reports.length > 0 || jsonReports.length > 0) && (
+    <section class="section">
+      <h2 class="section-title">Reports</h2>
+      <div class="report-nav">
+        {reports.map((r) => (
+          <a href={`#report-${r.name}`} class="report-link">{r.displayName}</a>
+        ))}
+        {jsonReports.map((r) => (
+          <a href={`#report-${r.name}`} class="report-link">{r.displayName}</a>
+        ))}
       </div>
-    )}
+    </section>
+  )}
 
-    <div class="table-scroll">
-      <table class="data-table" id="candidates-table">
-        <thead>
-          <tr>
-            <th><input type="checkbox" id="check-all" /></th>
-            <th>Keyword</th>
-            <th>Source</th>
-            <th>Seed</th>
-            <th>Decision</th>
-          </tr>
-        </thead>
-        <tbody>
-          {unvalidated.slice(0, 100).map((c: any) => (
-            <tr data-keyword={c.keyword}>
-              <td><input type="checkbox" class="cand-check" data-keyword={c.keyword} /></td>
-              <td class="mono">{c.keyword}</td>
-              <td class="mono small">{c.source}</td>
-              <td class="mono small">{c.seed_keyword}</td>
-              <td>
-                <div class="decision-btns">
-                  <button class="btn btn-sm btn-inc" data-keyword={c.keyword}>Include</button>
-                  <button class="btn btn-sm btn-exc" data-keyword={c.keyword}>Exclude</button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    {unvalidated.length > 100 && (
-      <p class="more-note">Showing first 100 of {unvalidated.length} unvalidated candidates</p>
-    )}
-  </section>
+  <!-- Rendered markdown reports -->
+  {reports.map((r) => (
+    <section class="section report-section" id={`report-${r.name}`}>
+      <h2 class="section-title">{r.displayName}</h2>
+      {r.html ? (
+        <div class="report-body" set:html={r.html} />
+      ) : (
+        <p class="empty">Could not load report</p>
+      )}
+    </section>
+  ))}
+
+  <!-- JSON reports -->
+  {jsonReports.map((r) => (
+    <section class="section report-section" id={`report-${r.name}`}>
+      <h2 class="section-title">{r.displayName}</h2>
+      {r.data ? (
+        <pre class="json-block">{JSON.stringify(r.data, null, 2)}</pre>
+      ) : (
+        <p class="empty">Could not load report</p>
+      )}
+    </section>
+  ))}
 </Dashboard>
 
 <script>
-  // Individual keyword decisions
-  document.querySelectorAll('.btn-inc').forEach(btn => {
+  document.querySelectorAll('.check-toggle').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const keyword = (btn as HTMLElement).dataset.keyword!;
-      await updateCandidates([{ keyword, decision: 'include' }]);
+      const el = btn as HTMLElement;
+      const id = el.dataset.id;
+      const currentStatus = el.dataset.status;
+      const newStatus = currentStatus === 'done' ? 'open' : 'done';
+
+      const res = await fetch(`/api/tech-seo-tasks/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+
+      if (res.ok) location.reload();
+      else alert('Update failed');
     });
   });
-
-  document.querySelectorAll('.btn-exc').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const keyword = (btn as HTMLElement).dataset.keyword!;
-      await updateCandidates([{ keyword, decision: 'exclude' }]);
-    });
-  });
-
-  // Bulk operations
-  document.getElementById('check-all')?.addEventListener('change', (e) => {
-    const checked = (e.target as HTMLInputElement).checked;
-    document.querySelectorAll('.cand-check').forEach(cb => {
-      (cb as HTMLInputElement).checked = checked;
-    });
-  });
-
-  document.getElementById('select-all')?.addEventListener('click', () => {
-    document.querySelectorAll('.cand-check').forEach(cb => {
-      (cb as HTMLInputElement).checked = true;
-    });
-  });
-
-  document.getElementById('bulk-include')?.addEventListener('click', async () => {
-    const updates = getSelectedKeywords().map(kw => ({ keyword: kw, decision: 'include' }));
-    if (updates.length === 0) return alert('No keywords selected');
-    await updateCandidates(updates);
-  });
-
-  document.getElementById('bulk-exclude')?.addEventListener('click', async () => {
-    const updates = getSelectedKeywords().map(kw => ({ keyword: kw, decision: 'exclude' }));
-    if (updates.length === 0) return alert('No keywords selected');
-    await updateCandidates(updates);
-  });
-
-  function getSelectedKeywords(): string[] {
-    return Array.from(document.querySelectorAll('.cand-check:checked'))
-      .map(cb => (cb as HTMLElement).dataset.keyword!)
-      .filter(Boolean);
-  }
-
-  async function updateCandidates(updates: Array<{ keyword: string; decision: string }>) {
-    const res = await fetch('/api/keyword-candidates', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ updates })
-    });
-    if (res.ok) location.reload();
-    else alert('Update failed');
-  }
 </script>
 
 <style>
@@ -252,7 +251,7 @@ const excluded = candidates.filter((c: any) => c.decision === 'exclude');
     font-size: 1.1rem;
     font-weight: 400;
     color: var(--color-parchment);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
   .section-note {
     font-family: var(--font-mono);
@@ -260,6 +259,55 @@ const excluded = candidates.filter((c: any) => c.decision === 'exclude');
     color: var(--color-slate);
     margin-bottom: 0.75rem;
   }
+
+  /* Checklist */
+  .checklist { display: flex; flex-direction: column; gap: 0.4rem; }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 0.6rem 0.75rem;
+  }
+  .check-item.done { opacity: 0.5; }
+  .check-toggle {
+    width: 22px;
+    height: 22px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    background: transparent;
+    color: #86efac;
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .check-toggle.checked {
+    background: rgba(134,239,172,0.1);
+    border-color: rgba(134,239,172,0.3);
+  }
+  .check-content { display: flex; align-items: center; gap: 0.5rem; flex: 1; }
+  .check-text {
+    font-size: 0.8rem;
+    color: var(--color-starlight);
+  }
+  .check-item.done .check-text { text-decoration: line-through; }
+  .check-cat {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+    background: rgba(107,114,128,0.1);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+  }
+
+  /* SERP & tables */
   .table-scroll { overflow-x: auto; }
   .data-table {
     width: 100%;
@@ -387,38 +435,95 @@ const excluded = candidates.filter((c: any) => c.decision === 'exclude');
     line-height: 1.4;
   }
 
-  /* Candidates */
-  .candidates-controls {
+  /* Report nav */
+  .report-nav {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.4rem;
+  }
+  .report-link {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-compass-blue);
+    text-decoration: none;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid rgba(74,111,165,0.2);
+    border-radius: 3px;
+  }
+  .report-link:hover { background: rgba(74,111,165,0.1); }
+
+  /* Report body */
+  .report-section {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1.25rem;
+  }
+  .report-body {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--color-starlight);
+  }
+  .report-body :global(h1),
+  .report-body :global(h2),
+  .report-body :global(h3) {
+    font-family: var(--font-display);
+    color: var(--color-parchment);
+    font-weight: 400;
+    margin: 1rem 0 0.5rem;
+  }
+  .report-body :global(h1) { font-size: 1.25rem; }
+  .report-body :global(h2) { font-size: 1.1rem; }
+  .report-body :global(h3) { font-size: 0.95rem; }
+  .report-body :global(p) { margin-bottom: 0.75rem; }
+  .report-body :global(ul),
+  .report-body :global(ol) { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+  .report-body :global(li) { margin-bottom: 0.25rem; }
+  .report-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: rgba(0,0,0,0.3);
+    padding: 0.1rem 0.3rem;
+    border-radius: 2px;
+  }
+  .report-body :global(pre) {
+    background: rgba(0,0,0,0.3);
+    padding: 0.75rem;
+    border-radius: 3px;
+    overflow-x: auto;
     margin-bottom: 0.75rem;
   }
-  .btn {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    padding: 0.35rem 0.65rem;
-    border-radius: 3px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: transparent;
-    color: var(--color-starlight);
-    cursor: pointer;
-    transition: background 0.15s;
+  .report-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
   }
-  .btn:hover { background: rgba(255,255,255,0.05); }
-  .btn-bulk { border-color: rgba(134,239,172,0.3); color: #86efac; }
-  .btn-bulk-exclude { border-color: rgba(239,68,68,0.3); color: #ef4444; }
-  .btn-sm { font-size: 0.6rem; padding: 0.2rem 0.4rem; }
-  .btn-inc { border-color: rgba(134,239,172,0.3); color: #86efac; }
-  .btn-exc { border-color: rgba(239,68,68,0.3); color: #ef4444; }
-  .decision-btns { display: flex; gap: 0.25rem; }
-  .more-note {
+  .report-body :global(th),
+  .report-body :global(td) {
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .report-body :global(th) {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.6rem;
+    text-transform: uppercase;
     color: var(--color-slate);
-    margin-top: 0.5rem;
   }
+  .report-body :global(strong) { color: var(--color-parchment); }
+  .report-body :global(a) { color: var(--color-compass-blue); }
 
-  input[type="checkbox"] {
-    accent-color: var(--color-fleece-gold);
+  .json-block {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    background: rgba(0,0,0,0.3);
+    padding: 0.75rem;
+    border-radius: 3px;
+    overflow-x: auto;
+    color: var(--color-starlight);
+    max-height: 400px;
+    overflow-y: auto;
   }
+  .empty { color: var(--color-slate); font-size: 0.8rem; }
 </style>

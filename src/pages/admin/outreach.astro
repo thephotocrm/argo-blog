@@ -2,21 +2,30 @@
 export const prerender = false;
 
 import Dashboard from '../../components/admin/Dashboard.astro';
-import { getAuthorityOutbox } from '../../lib/data';
+import { getAuthorityOutbox, getCreators, getDiscoveryState } from '../../lib/data';
 
 const outbox = getAuthorityOutbox();
 const items = outbox.items || [];
 const redditPending = items.filter((i: any) => i.type === 'reddit_answer' && i.status === 'pending_review');
 const haroPending = items.filter((i: any) => i.type === 'haro_pitch' && i.status === 'pending_review');
 const completed = items.filter((i: any) => i.status !== 'pending_review');
+
+const creatorsData = getCreators();
+const discoveryState = getDiscoveryState();
+const creators = creatorsData.creators || [];
+const qualified = creators.filter((c: any) => c.outreachStatus === 'qualified');
+const outreachSent = creators.filter((c: any) => c.outreachStatus === 'outreach_sent');
+const converted = creators.filter((c: any) => c.outreachStatus === 'converted');
+const noOutreach = qualified.filter((c: any) => c.followUpCount === 0);
 ---
 
-<Dashboard title="Authority Outreach" activePage="authority">
+<Dashboard title="Outreach" activePage="outreach">
   <div class="page-header">
-    <h1>Authority Outreach</h1>
-    <p class="subtitle">{redditPending.length} Reddit answers &middot; {haroPending.length} HARO pitches pending</p>
+    <h1>Outreach</h1>
+    <p class="subtitle">{redditPending.length} Reddit drafts &middot; {haroPending.length} HARO pitches &middot; {noOutreach.length} creators need outreach</p>
   </div>
 
+  <!-- Authority Outbox: Reddit -->
   {redditPending.length > 0 && (
     <section class="section">
       <h2 class="section-title">Reddit Answers</h2>
@@ -47,6 +56,7 @@ const completed = items.filter((i: any) => i.status !== 'pending_review');
     </section>
   )}
 
+  <!-- Authority Outbox: HARO -->
   {haroPending.length > 0 && (
     <section class="section">
       <h2 class="section-title">HARO Pitches</h2>
@@ -75,6 +85,7 @@ const completed = items.filter((i: any) => i.status !== 'pending_review');
     </section>
   )}
 
+  <!-- Completed outbox items -->
   {completed.length > 0 && (
     <section class="section">
       <h2 class="section-title">Completed ({completed.length})</h2>
@@ -96,9 +107,98 @@ const completed = items.filter((i: any) => i.status !== 'pending_review');
     </section>
   )}
 
-  {items.length === 0 && (
+  <!-- Creator Pipeline -->
+  <div id="creators">
+    <h2 class="section-title" style="margin-top: 2rem;">Creator Pipeline</h2>
+
+    <!-- Funnel -->
+    <div class="funnel">
+      <div class="funnel-stage">
+        <div class="funnel-count">{creators.length}</div>
+        <div class="funnel-label">Discovered</div>
+      </div>
+      <div class="funnel-arrow">&#8594;</div>
+      <div class="funnel-stage">
+        <div class="funnel-count">{qualified.length}</div>
+        <div class="funnel-label">Qualified</div>
+      </div>
+      <div class="funnel-arrow">&#8594;</div>
+      <div class="funnel-stage">
+        <div class="funnel-count">{outreachSent.length}</div>
+        <div class="funnel-label">Outreach Sent</div>
+      </div>
+      <div class="funnel-arrow">&#8594;</div>
+      <div class="funnel-stage">
+        <div class="funnel-count">{converted.length}</div>
+        <div class="funnel-label">Converted</div>
+      </div>
+    </div>
+
+    <!-- Discovery State -->
+    {discoveryState.lastSession && (
+      <div class="discovery-bar">
+        <span>Last discovery: <strong>{discoveryState.lastSession.platform}</strong> on {discoveryState.lastSession.date}</span>
+        <span class="sep">&middot;</span>
+        <span>Next: <strong>{discoveryState.nextSession?.platform || '—'}</strong></span>
+        {discoveryState.lastAttempt?.status === 'failed' && (
+          <span class="discovery-warn">Last attempt failed: {discoveryState.lastAttempt.reason}</span>
+        )}
+      </div>
+    )}
+
+    <!-- Creator Cards -->
+    <div class="creator-grid">
+      {creators.sort((a: any, b: any) => (b.score || 0) - (a.score || 0)).map((creator: any) => (
+        <div class="creator-card" data-id={creator.id}>
+          <div class="card-top">
+            <div class="avatar">{creator.displayName?.charAt(0) || '?'}</div>
+            <div class="card-info">
+              <h3 class="creator-name">
+                <a href={creator.profileUrl} target="_blank" rel="noopener">{creator.displayName}</a>
+              </h3>
+              <div class="creator-handle">@{creator.handle} &middot; {creator.platform}</div>
+            </div>
+            <div class="score-badge" data-tier={creator.tier}>
+              <div class="score-num">{creator.score}</div>
+              <div class="score-label">{creator.tier}</div>
+            </div>
+          </div>
+
+          <div class="creator-meta">
+            <span>{creator.followers?.toLocaleString()} followers</span>
+            {creator.location && <><span class="sep">&middot;</span><span>{creator.location}</span></>}
+          </div>
+
+          {creator.nicheTags && (
+            <div class="tag-list">
+              {creator.nicheTags.slice(0, 5).map((tag: string) => (
+                <span class="niche-tag">{tag}</span>
+              ))}
+            </div>
+          )}
+
+          {creator.notes && <p class="creator-notes">{creator.notes}</p>}
+
+          <div class="card-footer">
+            <div class="status-row">
+              <span class:list={['badge', creator.outreachStatus]}>{creator.outreachStatus.replace(/_/g, ' ')}</span>
+              {creator.followUpCount > 0 && <span class="followup-count">{creator.followUpCount} follow-ups</span>}
+            </div>
+            <div class="card-actions">
+              <a href={creator.profileUrl} target="_blank" rel="noopener" class="btn btn-profile">View Profile</a>
+              {creator.outreachStatus === 'qualified' && creator.followUpCount === 0 && (
+                <button class="btn btn-outreach" data-id={creator.id}>Draft Outreach</button>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {items.length === 0 && creators.length === 0 && (
     <div class="empty-state">
-      <p>No items in the authority outbox yet.</p>
+      <p>No outreach items yet.</p>
     </div>
   )}
 </Dashboard>
@@ -115,7 +215,6 @@ const completed = items.filter((i: any) => i.status !== 'pending_review');
         el.textContent = 'Copied!';
         setTimeout(() => { el.textContent = orig; }, 1500);
       } catch {
-        // Fallback
         const ta = document.createElement('textarea');
         ta.value = text;
         document.body.appendChild(ta);
@@ -130,7 +229,7 @@ const completed = items.filter((i: any) => i.status !== 'pending_review');
     });
   });
 
-  // Status updates
+  // Authority outbox status updates
   async function updateOutbox(id: string, status: string) {
     const res = await fetch(`/api/authority-outbox/${encodeURIComponent(id)}`, {
       method: 'PATCH',
@@ -149,6 +248,20 @@ const completed = items.filter((i: any) => i.status !== 'pending_review');
   });
   document.querySelectorAll('.btn-skip').forEach(btn => {
     btn.addEventListener('click', () => updateOutbox((btn as HTMLElement).dataset.id!, 'skipped'));
+  });
+
+  // Creator outreach
+  document.querySelectorAll('.btn-outreach').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = (btn as HTMLElement).dataset.id!;
+      const res = await fetch(`/api/creators/${encodeURIComponent(id)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ outreachStatus: 'outreach_sent' })
+      });
+      if (res.ok) location.reload();
+      else alert('Update failed');
+    });
   });
 </script>
 
@@ -174,6 +287,8 @@ const completed = items.filter((i: any) => i.status !== 'pending_review');
     color: var(--color-parchment);
     margin-bottom: 0.75rem;
   }
+
+  /* Authority outbox */
   .outbox-list { display: flex; flex-direction: column; gap: 1rem; }
   .outbox-card {
     background: var(--color-deep-water);
@@ -268,6 +383,8 @@ const completed = items.filter((i: any) => i.status !== 'pending_review');
   .btn-open { border-color: rgba(255,107,53,0.3); color: #ff6b35; }
   .btn-posted, .btn-sent { border-color: rgba(134,239,172,0.3); color: #86efac; }
   .btn-skip { border-color: rgba(107,114,128,0.3); color: var(--color-slate); }
+
+  /* Data table */
   .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -289,6 +406,163 @@ const completed = items.filter((i: any) => i.status !== 'pending_review');
     color: var(--color-starlight);
   }
   .mono { font-family: var(--font-mono); font-size: 0.65rem; }
+
+  /* Creator pipeline */
+  .funnel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .funnel-stage {
+    flex: 1;
+    min-width: 100px;
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 0.75rem;
+    text-align: center;
+  }
+  .funnel-count {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-fleece-gold);
+  }
+  .funnel-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-slate);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .funnel-arrow {
+    color: var(--color-slate);
+    font-size: 1.25rem;
+  }
+  .discovery-bar {
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .discovery-bar strong { color: var(--color-starlight); }
+  .discovery-warn {
+    color: #ef4444;
+    margin-left: 0.5rem;
+  }
+  .sep { margin: 0 0.35rem; }
+  .creator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 0.75rem;
+  }
+  .creator-card {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1rem;
+  }
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(201,162,39,0.15);
+    color: var(--color-fleece-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .card-info { flex: 1; min-width: 0; }
+  .creator-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .creator-name a { color: var(--color-parchment); text-decoration: none; }
+  .creator-name a:hover { color: var(--color-fleece-gold); }
+  .creator-handle {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+  }
+  .score-badge {
+    text-align: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .score-badge[data-tier="hot"] { background: rgba(239,68,68,0.15); }
+  .score-badge[data-tier="warm"] { background: rgba(201,162,39,0.15); }
+  .score-badge[data-tier="cold"] { background: rgba(74,111,165,0.15); }
+  .score-num {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-parchment);
+  }
+  .score-label {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+  }
+  .creator-meta {
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    margin-bottom: 0.4rem;
+  }
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .niche-tag {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    background: rgba(74,111,165,0.1);
+    color: var(--color-compass-blue);
+  }
+  .creator-notes {
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .status-row { display: flex; align-items: center; gap: 0.5rem; }
+  .badge.qualified { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
+  .badge.outreach_sent { background: rgba(74,111,165,0.15); color: var(--color-compass-blue); }
+  .badge.converted { background: rgba(134,239,172,0.1); color: #86efac; }
+  .followup-count {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-slate);
+  }
+  .btn-profile { border-color: rgba(74,111,165,0.3); color: var(--color-compass-blue); }
+  .btn-outreach { border-color: rgba(201,162,39,0.3); color: var(--color-fleece-gold); }
+  .btn-outreach:hover { background: rgba(201,162,39,0.1); }
+
   .empty-state {
     text-align: center;
     padding: 3rem;
