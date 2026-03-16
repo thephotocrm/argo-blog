@@ -14,6 +14,12 @@ import contentGapsData from '../data/synced/seo/content-gaps-latest.json';
 import techSeoTasksData from '../data/synced/seo/tech-seo-tasks.json';
 import indexingStatusData from '../data/synced/seo/indexing-status-latest.json';
 import gscHistoryData from '../data/synced/seo/gsc-history-summary.json';
+import directorySubmissionsData from '../data/synced/seo/directory-submissions.json';
+import linkBuildingData from '../data/synced/seo/link-building.json';
+import growthTasksData from '../data/synced/seo/growth-tasks.json';
+import distributionStatusData from '../data/synced/seo/distribution-status.json';
+import eeatScorecardData from '../data/synced/seo/eeat-scorecard.json';
+import reviewSolicitationData from '../data/synced/seo/review-solicitation.json';
 
 // Data accessors — read from static imports (deployed via git sync)
 export function getContentQueue() {
@@ -74,4 +80,28 @@ export function getIndexingStatus() {
 
 export function getGscHistory() {
   return gscHistoryData || { lastUpdated: '', dailyTotals: [], topQueriesWithTrends: [] };
+}
+
+export function getDirectorySubmissions() {
+  return directorySubmissionsData || { items: [] };
+}
+
+export function getLinkBuilding() {
+  return linkBuildingData || { items: [] };
+}
+
+export function getGrowthTasks() {
+  return growthTasksData || { tasks: [] };
+}
+
+export function getDistributionStatus() {
+  return distributionStatusData || { posts: [] };
+}
+
+export function getEeatScorecard() {
+  return eeatScorecardData || { overallScore: 0, maxScore: 10, checks: [] };
+}
+
+export function getReviewSolicitation() {
+  return reviewSolicitationData || { targets: [], contacts: [] };
 }

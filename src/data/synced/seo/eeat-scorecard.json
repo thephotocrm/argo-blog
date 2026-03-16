@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-16",
+  "overallScore": 3,
+  "maxScore": 10,
+  "checks": [
+    { "id": "author-pages", "label": "Author pages with bios exist", "category": "expertise", "status": "fail", "automated": true, "notes": "No author pages found" },
+    { "id": "person-schema", "label": "Person schema on author pages", "category": "expertise", "status": "fail", "automated": true, "notes": "" },
+    { "id": "first-person", "label": "First-person experience in content", "category": "experience", "status": "fail", "automated": true, "notes": "All posts use brand voice, no personal experience" },
+    { "id": "testimonials", "label": "Customer testimonials on site", "category": "trust", "status": "fail", "automated": true, "notes": "" },
+    { "id": "external-citations", "label": "Cited in third-party content", "category": "authority", "status": "fail", "automated": true, "notes": "No backlinks detected" },
+    { "id": "social-profiles", "label": "Active social media profiles linked", "category": "trust", "status": "fail", "automated": true, "notes": "sameAs array is empty" },
+    { "id": "about-page", "label": "Detailed About page exists", "category": "trust", "status": "fail", "automated": true, "notes": "" },
+    { "id": "structured-data", "label": "Organization + SoftwareApplication schema", "category": "trust", "status": "pass", "automated": true, "notes": "Both present and valid" },
+    { "id": "breadcrumbs", "label": "Breadcrumb schema on all pages", "category": "trust", "status": "pass", "automated": true, "notes": "" },
+    { "id": "https-ssl", "label": "HTTPS with valid SSL", "category": "trust", "status": "pass", "automated": true, "notes": "" }
+  ]
+}

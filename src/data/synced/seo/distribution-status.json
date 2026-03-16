@@ -1,0 +1,50 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-16",
+  "posts": [
+    {
+      "slug": "why-photographers-need-a-crm",
+      "title": "Why Photographers Need a CRM in 2026",
+      "publishedAt": "2026-03-15",
+      "platforms": {
+        "medium": { "status": "not_posted", "url": null, "postedAt": null },
+        "linkedin": { "status": "not_posted", "url": null, "postedAt": null },
+        "reddit": { "status": "not_posted", "url": null, "postedAt": null },
+        "quora": { "status": "not_posted", "url": null, "postedAt": null }
+      }
+    },
+    {
+      "slug": "how-to-price-photography",
+      "title": "How to Price Photography: A Practical Guide",
+      "publishedAt": "2026-03-15",
+      "platforms": {
+        "medium": { "status": "not_posted", "url": null, "postedAt": null },
+        "linkedin": { "status": "not_posted", "url": null, "postedAt": null },
+        "reddit": { "status": "not_posted", "url": null, "postedAt": null },
+        "quora": { "status": "not_posted", "url": null, "postedAt": null }
+      }
+    },
+    {
+      "slug": "photography-client-management",
+      "title": "Photography Client Management: From First Inquiry to Gallery Delivery",
+      "publishedAt": "2026-03-15",
+      "platforms": {
+        "medium": { "status": "not_posted", "url": null, "postedAt": null },
+        "linkedin": { "status": "not_posted", "url": null, "postedAt": null },
+        "reddit": { "status": "not_posted", "url": null, "postedAt": null },
+        "quora": { "status": "not_posted", "url": null, "postedAt": null }
+      }
+    },
+    {
+      "slug": "honeybook-vs-dubsado-for-photographers",
+      "title": "HoneyBook vs Dubsado for Photographers: An Honest Comparison",
+      "publishedAt": "2026-03-15",
+      "platforms": {
+        "medium": { "status": "not_posted", "url": null, "postedAt": null },
+        "linkedin": { "status": "not_posted", "url": null, "postedAt": null },
+        "reddit": { "status": "not_posted", "url": null, "postedAt": null },
+        "quora": { "status": "not_posted", "url": null, "postedAt": null }
+      }
+    }
+  ]
+}

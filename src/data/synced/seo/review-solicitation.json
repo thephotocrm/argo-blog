@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-16",
+  "targets": [
+    { "platform": "G2", "goal": 10, "current": 0 },
+    { "platform": "Capterra", "goal": 10, "current": 0 }
+  ],
+  "contacts": []
+}

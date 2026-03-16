@@ -1,0 +1,861 @@
+---
+export const prerender = false;
+
+import Dashboard from '../../components/admin/Dashboard.astro';
+import { getDirectorySubmissions, getLinkBuilding, getGrowthTasks, getDistributionStatus, getEeatScorecard, getReviewSolicitation, getContentLog } from '../../lib/data';
+
+const directories = getDirectorySubmissions();
+const linkBuilding = getLinkBuilding();
+const growthTasks = getGrowthTasks();
+const distribution = getDistributionStatus();
+const eeat = getEeatScorecard();
+const reviews = getReviewSolicitation();
+const contentLog = getContentLog();
+
+// Content velocity stats
+const entries = contentLog.entries || [];
+const totalPublished = entries.length;
+const thisWeek = entries.filter((e: any) => {
+  const d = new Date(e.published_at);
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  return d >= weekAgo;
+}).length;
+
+// Directory stats
+const dirItems = directories.items || [];
+const dirNotStarted = dirItems.filter((d: any) => d.status === 'not_started').length;
+const dirSubmitted = dirItems.filter((d: any) => d.status === 'submitted').length;
+const dirLive = dirItems.filter((d: any) => d.status === 'live').length;
+
+// Link building stats
+const linkItems = linkBuilding.items || [];
+const linkFound = linkItems.filter((l: any) => l.status === 'found').length;
+const linkContacted = linkItems.filter((l: any) => l.status === 'contacted').length;
+const linkWon = linkItems.filter((l: any) => l.status === 'won').length;
+
+// Growth tasks stats
+const tasks = growthTasks.tasks || [];
+const tasksOpen = tasks.filter((t: any) => t.status === 'open').length;
+const tasksDone = tasks.filter((t: any) => t.status === 'done').length;
+
+// Distribution stats
+const posts = distribution.posts || [];
+const totalPlatformSlots = posts.length * 4;
+const postedSlots = posts.reduce((acc: number, p: any) => {
+  return acc + Object.values(p.platforms).filter((pl: any) => pl.status === 'posted').length;
+}, 0);
+
+// E-E-A-T stats
+const checks = eeat.checks || [];
+const eatPassed = checks.filter((c: any) => c.status === 'pass').length;
+const eatTotal = checks.length;
+
+// Review stats
+const targets = reviews.targets || [];
+
+// Category labels
+const categoryLabels: Record<string, string> = {
+  link_bait: 'Link Bait',
+  eeat: 'E-E-A-T',
+  local_seo: 'Local SEO',
+  video_seo: 'Video SEO',
+  authority: 'Authority',
+  greyhat: 'Greyhat',
+  distribution: 'Distribution',
+  rich_results: 'Rich Results',
+  freshness: 'Freshness',
+  ai_seo: 'AI SEO',
+};
+---
+
+<Dashboard title="Strategy" activePage="strategy">
+  <div class="page-header">
+    <h1>Strategy Execution</h1>
+    <p class="subtitle">{dirNotStarted} directories pending · {linkFound} link opportunities · {tasksOpen} growth tasks open · {postedSlots}/{totalPlatformSlots} cross-posted</p>
+  </div>
+
+  <!-- Section Nav -->
+  <nav class="section-nav">
+    <a href="#directories">Directories</a>
+    <a href="#link-building">Link Building</a>
+    <a href="#velocity">Velocity</a>
+    <a href="#distribution">Distribution</a>
+    <a href="#growth">Growth Tasks</a>
+    <a href="#eeat">E-E-A-T</a>
+    <a href="#reviews">Reviews</a>
+  </nav>
+
+  <!-- ===== DIRECTORY SUBMISSIONS ===== -->
+  <section id="directories" class="section">
+    <h2 class="section-title">Directory Submissions</h2>
+    <div class="stat-row">
+      <div class="mini-stat"><span class="mini-num">{dirNotStarted}</span><span class="mini-label">Not Started</span></div>
+      <div class="mini-stat"><span class="mini-num gold">{dirSubmitted}</span><span class="mini-label">Submitted</span></div>
+      <div class="mini-stat"><span class="mini-num green">{dirLive}</span><span class="mini-label">Live</span></div>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Directory</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Listing</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {dirItems.map((d: any) => (
+            <tr data-id={d.id}>
+              <td class="name-cell">{d.name}</td>
+              <td><span class="badge slate">{d.category}</span></td>
+              <td><span class={`badge ${d.priority === 'high' ? 'gold' : d.priority === 'medium' ? 'blue' : 'slate'}`}>{d.priority}</span></td>
+              <td>
+                <span class={`badge ${d.status === 'live' ? 'green' : d.status === 'submitted' ? 'blue' : d.status === 'rejected' ? 'red' : 'slate'}`}>
+                  {d.status.replace('_', ' ')}
+                </span>
+              </td>
+              <td>
+                {d.listingUrl ? <a href={d.listingUrl} target="_blank" class="link-ext">View</a> : <span class="text-muted">—</span>}
+              </td>
+              <td class="actions-cell">
+                {d.status === 'not_started' && (
+                  <button class="btn btn-sm btn-submit-dir" data-id={d.id}>Mark Submitted</button>
+                )}
+                {d.status === 'submitted' && (
+                  <button class="btn btn-sm btn-live-dir" data-id={d.id}>Mark Live</button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== LINK BUILDING PIPELINE ===== -->
+  <section id="link-building" class="section">
+    <h2 class="section-title">Link Building Pipeline</h2>
+    {linkItems.length === 0 ? (
+      <div class="empty-state">No link opportunities found yet. Bot will populate this via roundup discovery and broken link scanning.</div>
+    ) : (
+      <>
+        <div class="stat-row">
+          <div class="mini-stat"><span class="mini-num">{linkFound}</span><span class="mini-label">Found</span></div>
+          <div class="mini-stat"><span class="mini-num blue">{linkContacted}</span><span class="mini-label">Contacted</span></div>
+          <div class="mini-stat"><span class="mini-num green">{linkWon}</span><span class="mini-label">Won</span></div>
+        </div>
+        <div class="card-grid">
+          {linkItems.filter((l: any) => l.status === 'found' || l.status === 'contacted').map((l: any) => (
+            <div class="outbox-card" data-id={l.id}>
+              <div class="card-header">
+                <span class={`badge ${l.type === 'roundup' ? 'gold' : l.type === 'guest_post' ? 'blue' : 'slate'}`}>{l.type.replace('_', ' ')}</span>
+                <span class={`badge ${l.status === 'found' ? 'slate' : 'blue'}`}>{l.status}</span>
+              </div>
+              <div class="card-domain">{l.targetDomain} {l.daScore ? `· DA ${l.daScore}` : ''}</div>
+              <a href={l.targetUrl} target="_blank" class="card-url">{l.targetUrl}</a>
+              {l.outreachDraft && (
+                <div class="draft-box">
+                  <pre class="draft-text">{l.outreachDraft}</pre>
+                </div>
+              )}
+              <div class="card-actions">
+                {l.outreachDraft && <button class="btn btn-sm btn-copy" data-text={l.outreachDraft}>Copy Draft</button>}
+                {l.status === 'found' && <button class="btn btn-sm btn-link-contacted" data-id={l.id}>Mark Contacted</button>}
+                {l.status === 'contacted' && (
+                  <>
+                    <button class="btn btn-sm btn-link-won" data-id={l.id}>Won</button>
+                    <button class="btn btn-sm btn-link-lost" data-id={l.id}>Lost</button>
+                  </>
+                )}
+                <button class="btn btn-sm btn-link-skip" data-id={l.id}>Skip</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    )}
+  </section>
+
+  <!-- ===== CONTENT VELOCITY ===== -->
+  <section id="velocity" class="section">
+    <h2 class="section-title">Content Velocity</h2>
+    <div class="stat-row">
+      <div class="mini-stat"><span class="mini-num">{totalPublished}</span><span class="mini-label">Published</span></div>
+      <div class="mini-stat"><span class="mini-num gold">{thisWeek}</span><span class="mini-label">This Week</span></div>
+    </div>
+    {entries.length > 0 ? (
+      <div class="velocity-list">
+        {entries.slice(0, 10).map((e: any) => (
+          <div class="velocity-item">
+            <span class="velocity-date">{e.published_at}</span>
+            <span class="velocity-title">{e.title}</span>
+            <span class="velocity-words">{e.word_count} words</span>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">No published content in log yet.</div>
+    )}
+  </section>
+
+  <!-- ===== DISTRIBUTION TRACKER ===== -->
+  <section id="distribution" class="section">
+    <h2 class="section-title">Distribution Tracker</h2>
+    <div class="table-wrap">
+      <table class="data-table dist-table">
+        <thead>
+          <tr>
+            <th>Post</th>
+            <th>Medium</th>
+            <th>LinkedIn</th>
+            <th>Reddit</th>
+            <th>Quora</th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.map((p: any) => (
+            <tr>
+              <td class="name-cell">{p.title}</td>
+              {['medium', 'linkedin', 'reddit', 'quora'].map((platform: string) => {
+                const pl = p.platforms[platform];
+                const isPosted = pl.status === 'posted';
+                return (
+                  <td class="platform-cell">
+                    {isPosted ? (
+                      <a href={pl.url || '#'} target="_blank" class="badge green">posted</a>
+                    ) : (
+                      <button class="btn btn-sm btn-dist-toggle" data-slug={p.slug} data-platform={platform}>
+                        not posted
+                      </button>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== GROWTH TASKS ===== -->
+  <section id="growth" class="section">
+    <h2 class="section-title">Growth Tasks</h2>
+    <div class="stat-row">
+      <div class="mini-stat"><span class="mini-num">{tasksOpen}</span><span class="mini-label">Open</span></div>
+      <div class="mini-stat"><span class="mini-num green">{tasksDone}</span><span class="mini-label">Done</span></div>
+    </div>
+    <div class="checklist">
+      {tasks.map((t: any) => (
+        <label class="check-item" data-id={t.id}>
+          <input type="checkbox" class="growth-check" data-id={t.id} checked={t.status === 'done'} />
+          <span class={`check-text ${t.status === 'done' ? 'done' : ''}`}>{t.task}</span>
+          <span class={`badge ${t.priority === 'high' ? 'gold' : 'slate'}`}>{t.priority}</span>
+          <span class={`badge ${categoryLabels[t.category] ? 'blue' : 'slate'}`}>{categoryLabels[t.category] || t.category}</span>
+        </label>
+      ))}
+    </div>
+  </section>
+
+  <!-- ===== E-E-A-T SCORECARD ===== -->
+  <section id="eeat" class="section">
+    <h2 class="section-title">E-E-A-T Scorecard</h2>
+    <div class="eeat-score">
+      <span class="score-num">{eeat.overallScore || eatPassed}</span>
+      <span class="score-slash">/</span>
+      <span class="score-total">{eeat.maxScore || eatTotal}</span>
+    </div>
+    <div class="eeat-bar">
+      <div class="eeat-bar-fill" style={`width: ${(eatPassed / Math.max(eatTotal, 1)) * 100}%`}></div>
+    </div>
+    {['expertise', 'experience', 'authority', 'trust'].map((cat: string) => {
+      const catChecks = checks.filter((c: any) => c.category === cat);
+      if (catChecks.length === 0) return null;
+      return (
+        <div class="eeat-group">
+          <h3 class="eeat-cat">{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
+          {catChecks.map((c: any) => (
+            <div class={`eeat-check ${c.status}`}>
+              <span class={`eeat-icon ${c.status}`}>{c.status === 'pass' ? '\u2713' : '\u2717'}</span>
+              <span class="eeat-label">{c.label}</span>
+              {c.notes && <span class="eeat-notes">{c.notes}</span>}
+            </div>
+          ))}
+        </div>
+      );
+    })}
+  </section>
+
+  <!-- ===== REVIEW SOLICITATION ===== -->
+  <section id="reviews" class="section">
+    <h2 class="section-title">Review Solicitation</h2>
+    <div class="stat-row">
+      {targets.map((t: any) => (
+        <div class="mini-stat">
+          <span class="mini-num">{t.current}/{t.goal}</span>
+          <span class="mini-label">{t.platform}</span>
+          <div class="review-bar">
+            <div class="review-bar-fill" style={`width: ${(t.current / Math.max(t.goal, 1)) * 100}%`}></div>
+          </div>
+        </div>
+      ))}
+    </div>
+    {(reviews.contacts || []).length > 0 ? (
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Platform</th>
+              <th>Status</th>
+              <th>Review</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(reviews.contacts || []).map((c: any) => (
+              <tr data-id={c.id}>
+                <td>{c.name}</td>
+                <td>{c.targetPlatform}</td>
+                <td><span class={`badge ${c.status === 'review_posted' ? 'green' : c.status === 'contacted' ? 'blue' : 'slate'}`}>{c.status.replace('_', ' ')}</span></td>
+                <td>{c.reviewUrl ? <a href={c.reviewUrl} target="_blank" class="link-ext">View</a> : '—'}</td>
+                <td class="actions-cell">
+                  {c.status === 'not_contacted' && <button class="btn btn-sm btn-review-contact" data-id={c.id}>Mark Contacted</button>}
+                  {c.status === 'contacted' && <button class="btn btn-sm btn-review-posted" data-id={c.id}>Review Posted</button>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <div class="empty-state">No review contacts added yet. Add contacts as you onboard early users.</div>
+    )}
+  </section>
+</Dashboard>
+
+<style>
+  .page-header { margin-bottom: 1.5rem; }
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+  }
+  .subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    margin-top: 0.25rem;
+  }
+
+  /* Section nav */
+  .section-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .section-nav a {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+    text-decoration: none;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 3px;
+    transition: all 0.15s;
+  }
+  .section-nav a:hover {
+    color: var(--color-parchment);
+    border-color: var(--color-fleece-gold);
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 2.5rem;
+    scroll-margin-top: 8rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin-bottom: 0.75rem;
+  }
+
+  /* Stat rows */
+  .stat-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .mini-stat {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    text-align: center;
+    min-width: 80px;
+  }
+  .mini-num {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--color-parchment);
+  }
+  .mini-num.gold { color: var(--color-fleece-gold); }
+  .mini-num.green { color: #86efac; }
+  .mini-num.blue { color: var(--color-compass-blue); }
+  .mini-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-slate);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  .data-table th {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .data-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--color-starlight);
+  }
+  .data-table tr:hover { background: rgba(255,255,255,0.02); }
+  .name-cell {
+    font-weight: 500;
+    color: var(--color-parchment);
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .actions-cell {
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+  }
+  .text-muted { color: var(--color-slate); }
+  .link-ext {
+    color: var(--color-compass-blue);
+    text-decoration: none;
+    font-size: 0.75rem;
+  }
+  .link-ext:hover { text-decoration: underline; }
+
+  /* Badges */
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .badge.gold { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
+  .badge.blue { background: rgba(74,111,165,0.15); color: var(--color-compass-blue); }
+  .badge.green { background: rgba(134,239,172,0.1); color: #86efac; text-decoration: none; }
+  .badge.slate { background: rgba(107,114,128,0.15); color: var(--color-slate); }
+  .badge.red { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+  /* Buttons */
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--color-starlight);
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: var(--color-fleece-gold);
+    color: var(--color-parchment);
+  }
+  .btn.btn-sm { font-size: 0.6rem; padding: 0.2rem 0.5rem; }
+
+  /* Card grid (link building) */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0.75rem;
+  }
+  .outbox-card {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+  }
+  .card-header {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+  .card-domain {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-parchment);
+    margin-bottom: 0.2rem;
+  }
+  .card-url {
+    font-size: 0.65rem;
+    color: var(--color-compass-blue);
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .card-url:hover { text-decoration: underline; }
+  .draft-box {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 3px;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+  .draft-text {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: var(--color-starlight);
+    white-space: pre-wrap;
+    margin: 0;
+  }
+  .card-actions {
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  /* Distribution table */
+  .dist-table .platform-cell { text-align: center; }
+
+  /* Checklist (growth tasks) */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .check-item:hover { background: rgba(255,255,255,0.03); }
+  .growth-check {
+    accent-color: var(--color-fleece-gold);
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  .check-text {
+    flex: 1;
+    font-size: 0.8rem;
+    color: var(--color-starlight);
+  }
+  .check-text.done {
+    text-decoration: line-through;
+    color: var(--color-slate);
+  }
+
+  /* E-E-A-T scorecard */
+  .eeat-score {
+    display: flex;
+    align-items: baseline;
+    gap: 0.15rem;
+    margin-bottom: 0.5rem;
+  }
+  .score-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--color-fleece-gold);
+  }
+  .score-slash {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-slate);
+  }
+  .score-total {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-slate);
+  }
+  .eeat-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+  .eeat-bar-fill {
+    height: 100%;
+    background: var(--color-fleece-gold);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+  .eeat-group { margin-bottom: 1rem; }
+  .eeat-cat {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-parchment);
+    margin-bottom: 0.4rem;
+  }
+  .eeat-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.35rem 0;
+  }
+  .eeat-icon {
+    font-size: 0.8rem;
+    width: 18px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .eeat-icon.pass { color: #86efac; }
+  .eeat-icon.fail { color: #ef4444; }
+  .eeat-label {
+    font-size: 0.8rem;
+    color: var(--color-starlight);
+  }
+  .eeat-notes {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-slate);
+    margin-left: 0.25rem;
+  }
+
+  /* Review bars */
+  .review-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 0.3rem;
+  }
+  .review-bar-fill {
+    height: 100%;
+    background: #86efac;
+    border-radius: 2px;
+  }
+
+  /* Velocity list */
+  .velocity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .velocity-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+  .velocity-date {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    white-space: nowrap;
+  }
+  .velocity-title {
+    flex: 1;
+    color: var(--color-parchment);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .velocity-words {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    white-space: nowrap;
+  }
+
+  /* Empty state */
+  .empty-state {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    padding: 1.5rem;
+    text-align: center;
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .stat-row { flex-wrap: wrap; }
+    .card-grid { grid-template-columns: 1fr; }
+    .section-nav { gap: 0.3rem; }
+  }
+</style>
+
+<script>
+  // Directory submissions
+  document.querySelectorAll('.btn-submit-dir').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const id = (btn as HTMLElement).dataset.id;
+      const res = await fetch(`/api/directory-submissions/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'submitted', submittedAt: new Date().toISOString().split('T')[0] })
+      });
+      if (res.ok) location.reload();
+      else alert('Update failed');
+    });
+  });
+
+  document.querySelectorAll('.btn-live-dir').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const id = (btn as HTMLElement).dataset.id;
+      const listingUrl = prompt('Enter listing URL (optional):');
+      const res = await fetch(`/api/directory-submissions/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'live', listingUrl: listingUrl || null })
+      });
+      if (res.ok) location.reload();
+      else alert('Update failed');
+    });
+  });
+
+  // Link building
+  document.querySelectorAll('.btn-copy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = (btn as HTMLElement).dataset.text || '';
+      navigator.clipboard.writeText(text).then(() => {
+        (btn as HTMLElement).textContent = 'Copied!';
+        setTimeout(() => { (btn as HTMLElement).textContent = 'Copy Draft'; }, 1500);
+      });
+    });
+  });
+
+  async function updateLink(id: string, status: string) {
+    const body: any = { status };
+    if (status === 'contacted') body.contactedAt = new Date().toISOString().split('T')[0];
+    if (status === 'won') body.wonAt = new Date().toISOString().split('T')[0];
+    const res = await fetch(`/api/link-building/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (res.ok) location.reload();
+    else alert('Update failed');
+  }
+
+  document.querySelectorAll('.btn-link-contacted').forEach(btn => {
+    btn.addEventListener('click', () => updateLink((btn as HTMLElement).dataset.id!, 'contacted'));
+  });
+  document.querySelectorAll('.btn-link-won').forEach(btn => {
+    btn.addEventListener('click', () => updateLink((btn as HTMLElement).dataset.id!, 'won'));
+  });
+  document.querySelectorAll('.btn-link-lost').forEach(btn => {
+    btn.addEventListener('click', () => updateLink((btn as HTMLElement).dataset.id!, 'lost'));
+  });
+  document.querySelectorAll('.btn-link-skip').forEach(btn => {
+    btn.addEventListener('click', () => updateLink((btn as HTMLElement).dataset.id!, 'skipped'));
+  });
+
+  // Growth tasks
+  document.querySelectorAll('.growth-check').forEach(cb => {
+    cb.addEventListener('change', async () => {
+      const id = (cb as HTMLInputElement).dataset.id;
+      const newStatus = (cb as HTMLInputElement).checked ? 'done' : 'open';
+      const res = await fetch(`/api/growth-tasks/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      if (res.ok) location.reload();
+      else alert('Update failed');
+    });
+  });
+
+  // Distribution toggle
+  document.querySelectorAll('.btn-dist-toggle').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const slug = (btn as HTMLElement).dataset.slug;
+      const platform = (btn as HTMLElement).dataset.platform;
+      const url = prompt(`Enter ${platform} URL for this post (optional):`);
+      const res = await fetch('/api/distribution-status', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug, platform, status: 'posted', url: url || null })
+      });
+      if (res.ok) location.reload();
+      else alert('Update failed');
+    });
+  });
+
+  // Review solicitation
+  document.querySelectorAll('.btn-review-contact').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = (btn as HTMLElement).dataset.id;
+      const res = await fetch(`/api/review-solicitation/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'contacted' })
+      });
+      if (res.ok) location.reload();
+      else alert('Update failed');
+    });
+  });
+
+  document.querySelectorAll('.btn-review-posted').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const id = (btn as HTMLElement).dataset.id;
+      const reviewUrl = prompt('Enter review URL:');
+      const res = await fetch(`/api/review-solicitation/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'review_posted', reviewPosted: true, reviewUrl })
+      });
+      if (res.ok) location.reload();
+      else alert('Update failed');
+    });
+  });
+</script>

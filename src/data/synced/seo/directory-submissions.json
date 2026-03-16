@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-16",
+  "items": [
+    { "id": "alternativeto", "name": "AlternativeTo", "category": "Comparison", "priority": "high", "status": "not_started", "submissionUrl": "https://alternativeto.net/submit/", "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "g2", "name": "G2", "category": "Review", "priority": "high", "status": "not_started", "submissionUrl": "https://www.g2.com/products/new", "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "capterra", "name": "Capterra", "category": "Review", "priority": "high", "status": "not_started", "submissionUrl": "https://www.capterra.com/vendors/sign-up", "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "producthunt", "name": "Product Hunt", "category": "Launch", "priority": "high", "status": "not_started", "submissionUrl": "https://www.producthunt.com/posts/new", "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "getapp", "name": "GetApp", "category": "Review", "priority": "medium", "status": "not_started", "submissionUrl": null, "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "softwareadvice", "name": "Software Advice", "category": "Review", "priority": "medium", "status": "not_started", "submissionUrl": null, "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "saashub", "name": "SaaSHub", "category": "Directory", "priority": "medium", "status": "not_started", "submissionUrl": "https://www.saashub.com/submit", "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "betalist", "name": "BetaList", "category": "Launch", "priority": "medium", "status": "not_started", "submissionUrl": "https://betalist.com/submit", "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "crunchbase", "name": "Crunchbase", "category": "Directory", "priority": "high", "status": "not_started", "submissionUrl": "https://www.crunchbase.com/", "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "stackshare", "name": "StackShare", "category": "Tech", "priority": "low", "status": "not_started", "submissionUrl": null, "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "slant", "name": "Slant", "category": "Comparison", "priority": "low", "status": "not_started", "submissionUrl": null, "listingUrl": null, "submittedAt": null, "notes": "" },
+    { "id": "trustpilot", "name": "Trustpilot", "category": "Review", "priority": "high", "status": "not_started", "submissionUrl": "https://business.trustpilot.com/", "listingUrl": null, "submittedAt": null, "notes": "" }
+  ]
+}
