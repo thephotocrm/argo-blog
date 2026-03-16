@@ -1,0 +1,104 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<Base
+  title="Blog — Argo Studio"
+  description="Practical guides, pricing strategies, and workflow tips for photographers who run their own business."
+>
+  <section class="blog-hero">
+    <div class="container">
+      <p class="overline">Resources for Photographers</p>
+      <h1>Blog</h1>
+      <p class="hero-sub">
+        Guides, strategies, and tools from photographers who have been where you are.
+      </p>
+    </div>
+  </section>
+
+  <section class="posts-grid">
+    <div class="container-wide">
+      {posts.length > 0 ? (
+        <div class="grid">
+          {posts.map((post) => (
+            <a href={`/blog/${post.id}`} class="post-card">
+              <p class="overline">{post.data.tags?.[0] || 'Photography Business'}</p>
+              <h3>{post.data.title}</h3>
+              <p class="post-desc">{post.data.description}</p>
+              <time datetime={post.data.date}>
+                {new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </time>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p>Content is on its way. Check back soon.</p>
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .blog-hero {
+    padding: 4rem 0 3rem;
+    text-align: center;
+  }
+  .blog-hero h1 {
+    margin-top: 0.5rem;
+  }
+  .hero-sub {
+    margin-top: 1rem;
+    color: var(--color-slate);
+    font-size: 1.1rem;
+  }
+  .posts-grid {
+    padding: 2rem 0 3rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .post-card {
+    display: block;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    color: var(--color-night);
+    transition: border-color 0.15s;
+  }
+  .post-card:hover {
+    border-color: var(--color-fleece-gold);
+    text-decoration: none;
+  }
+  .post-card h3 {
+    margin-top: 0.35rem;
+    font-size: 1.15rem;
+  }
+  .post-desc {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-slate);
+    line-height: 1.5;
+  }
+  .post-card time {
+    display: block;
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-slate);
+  }
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-slate);
+  }
+</style>
