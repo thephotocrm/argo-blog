@@ -57,165 +57,314 @@ const hasActions = pendingReviews > 0 || pendingOutbox > 0 || noOutreach > 0 || 
 ---
 
 <Dashboard title="Dashboard" activePage="overview">
-  <div class="dashboard-header">
-    <h1>Command Center</h1>
-    <p class="last-updated">Data as of {keywordData.lastUpdated}</p>
+  <!-- Page Title + Breadcrumb -->
+  <div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <nav class="breadcrumb">
+      <a href="/admin" class="breadcrumb-link">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">Dashboard</span>
+    </nav>
   </div>
 
-  <!-- Action Queue -->
-  <div class="action-bar">
-    {hasActions ? (
-      <>
-        {pendingReviews > 0 && <a href="/admin/content" class="action-badge gold">{pendingReviews} posts to review</a>}
-        {pendingOutbox > 0 && <a href="/admin/outreach" class="action-badge blue">{pendingOutbox} outreach drafts</a>}
-        {noOutreach > 0 && <a href="/admin/outreach#creators" class="action-badge green">{noOutreach} creators need outreach</a>}
-        {unvalidated > 0 && <a href="/admin/content#candidates" class="action-badge slate">{unvalidated} keyword candidates</a>}
-        {cronErrors > 0 && <span class="action-badge red">{cronErrors} cron errors</span>}
-        {dirToSubmit > 0 && <a href="/admin/strategy#directories" class="action-badge gold">{dirToSubmit} directories to submit</a>}
-        {linkOpps > 0 && <a href="/admin/strategy#link-building" class="action-badge blue">{linkOpps} link opportunities</a>}
-        {growthOpen > 0 && <a href="/admin/strategy#growth" class="action-badge slate">{growthOpen} growth tasks open</a>}
-        {needsCrossPost > 0 && <a href="/admin/strategy#distribution" class="action-badge green">{needsCrossPost} posts need cross-posting</a>}
-      </>
-    ) : (
-      <span class="action-badge all-clear">All clear</span>
-    )}
-  </div>
+  <!-- Top Stat Cards Row -->
+  <div class="stat-cards-row">
+    <!-- Card 1: Published Posts -->
+    <div class="w-stat-card">
+      <div class="w-stat-content">
+        <span class="w-stat-label">Published Posts</span>
+        <span class="w-stat-value">{publishedPosts}</span>
+        <span class="w-stat-sub">Blog articles</span>
+      </div>
+      <div class="w-stat-chart area-chart-green"></div>
+    </div>
 
-  <!-- Quick Stats -->
-  <StatsCards
-    gscTotals={gscData?.totals}
-    publishedPosts={publishedPosts}
-    totalKeywords={keywords.length}
-  />
-
-  <!-- Google Indexing + GSC Trends -->
-  <div class="two-col" style="margin-bottom: 1.5rem;">
-    <div class="indexing-card">
-      <h2 class="section-title">Google Indexing</h2>
+    <!-- Card 2: Google Indexing (donut) -->
+    <div class="w-stat-card">
+      <div class="w-stat-content">
+        <span class="w-stat-label">Google Indexing</span>
+        <span class="w-stat-value">{indexingStatus.total > 0 ? indexingStatus.indexed : '--'}<span class="w-stat-of">/{indexingStatus.total || '--'}</span></span>
+      </div>
       {indexingStatus.total > 0 ? (
-        <div class="indexing-body">
-          <div class="indexing-stat-row">
-            <div class="indexing-stat">
-              <span class="indexing-num green">{indexingStatus.indexed}</span>
-              <span class="indexing-label">Indexed</span>
-            </div>
-            <div class="indexing-stat">
-              <span class="indexing-num gold">{indexingStatus.crawled_not_indexed}</span>
-              <span class="indexing-label">Crawled</span>
-            </div>
-            <div class="indexing-stat">
-              <span class="indexing-num slate">{indexingStatus.discovered_not_indexed}</span>
-              <span class="indexing-label">Discovered</span>
-            </div>
-            <div class="indexing-stat">
-              <span class="indexing-num">{indexingStatus.total}</span>
-              <span class="indexing-label">Total</span>
-            </div>
+        <div class="donut-wrap">
+          <div
+            class="donut"
+            style={`background: conic-gradient(#3ac977 0% ${(indexingStatus.indexed / indexingStatus.total) * 100}%, #18a594 ${(indexingStatus.indexed / indexingStatus.total) * 100}% ${((indexingStatus.indexed + indexingStatus.crawled_not_indexed) / indexingStatus.total) * 100}%, #e6e6e6 ${((indexingStatus.indexed + indexingStatus.crawled_not_indexed) / indexingStatus.total) * 100}% 100%);`}
+          >
+            <div class="donut-hole"></div>
           </div>
-          <div class="indexing-bar">
-            <div class="bar-indexed" style={`width: ${(indexingStatus.indexed / indexingStatus.total) * 100}%`}></div>
-            <div class="bar-crawled" style={`width: ${(indexingStatus.crawled_not_indexed / indexingStatus.total) * 100}%`}></div>
+          <div class="donut-legend">
+            <span class="legend-dot" style="background:#3ac977"></span> Indexed
+            <span class="legend-dot" style="background:#18a594; margin-left:0.5rem"></span> Crawled
+            <span class="legend-dot" style="background:#e6e6e6; margin-left:0.5rem"></span> Discovered
           </div>
-          {indexingStatus.pages.filter((p: any) => p.verdict !== 'PASS').length > 0 && (
-            <details class="not-indexed-list">
-              <summary>{indexingStatus.total - indexingStatus.indexed} not yet indexed</summary>
-              <ul>
-                {indexingStatus.pages.filter((p: any) => p.verdict !== 'PASS').map((p: any) => (
-                  <li>
-                    <span class="page-url">{p.url.replace('https://blog.argostudio.co', '')}</span>
-                    <span class="page-state">{p.coverageState}</span>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          )}
-          {indexingStatus.date && <div class="card-date">Updated {indexingStatus.date}</div>}
         </div>
       ) : (
-        <div class="no-data">No indexing data yet — run gsc-indexing-check.sh</div>
+        <div class="w-stat-chart area-chart-muted"></div>
       )}
     </div>
 
-    <div class="gsc-trends-card">
-      <h2 class="section-title">GSC Trends</h2>
-      {gscHistory.dailyTotals && gscHistory.dailyTotals.length > 0 ? (
-        <div class="trends-body">
+    <!-- Card 3: GSC Clicks -->
+    <div class="w-stat-card">
+      <div class="w-stat-content">
+        <span class="w-stat-label">GSC Clicks</span>
+        <span class="w-stat-value">{gscData?.totals ? gscData.totals.clicks.toLocaleString() : '--'}</span>
+        {gscHistory.dailyTotals && gscHistory.dailyTotals.length > 1 && (() => {
+          const totals = gscHistory.dailyTotals;
+          const latest = totals[totals.length - 1];
+          const prev = totals[totals.length - 2];
+          const delta = latest.clicks - prev.clicks;
+          return <span class:list={['w-stat-delta', { 'delta-up': delta > 0, 'delta-down': delta < 0 }]}>{delta > 0 ? '+' : ''}{delta} vs prev</span>;
+        })()}
+      </div>
+      <div class="w-stat-chart area-chart-blue"></div>
+    </div>
+
+    <!-- Card 4: Tasks Pending -->
+    <div class="w-stat-card">
+      <div class="w-stat-content">
+        <span class="w-stat-label">Tasks Pending</span>
+        {(() => {
+          const totalActions = pendingReviews + pendingOutbox + noOutreach + unvalidated + dirToSubmit + linkOpps + growthOpen + needsCrossPost + cronErrors;
+          return (
+            <>
+              <span class="w-stat-value">{totalActions}</span>
+              <div class="w-task-progress">
+                <div class="task-progress-bar">
+                  <div class="task-progress-fill" style={`width: ${totalActions > 0 ? Math.max(5, 100 - (totalActions / (totalActions + 5)) * 100) : 100}%`}></div>
+                </div>
+                <span class="task-progress-text">{totalActions === 0 ? 'All clear' : `${totalActions} action${totalActions !== 1 ? 's' : ''} needed`}</span>
+              </div>
+            </>
+          );
+        })()}
+      </div>
+      <div class="w-stat-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9,11 12,14 22,4" /><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- GSC Performance Overview (full width) -->
+  <div class="card gsc-overview-card">
+    <div class="card-header">
+      <h2 class="card-title">GSC Performance Overview</h2>
+      <div class="card-tabs">
+        <button class="card-tab active">Week</button>
+        <button class="card-tab">Month</button>
+        <button class="card-tab">Year</button>
+      </div>
+    </div>
+    {gscHistory.dailyTotals && gscHistory.dailyTotals.length > 0 ? (
+      <div class="gsc-overview-body">
+        <div class="sparkline-lg">
+          {gscHistory.dailyTotals.map((d: any) => {
+            const max = Math.max(...gscHistory.dailyTotals.map((t: any) => t.impressions), 1);
+            const height = Math.max((d.impressions / max) * 100, 3);
+            return (
+              <div class="spark-col" title={`${d.date}: ${d.impressions} imp, ${d.clicks} clicks`}>
+                <div class="spark-bar-lg" style={`height: ${height}%`}></div>
+                <span class="spark-label">{d.date?.slice(5)}</span>
+              </div>
+            );
+          })}
+        </div>
+        <div class="gsc-bottom-stats">
           {(() => {
             const totals = gscHistory.dailyTotals;
             const latest = totals[totals.length - 1];
             const prev = totals.length > 1 ? totals[totals.length - 2] : null;
             const clickDelta = prev ? latest.clicks - prev.clicks : 0;
-            const impDelta = prev ? latest.impressions - prev.impressions : 0;
             return (
-              <div class="trend-stats">
-                <div class="trend-stat">
-                  <span class="trend-num">{latest.clicks}</span>
-                  <span class="trend-label">Clicks</span>
-                  {prev && <span class:list={['trend-delta', { 'delta-up': clickDelta > 0, 'delta-down': clickDelta < 0 }]}>{clickDelta > 0 ? '+' : ''}{clickDelta}</span>}
+              <>
+                <div class="gsc-bottom-stat">
+                  <span class="gsc-b-label">Clicks</span>
+                  <span class="gsc-b-value">{latest.clicks}</span>
                 </div>
-                <div class="trend-stat">
-                  <span class="trend-num">{latest.impressions}</span>
-                  <span class="trend-label">Impressions</span>
-                  {prev && <span class:list={['trend-delta', { 'delta-up': impDelta > 0, 'delta-down': impDelta < 0 }]}>{impDelta > 0 ? '+' : ''}{impDelta}</span>}
+                <div class="gsc-bottom-stat">
+                  <span class="gsc-b-label">Impressions</span>
+                  <span class="gsc-b-value">{latest.impressions}</span>
                 </div>
-                <div class="trend-stat">
-                  <span class="trend-num">{latest.avgPosition || '—'}</span>
-                  <span class="trend-label">Avg Position</span>
+                <div class="gsc-bottom-stat">
+                  <span class="gsc-b-label">Avg Position</span>
+                  <span class="gsc-b-value">{latest.avgPosition || '--'}</span>
                 </div>
-              </div>
+                <div class="gsc-bottom-stat">
+                  <span class="gsc-b-label">Click Delta</span>
+                  <span class:list={['gsc-b-value', { 'delta-up': clickDelta > 0, 'delta-down': clickDelta < 0 }]}>{clickDelta > 0 ? '+' : ''}{clickDelta}</span>
+                </div>
+              </>
             );
           })()}
-          <div class="sparkline">
-            {gscHistory.dailyTotals.map((d: any, i: number) => {
-              const max = Math.max(...gscHistory.dailyTotals.map((t: any) => t.impressions), 1);
-              const height = Math.max((d.impressions / max) * 32, 2);
-              return <div class="spark-bar" style={`height: ${height}px`} title={`${d.date}: ${d.impressions} imp, ${d.clicks} clicks`}></div>;
-            })}
-          </div>
-          {gscHistory.lastUpdated && <div class="card-date">Updated {gscHistory.lastUpdated}</div>}
         </div>
-      ) : (
-        <div class="no-data">No GSC history yet — run gsc-daily-snapshot.sh</div>
-      )}
-    </div>
+        {gscHistory.lastUpdated && <div class="card-date">Updated {gscHistory.lastUpdated}</div>}
+      </div>
+    ) : (
+      <div class="no-data">No GSC history yet -- run gsc-daily-snapshot.sh</div>
+    )}
   </div>
 
-  <!-- Creator Pipeline Funnel -->
-  <div class="pipeline-funnel">
-    <h2 class="section-title">Creator Pipeline</h2>
-    <div class="funnel-stages">
-      {(() => {
-        const c = creators.creators || [];
-        const stages = [
-          { name: 'Discovered', count: c.length },
-          { name: 'Qualified', count: c.filter((x: any) => x.outreachStatus === 'qualified' || x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length },
-          { name: 'Outreach Sent', count: c.filter((x: any) => x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length },
-          { name: 'Converted', count: c.filter((x: any) => x.outreachStatus === 'converted').length },
-        ];
-        return stages.map((s) => (
-          <div class="funnel-stage">
-            <div class="funnel-count">{s.count}</div>
-            <div class="funnel-label">{s.name}</div>
+  <!-- Two Column: Action Queue + Creator Pipeline -->
+  <div class="two-col">
+    <!-- Action Queue -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Action Queue</h2>
+        <span class="card-count">{pendingReviews + pendingOutbox + noOutreach + unvalidated + cronErrors + dirToSubmit + linkOpps + growthOpen + needsCrossPost} items</span>
+      </div>
+      <div class="action-list">
+        {hasActions ? (
+          <>
+            {pendingReviews > 0 && (
+              <div class="action-item border-gold">
+                <div class="action-text">
+                  <span class="action-name">Posts to review</span>
+                  <span class="action-count-badge">{pendingReviews}</span>
+                </div>
+                <a href="/admin/content" class="action-link-badge badge-gold">Content</a>
+              </div>
+            )}
+            {pendingOutbox > 0 && (
+              <div class="action-item border-blue">
+                <div class="action-text">
+                  <span class="action-name">Outreach drafts</span>
+                  <span class="action-count-badge">{pendingOutbox}</span>
+                </div>
+                <a href="/admin/outreach" class="action-link-badge badge-blue">Outreach</a>
+              </div>
+            )}
+            {noOutreach > 0 && (
+              <div class="action-item border-green">
+                <div class="action-text">
+                  <span class="action-name">Creators need outreach</span>
+                  <span class="action-count-badge">{noOutreach}</span>
+                </div>
+                <a href="/admin/outreach#creators" class="action-link-badge badge-green">Outreach</a>
+              </div>
+            )}
+            {unvalidated > 0 && (
+              <div class="action-item border-slate">
+                <div class="action-text">
+                  <span class="action-name">Keyword candidates</span>
+                  <span class="action-count-badge">{unvalidated}</span>
+                </div>
+                <a href="/admin/content#candidates" class="action-link-badge badge-slate">Content</a>
+              </div>
+            )}
+            {cronErrors > 0 && (
+              <div class="action-item border-red">
+                <div class="action-text">
+                  <span class="action-name">Cron errors</span>
+                  <span class="action-count-badge">{cronErrors}</span>
+                </div>
+                <span class="action-link-badge badge-red">System</span>
+              </div>
+            )}
+            {dirToSubmit > 0 && (
+              <div class="action-item border-gold">
+                <div class="action-text">
+                  <span class="action-name">Directories to submit</span>
+                  <span class="action-count-badge">{dirToSubmit}</span>
+                </div>
+                <a href="/admin/strategy#directories" class="action-link-badge badge-gold">Strategy</a>
+              </div>
+            )}
+            {linkOpps > 0 && (
+              <div class="action-item border-blue">
+                <div class="action-text">
+                  <span class="action-name">Link opportunities</span>
+                  <span class="action-count-badge">{linkOpps}</span>
+                </div>
+                <a href="/admin/strategy#link-building" class="action-link-badge badge-blue">Strategy</a>
+              </div>
+            )}
+            {growthOpen > 0 && (
+              <div class="action-item border-slate">
+                <div class="action-text">
+                  <span class="action-name">Growth tasks open</span>
+                  <span class="action-count-badge">{growthOpen}</span>
+                </div>
+                <a href="/admin/strategy#growth" class="action-link-badge badge-slate">Strategy</a>
+              </div>
+            )}
+            {needsCrossPost > 0 && (
+              <div class="action-item border-green">
+                <div class="action-text">
+                  <span class="action-name">Posts need cross-posting</span>
+                  <span class="action-count-badge">{needsCrossPost}</span>
+                </div>
+                <a href="/admin/strategy#distribution" class="action-link-badge badge-green">Strategy</a>
+              </div>
+            )}
+          </>
+        ) : (
+          <div class="action-item border-green">
+            <div class="action-text">
+              <span class="action-name" style="color: var(--color-success)">All clear -- no actions needed</span>
+            </div>
           </div>
-        ));
-      })()}
+        )}
+      </div>
+    </div>
+
+    <!-- Creator Pipeline -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Creator Pipeline</h2>
+      </div>
+      <div class="pipeline-body">
+        {(() => {
+          const c = creators.creators || [];
+          const stages = [
+            { name: 'Discovered', count: c.length, color: '#6c757d' },
+            { name: 'Qualified', count: c.filter((x: any) => x.outreachStatus === 'qualified' || x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length, color: '#0d99ff' },
+            { name: 'Outreach Sent', count: c.filter((x: any) => x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length, color: '#18a594' },
+            { name: 'Converted', count: c.filter((x: any) => x.outreachStatus === 'converted').length, color: '#3ac977' },
+          ];
+          const maxCount = Math.max(...stages.map(s => s.count), 1);
+          return (
+            <div class="funnel-bars">
+              {stages.map((s) => (
+                <div class="funnel-row">
+                  <div class="funnel-row-label">
+                    <span class="funnel-name">{s.name}</span>
+                    <span class="funnel-num">{s.count}</span>
+                  </div>
+                  <div class="funnel-bar-track">
+                    <div class="funnel-bar-fill" style={`width: ${Math.max((s.count / maxCount) * 100, 4)}%; background: ${s.color};`}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+      </div>
     </div>
   </div>
 
-  <!-- Cron Jobs -->
-  <div class="cron-grid">
-    <h2 class="section-title">Cron Jobs</h2>
+  <!-- Cron Jobs Grid -->
+  <div class="card cron-section">
+    <div class="card-header">
+      <h2 class="card-title">Cron Jobs</h2>
+      <span class="card-count">{cronJobs.length} jobs{cronErrors > 0 ? ` / ${cronErrors} errors` : ''}</span>
+    </div>
     <div class="cron-cards">
       {cronJobs.map((job: any) => {
         const st = job.state || {};
         const isOk = st.lastRunStatus === 'ok';
         const isErr = st.lastRunStatus === 'error';
         const lastRun = st.lastRunAtMs ? new Date(st.lastRunAtMs).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Never';
-        const nextRun = st.nextRunAtMs ? new Date(st.nextRunAtMs).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+        const nextRun = st.nextRunAtMs ? new Date(st.nextRunAtMs).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '--';
         return (
           <div class:list={['cron-card', { 'cron-ok': isOk, 'cron-err': isErr }]}>
-            <div class="cron-name">{job.name}</div>
-            <div class="cron-status">{isOk ? 'OK' : isErr ? 'ERROR' : st.lastRunStatus || 'unknown'}</div>
+            <div class="cron-top">
+              <div class="cron-name">{job.name}</div>
+              <span class:list={['cron-status-badge', { 'status-ok': isOk, 'status-err': isErr }]}>
+                {isOk ? 'OK' : isErr ? 'ERROR' : st.lastRunStatus || 'unknown'}
+              </span>
+            </div>
             <div class="cron-meta">Last: {lastRun}</div>
             <div class="cron-meta">Next: {nextRun}</div>
           </div>
@@ -223,245 +372,479 @@ const hasActions = pendingReviews > 0 || pendingOutbox > 0 || noOutreach > 0 || 
       })}
     </div>
   </div>
+
+  <!-- Data timestamp -->
+  <div class="page-footer">
+    Data as of {keywordData.lastUpdated}
+  </div>
 </Dashboard>
 
 <style>
-  .dashboard-header { margin-bottom: 1.5rem; }
-  .dashboard-header h1 {
-    font-family: var(--font-display);
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--color-parchment);
-    margin: 0;
-  }
-  .last-updated {
-    font-family: var(--font-body);
-    font-size: 0.7rem;
-    color: var(--color-slate);
-    margin-top: 0.25rem;
-  }
-  .action-bar {
+  /* Page Header */
+  .page-header {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 1.5rem;
   }
-  .action-badge {
-    font-family: var(--font-body);
-    font-size: 0.7rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 0.375rem;
-    text-decoration: none;
-  }
-  .action-badge.gold { background: rgba(24,165,148,0.1); color: var(--color-fleece-gold); }
-  .action-badge.blue { background: rgba(13,153,255,0.1); color: #0d99ff; }
-  .action-badge.green { background: rgba(58,201,119,0.1); color: #2a9d5c; }
-  .action-badge.slate { background: rgba(108,117,125,0.1); color: var(--color-slate); }
-  .action-badge.red { background: rgba(255,94,94,0.1); color: #d94444; }
-  .action-badge.all-clear { background: rgba(58,201,119,0.08); color: #2a9d5c; }
-  .section-title {
+  .page-title {
     font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--color-parchment);
-    margin-bottom: 0.75rem;
   }
-  .cron-grid { margin-bottom: 2rem; }
-  .cron-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.5rem;
-  }
-  .cron-card {
-    background: var(--color-deep-water);
-    border: 1px solid var(--color-border);
-    border-radius: 0.375rem;
-    padding: 0.6rem 0.75rem;
-    box-shadow: 0 1px 3px var(--color-card-shadow);
-  }
-  .cron-card.cron-ok { border-left: 3px solid #2a9d5c; }
-  .cron-card.cron-err { border-left: 3px solid var(--color-danger); }
-  .cron-name {
-    font-family: var(--font-body);
-    font-size: 0.65rem;
-    color: var(--color-parchment);
-    margin-bottom: 0.25rem;
-    word-break: break-all;
-  }
-  .cron-status {
-    font-family: var(--font-body);
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    margin-bottom: 0.25rem;
-  }
-  .cron-ok .cron-status { color: #2a9d5c; }
-  .cron-err .cron-status { color: var(--color-danger); }
-  .cron-meta {
-    font-size: 0.6rem;
+  .breadcrumb {
+    font-size: 0.75rem;
     color: var(--color-slate);
   }
-  .pipeline-funnel { margin-bottom: 2rem; }
-  .funnel-stages {
+  .breadcrumb-link {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .breadcrumb-link:hover { text-decoration: underline; }
+  .breadcrumb-sep { margin: 0 0.35rem; color: var(--color-slate); }
+  .breadcrumb-current { color: var(--color-slate); }
+
+  /* Card Base */
+  .card {
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
+    border: 0;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .card-header {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
   }
-  .funnel-stage {
-    flex: 1;
-    background: var(--color-deep-water);
-    border: 1px solid var(--color-border);
-    border-radius: 0.375rem;
-    padding: 1rem;
-    text-align: center;
-    box-shadow: 0 1px 3px var(--color-card-shadow);
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-parchment);
   }
-  .funnel-count {
+  .card-count {
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    background: var(--color-frost);
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+  }
+  .card-date {
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    margin-top: 0.75rem;
+  }
+  .no-data {
+    font-size: 0.75rem;
+    color: var(--color-slate);
+    padding: 1.5rem 0;
+  }
+
+  /* Top Stat Cards Row */
+  .stat-cards-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .w-stat-card {
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .w-stat-content {
+    position: relative;
+    z-index: 1;
+  }
+  .w-stat-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-slate);
+    margin-bottom: 0.25rem;
+  }
+  .w-stat-value {
+    display: block;
     font-family: var(--font-display);
     font-size: 1.75rem;
-    color: var(--color-fleece-gold);
+    font-weight: 700;
+    color: var(--color-parchment);
+    line-height: 1.2;
   }
-  .funnel-label {
-    font-family: var(--font-body);
+  .w-stat-of {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-slate);
+  }
+  .w-stat-sub {
+    display: block;
     font-size: 0.65rem;
     color: var(--color-slate);
-    text-transform: uppercase;
+    margin-top: 0.15rem;
   }
+  .w-stat-delta {
+    display: inline-block;
+    font-size: 0.7rem;
+    margin-top: 0.25rem;
+    color: var(--color-slate);
+  }
+  .w-stat-icon {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    opacity: 0.5;
+  }
+
+  /* Mini area chart placeholders */
+  .w-stat-chart {
+    height: 40px;
+    border-radius: 0.375rem;
+  }
+  .area-chart-green {
+    background: linear-gradient(180deg, rgba(58,201,119,0.2) 0%, rgba(58,201,119,0.02) 100%);
+    border-bottom: 2px solid rgba(58,201,119,0.5);
+  }
+  .area-chart-blue {
+    background: linear-gradient(180deg, rgba(13,153,255,0.2) 0%, rgba(13,153,255,0.02) 100%);
+    border-bottom: 2px solid rgba(13,153,255,0.5);
+  }
+  .area-chart-muted {
+    background: linear-gradient(180deg, rgba(108,117,125,0.1) 0%, rgba(108,117,125,0.02) 100%);
+    border-bottom: 2px solid rgba(108,117,125,0.2);
+  }
+
+  /* Donut chart */
+  .donut-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .donut {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .donut-hole {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .donut-legend {
+    display: flex;
+    align-items: center;
+    font-size: 0.55rem;
+    color: var(--color-slate);
+    gap: 0.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  /* Delta colors */
+  .delta-up { color: var(--color-success) !important; }
+  .delta-down { color: var(--color-danger) !important; }
+
+  /* Task progress */
+  .w-task-progress { margin-top: 0.5rem; }
+  .task-progress-bar {
+    height: 6px;
+    background: var(--color-border-light);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.3rem;
+  }
+  .task-progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+  .task-progress-text {
+    font-size: 0.6rem;
+    color: var(--color-slate);
+  }
+
+  /* GSC Overview Card */
+  .gsc-overview-card {
+    margin-bottom: 1.5rem;
+  }
+  .card-tabs {
+    display: flex;
+    gap: 0;
+    background: var(--color-frost);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  .card-tab {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.35rem 0.85rem;
+    border: none;
+    background: transparent;
+    color: var(--color-slate);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .card-tab.active {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 0.5rem;
+  }
+  .sparkline-lg {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 120px;
+    padding: 0.5rem 0;
+  }
+  .spark-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .spark-bar-lg {
+    width: 100%;
+    max-width: 24px;
+    background: linear-gradient(180deg, var(--primary) 0%, rgba(24,165,148,0.3) 100%);
+    border-radius: 3px 3px 0 0;
+    min-height: 3px;
+    transition: height 0.2s;
+  }
+  .spark-col:hover .spark-bar-lg {
+    background: var(--primary);
+  }
+  .spark-label {
+    font-size: 0.5rem;
+    color: var(--color-slate);
+    margin-top: 0.3rem;
+    white-space: nowrap;
+  }
+  .gsc-bottom-stats {
+    display: flex;
+    gap: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border-light);
+    margin-top: 0.75rem;
+  }
+  .gsc-bottom-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .gsc-b-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+  }
+  .gsc-b-value {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-parchment);
+  }
+
+  /* Two Column Layout */
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+    margin-bottom: 1.5rem;
   }
-  /* Indexing card */
-  .indexing-card, .gsc-trends-card {
-    background: var(--color-deep-water);
-    border: 1px solid var(--color-border);
-    border-radius: 0.375rem;
-    padding: 1rem 1.25rem;
-    box-shadow: 0 1px 3px var(--color-card-shadow);
-  }
-  .indexing-body, .trends-body { margin-top: 0.5rem; }
-  .indexing-stat-row {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
-  }
-  .indexing-stat {
+  .two-col > .card { margin-bottom: 0; }
+
+  /* Action Queue */
+  .action-list {
     display: flex;
     flex-direction: column;
+    gap: 0;
+  }
+  .action-item {
+    display: flex;
     align-items: center;
-    flex: 1;
-  }
-  .indexing-num {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    color: var(--color-parchment);
-  }
-  .indexing-num.green { color: #2a9d5c; }
-  .indexing-num.gold { color: var(--color-fleece-gold); }
-  .indexing-num.slate { color: var(--color-slate); }
-  .indexing-label {
-    font-family: var(--font-body);
-    font-size: 0.6rem;
-    color: var(--color-slate);
-    text-transform: uppercase;
-  }
-  .indexing-bar {
-    height: 6px;
-    background: var(--color-border-light);
-    border-radius: 3px;
-    display: flex;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-  }
-  .bar-indexed { background: #2a9d5c; }
-  .bar-crawled { background: var(--color-fleece-gold); }
-  .not-indexed-list {
-    font-family: var(--font-body);
-    font-size: 0.65rem;
-    color: var(--color-slate);
-  }
-  .not-indexed-list summary {
-    cursor: pointer;
-    margin-bottom: 0.5rem;
-  }
-  .not-indexed-list ul {
-    list-style: none;
-    padding: 0;
-    max-height: 150px;
-    overflow-y: auto;
-  }
-  .not-indexed-list li {
-    display: flex;
     justify-content: space-between;
-    padding: 0.2rem 0;
+    padding: 0.7rem 0.75rem;
+    border-left: 3px solid transparent;
     border-bottom: 1px solid var(--color-border-light);
+    transition: background 0.1s;
   }
-  .page-url {
-    color: var(--color-parchment);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 60%;
-  }
-  .page-state { color: var(--color-slate); }
-
-  /* GSC trends card */
-  .trend-stats {
+  .action-item:last-child { border-bottom: 0; }
+  .action-item:hover { background: var(--color-frost); }
+  .action-item.border-gold { border-left-color: var(--primary); }
+  .action-item.border-blue { border-left-color: var(--color-compass-blue); }
+  .action-item.border-green { border-left-color: var(--color-success); }
+  .action-item.border-slate { border-left-color: var(--color-slate); }
+  .action-item.border-red { border-left-color: var(--color-danger); }
+  .action-text {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
+    align-items: center;
+    gap: 0.5rem;
   }
-  .trend-stat {
+  .action-name {
+    font-size: 0.8rem;
+    color: var(--color-parchment);
+  }
+  .action-count-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    background: var(--color-frost);
+    color: var(--color-parchment);
+    padding: 0.1rem 0.45rem;
+    border-radius: 1rem;
+    min-width: 20px;
+    text-align: center;
+  }
+  .action-link-badge {
+    font-size: 0.6rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .badge-gold { background: rgba(24,165,148,0.1); color: var(--primary); }
+  .badge-blue { background: rgba(13,153,255,0.1); color: var(--color-compass-blue); }
+  .badge-green { background: rgba(58,201,119,0.1); color: #2a9d5c; }
+  .badge-slate { background: rgba(108,117,125,0.1); color: var(--color-slate); }
+  .badge-red { background: rgba(255,94,94,0.1); color: var(--color-danger); }
+
+  /* Creator Pipeline */
+  .pipeline-body {
+    padding: 0.25rem 0;
+  }
+  .funnel-bars {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    flex: 1;
+    gap: 1rem;
   }
-  .trend-num {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
+  .funnel-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .funnel-row-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .funnel-name {
+    font-size: 0.75rem;
+    font-weight: 500;
     color: var(--color-parchment);
   }
-  .trend-label {
-    font-family: var(--font-body);
-    font-size: 0.6rem;
-    color: var(--color-slate);
-    text-transform: uppercase;
+  .funnel-num {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-parchment);
   }
-  .trend-delta {
-    font-family: var(--font-body);
-    font-size: 0.65rem;
-    color: var(--color-slate);
+  .funnel-bar-track {
+    height: 8px;
+    background: var(--color-border-light);
+    border-radius: 4px;
+    overflow: hidden;
   }
-  .delta-up { color: #2a9d5c; }
-  .delta-down { color: var(--color-danger); }
-  .sparkline {
-    display: flex;
-    align-items: flex-end;
-    gap: 2px;
-    height: 36px;
-    margin-bottom: 0.5rem;
-  }
-  .spark-bar {
-    flex: 1;
-    background: var(--color-compass-blue);
-    border-radius: 1px;
-    min-width: 3px;
-  }
-  .card-date {
-    font-family: var(--font-body);
-    font-size: 0.6rem;
-    color: var(--color-slate);
-    margin-top: 0.5rem;
-  }
-  .no-data {
-    font-family: var(--font-body);
-    font-size: 0.7rem;
-    color: var(--color-slate);
-    padding: 1rem 0;
+  .funnel-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
   }
 
+  /* Cron Jobs */
+  .cron-section { margin-bottom: 1.5rem; }
+  .cron-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.75rem;
+  }
+  .cron-card {
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--color-border);
+    transition: box-shadow 0.15s;
+  }
+  .cron-card:hover { box-shadow: 0 2px 8px rgba(82,63,105,0.08); }
+  .cron-card.cron-ok { border-left-color: var(--color-success); }
+  .cron-card.cron-err { border-left-color: var(--color-danger); }
+  .cron-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+  }
+  .cron-name {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--color-parchment);
+    word-break: break-all;
+    flex: 1;
+    margin-right: 0.5rem;
+  }
+  .cron-status-badge {
+    font-size: 0.55rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.45rem;
+    border-radius: 1rem;
+    white-space: nowrap;
+    background: var(--color-frost);
+    color: var(--color-slate);
+  }
+  .cron-status-badge.status-ok {
+    background: rgba(58,201,119,0.1);
+    color: #2a9d5c;
+  }
+  .cron-status-badge.status-err {
+    background: rgba(255,94,94,0.1);
+    color: var(--color-danger);
+  }
+  .cron-meta {
+    font-size: 0.6rem;
+    color: var(--color-slate);
+    line-height: 1.6;
+  }
+
+  /* Page footer */
+  .page-footer {
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    padding: 1rem 0 0.5rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 1200px) {
+    .stat-cards-row { grid-template-columns: repeat(2, 1fr); }
+  }
   @media (max-width: 900px) {
     .two-col { grid-template-columns: 1fr; }
-    .funnel-stages { flex-wrap: wrap; }
+    .stat-cards-row { grid-template-columns: 1fr; }
+    .gsc-bottom-stats { flex-wrap: wrap; gap: 1rem; }
   }
 </style>
