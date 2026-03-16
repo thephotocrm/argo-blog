@@ -8,11 +8,15 @@ const { title, activePage = 'overview' } = Astro.props;
 
 const tabs = [
   { id: 'overview', label: 'Overview', href: '/admin' },
-  { id: 'rankings', label: 'Rankings', href: '/admin/rankings' },
   { id: 'content', label: 'Content', href: '/admin/content' },
+  { id: 'authority', label: 'Authority', href: '/admin/authority' },
+  { id: 'creators', label: 'Creators', href: '/admin/creators' },
+  { id: 'rankings', label: 'Rankings', href: '/admin/rankings' },
+  { id: 'seo', label: 'SEO Intel', href: '/admin/seo' },
   { id: 'distribution', label: 'Distribution', href: '/admin/distribution' },
   { id: 'technical', label: 'Technical', href: '/admin/technical' },
   { id: 'competitors', label: 'Competitors', href: '/admin/competitors' },
+  { id: 'reports', label: 'Reports', href: '/admin/reports' },
   { id: 'system', label: 'System', href: '/admin/system' },
 ];
 ---
@@ -133,11 +137,6 @@ const tabs = [
         padding: 0.3rem 0.75rem;
         border-radius: 3px;
       }
-      .admin-main {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem 1.5rem;
-      }
       .admin-tabs {
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         background: var(--color-deep-water);
@@ -169,6 +168,11 @@ const tabs = [
       .tab.active {
         color: var(--color-fleece-gold);
         border-bottom-color: var(--color-fleece-gold);
+      }
+      .admin-main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
       }
     </style>
   </body>

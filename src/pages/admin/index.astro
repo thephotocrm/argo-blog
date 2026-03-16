@@ -10,6 +10,8 @@ import RankingTable from '../../components/admin/RankingTable.astro';
 import TrafficChart from '../../components/admin/TrafficChart.astro';
 import KeywordTable from '../../components/admin/KeywordTable.astro';
 
+import { getContentQueue, getAuthorityOutbox, getCreators, getCronJobs, getKeywordResearch, getKeywordCandidates } from '../../lib/data';
+
 import keywordData from '../../data/seo/keyword-research.json';
 import contentQueue from '../../data/seo/content-queue.json';
 
@@ -24,6 +26,20 @@ import siData from '../../data/seo/dashboard/self-improvement.json';
 import { getCollection } from 'astro:content';
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const publishedPosts = allPosts.length;
+
+// Marketing pipeline data
+const liveQueue = getContentQueue();
+const outbox = getAuthorityOutbox();
+const creators = getCreators();
+const cronData = getCronJobs();
+const candidates = getKeywordCandidates();
+
+const pendingReviews = (liveQueue.items || []).filter((i: any) => i.status === 'pending_review').length;
+const pendingOutbox = (outbox.items || []).filter((i: any) => i.status === 'pending_review').length;
+const noOutreach = (creators.creators || []).filter((c: any) => c.outreachStatus === 'qualified' && c.followUpCount === 0).length;
+const unvalidated = (candidates.candidates || []).filter((c: any) => c.decision === null).length;
+const cronJobs = cronData.jobs || [];
+const cronErrors = cronJobs.filter((j: any) => j.state?.lastRunStatus === 'error').length;
 
 // Keyword summary
 const keywords = keywordData.keywords;
@@ -74,8 +90,60 @@ const systemHealth = siData?.data?.systemHealthScore ?? null;
 
 <Dashboard title="Dashboard" activePage="overview">
   <div class="dashboard-header">
-    <h1>SEO Dashboard</h1>
+    <h1>Command Center</h1>
     <p class="last-updated">Data as of {keywordData.lastUpdated}</p>
+  </div>
+
+  {(pendingReviews > 0 || pendingOutbox > 0 || noOutreach > 0 || unvalidated > 0) && (
+    <div class="action-bar">
+      {pendingReviews > 0 && <a href="/admin/content" class="action-badge gold">{pendingReviews} posts to review</a>}
+      {pendingOutbox > 0 && <a href="/admin/authority" class="action-badge blue">{pendingOutbox} outbox drafts</a>}
+      {noOutreach > 0 && <a href="/admin/creators" class="action-badge green">{noOutreach} creators need outreach</a>}
+      {unvalidated > 0 && <a href="/admin/seo" class="action-badge slate">{unvalidated} keyword candidates</a>}
+      {cronErrors > 0 && <span class="action-badge red">{cronErrors} cron errors</span>}
+    </div>
+  )}
+
+  <div class="cron-grid">
+    <h2 class="section-title">Cron Jobs</h2>
+    <div class="cron-cards">
+      {cronJobs.map((job: any) => {
+        const st = job.state || {};
+        const isOk = st.lastRunStatus === 'ok';
+        const isErr = st.lastRunStatus === 'error';
+        const lastRun = st.lastRunAtMs ? new Date(st.lastRunAtMs).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Never';
+        const nextRun = st.nextRunAtMs ? new Date(st.nextRunAtMs).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+        return (
+          <div class:list={['cron-card', { 'cron-ok': isOk, 'cron-err': isErr }]}>
+            <div class="cron-name">{job.name}</div>
+            <div class="cron-status">{isOk ? 'OK' : isErr ? 'ERROR' : st.lastRunStatus || 'unknown'}</div>
+            <div class="cron-meta">Last: {lastRun}</div>
+            <div class="cron-meta">Next: {nextRun}</div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  <div class="pipeline-funnel">
+    <h2 class="section-title">Creator Pipeline</h2>
+    <div class="funnel-stages">
+      {(() => {
+        const c = creators.creators || [];
+        const stages = [
+          { name: 'Discovered', count: c.length },
+          { name: 'Qualified', count: c.filter((x: any) => x.outreachStatus === 'qualified' || x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length },
+          { name: 'Outreach Sent', count: c.filter((x: any) => x.outreachStatus === 'outreach_sent' || x.outreachStatus === 'converted').length },
+          { name: 'Converted', count: c.filter((x: any) => x.outreachStatus === 'converted').length },
+        ];
+        return stages.map((s) => (
+          <div class="funnel-stage">
+            <div class="funnel-count">{s.count}</div>
+            <div class="funnel-label">{s.name}</div>
+          </div>
+        ));
+      })()}
+    </div>
   </div>
 
   <StatsCards
@@ -114,9 +182,7 @@ const systemHealth = siData?.data?.systemHealthScore ?? null;
 </Dashboard>
 
 <style>
-  .dashboard-header {
-    margin-bottom: 1.5rem;
-  }
+  .dashboard-header { margin-bottom: 1.5rem; }
   .dashboard-header h1 {
     font-family: var(--font-display);
     font-size: 1.75rem;
@@ -130,6 +196,90 @@ const systemHealth = siData?.data?.systemHealthScore ?? null;
     color: var(--color-slate);
     margin-top: 0.25rem;
   }
+  .action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .action-badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 3px;
+    text-decoration: none;
+  }
+  .action-badge.gold { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
+  .action-badge.blue { background: rgba(74,111,165,0.15); color: var(--color-compass-blue); }
+  .action-badge.green { background: rgba(134,239,172,0.1); color: #86efac; }
+  .action-badge.slate { background: rgba(107,114,128,0.15); color: var(--color-slate); }
+  .action-badge.red { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin-bottom: 0.75rem;
+  }
+  .cron-grid { margin-bottom: 2rem; }
+  .cron-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.5rem;
+  }
+  .cron-card {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 0.6rem 0.75rem;
+  }
+  .cron-card.cron-ok { border-left: 3px solid #86efac; }
+  .cron-card.cron-err { border-left: 3px solid #ef4444; }
+  .cron-name {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-parchment);
+    margin-bottom: 0.25rem;
+    word-break: break-all;
+  }
+  .cron-status {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+  .cron-ok .cron-status { color: #86efac; }
+  .cron-err .cron-status { color: #ef4444; }
+  .cron-meta {
+    font-size: 0.6rem;
+    color: var(--color-slate);
+  }
+  .pipeline-funnel { margin-bottom: 2rem; }
+  .funnel-stages {
+    display: flex;
+    gap: 1rem;
+  }
+  .funnel-stage {
+    flex: 1;
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .funnel-count {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--color-fleece-gold);
+  }
+  .funnel-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -137,5 +287,6 @@ const systemHealth = siData?.data?.systemHealthScore ?? null;
   }
   @media (max-width: 900px) {
     .two-col { grid-template-columns: 1fr; }
+    .funnel-stages { flex-wrap: wrap; }
   }
 </style>

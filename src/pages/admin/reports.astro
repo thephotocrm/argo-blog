@@ -1,0 +1,280 @@
+---
+export const prerender = false;
+
+import Dashboard from '../../components/admin/Dashboard.astro';
+import { getReportsList, getReport, getTechSeoTasks } from '../../lib/data';
+import { marked } from 'marked';
+
+const reportFiles = getReportsList();
+const techSeoTasks = getTechSeoTasks();
+
+// Render all markdown reports
+const reports = reportFiles
+  .filter(f => f.endsWith('.md'))
+  .map(f => {
+    const raw = getReport(f);
+    return {
+      name: f,
+      displayName: f.replace(/\.md$/, '').replace(/-/g, ' '),
+      html: raw ? marked(raw) : null,
+    };
+  });
+
+// JSON reports
+const jsonReports = reportFiles
+  .filter(f => f.endsWith('.json'))
+  .map(f => {
+    const raw = getReport(f);
+    let data = null;
+    try { data = raw ? JSON.parse(raw) : null; } catch {}
+    return { name: f, displayName: f.replace(/\.json$/, '').replace(/-/g, ' '), data };
+  });
+
+const tasks = techSeoTasks.tasks || [];
+---
+
+<Dashboard title="Reports" activePage="reports">
+  <div class="page-header">
+    <h1>Reports</h1>
+    <p class="subtitle">{reports.length} markdown reports &middot; {jsonReports.length} data reports</p>
+  </div>
+
+  <!-- Tech SEO Checklist -->
+  <section class="section">
+    <h2 class="section-title">Tech SEO Issues</h2>
+    <div class="checklist">
+      {tasks.map((task: any) => (
+        <div class:list={['check-item', { done: task.status === 'done' }]} data-id={task.id}>
+          <button
+            class:list={['check-toggle', { checked: task.status === 'done' }]}
+            data-id={task.id}
+            data-status={task.status}
+          >
+            {task.status === 'done' ? '&#10003;' : ''}
+          </button>
+          <div class="check-content">
+            <span class="check-text">{task.issue}</span>
+            <span class="check-cat">{task.category}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Report navigation -->
+  <section class="section">
+    <h2 class="section-title">Report Index</h2>
+    <div class="report-nav">
+      {reports.map((r) => (
+        <a href={`#report-${r.name}`} class="report-link">{r.displayName}</a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Rendered reports -->
+  {reports.map((r) => (
+    <section class="section report-section" id={`report-${r.name}`}>
+      <h2 class="section-title">{r.displayName}</h2>
+      {r.html ? (
+        <div class="report-body" set:html={r.html} />
+      ) : (
+        <p class="empty">Could not load report</p>
+      )}
+    </section>
+  ))}
+
+  <!-- JSON reports -->
+  {jsonReports.map((r) => (
+    <section class="section report-section" id={`report-${r.name}`}>
+      <h2 class="section-title">{r.displayName}</h2>
+      {r.data ? (
+        <pre class="json-block">{JSON.stringify(r.data, null, 2)}</pre>
+      ) : (
+        <p class="empty">Could not load report</p>
+      )}
+    </section>
+  ))}
+</Dashboard>
+
+<script>
+  document.querySelectorAll('.check-toggle').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const el = btn as HTMLElement;
+      const id = el.dataset.id;
+      const currentStatus = el.dataset.status;
+      const newStatus = currentStatus === 'done' ? 'open' : 'done';
+
+      const res = await fetch(`/api/tech-seo-tasks/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+
+      if (res.ok) location.reload();
+      else alert('Update failed');
+    });
+  });
+</script>
+
+<style>
+  .page-header { margin-bottom: 1.5rem; }
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+  }
+  .subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    margin-top: 0.25rem;
+  }
+  .section { margin-bottom: 2.5rem; }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin-bottom: 0.75rem;
+  }
+
+  /* Checklist */
+  .checklist { display: flex; flex-direction: column; gap: 0.4rem; }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 0.6rem 0.75rem;
+  }
+  .check-item.done { opacity: 0.5; }
+  .check-toggle {
+    width: 22px;
+    height: 22px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    background: transparent;
+    color: #86efac;
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .check-toggle.checked {
+    background: rgba(134,239,172,0.1);
+    border-color: rgba(134,239,172,0.3);
+  }
+  .check-content { display: flex; align-items: center; gap: 0.5rem; flex: 1; }
+  .check-text {
+    font-size: 0.8rem;
+    color: var(--color-starlight);
+  }
+  .check-item.done .check-text { text-decoration: line-through; }
+  .check-cat {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+    background: rgba(107,114,128,0.1);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+  }
+
+  /* Report nav */
+  .report-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .report-link {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-compass-blue);
+    text-decoration: none;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid rgba(74,111,165,0.2);
+    border-radius: 3px;
+  }
+  .report-link:hover { background: rgba(74,111,165,0.1); }
+
+  /* Report body */
+  .report-section {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1.25rem;
+  }
+  .report-body {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--color-starlight);
+  }
+  .report-body :global(h1),
+  .report-body :global(h2),
+  .report-body :global(h3) {
+    font-family: var(--font-display);
+    color: var(--color-parchment);
+    font-weight: 400;
+    margin: 1rem 0 0.5rem;
+  }
+  .report-body :global(h1) { font-size: 1.25rem; }
+  .report-body :global(h2) { font-size: 1.1rem; }
+  .report-body :global(h3) { font-size: 0.95rem; }
+  .report-body :global(p) { margin-bottom: 0.75rem; }
+  .report-body :global(ul),
+  .report-body :global(ol) { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+  .report-body :global(li) { margin-bottom: 0.25rem; }
+  .report-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: rgba(0,0,0,0.3);
+    padding: 0.1rem 0.3rem;
+    border-radius: 2px;
+  }
+  .report-body :global(pre) {
+    background: rgba(0,0,0,0.3);
+    padding: 0.75rem;
+    border-radius: 3px;
+    overflow-x: auto;
+    margin-bottom: 0.75rem;
+  }
+  .report-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+  }
+  .report-body :global(th),
+  .report-body :global(td) {
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .report-body :global(th) {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    color: var(--color-slate);
+  }
+  .report-body :global(strong) { color: var(--color-parchment); }
+  .report-body :global(a) { color: var(--color-compass-blue); }
+
+  .json-block {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    background: rgba(0,0,0,0.3);
+    padding: 0.75rem;
+    border-radius: 3px;
+    overflow-x: auto;
+    color: var(--color-starlight);
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .empty { color: var(--color-slate); font-size: 0.8rem; }
+</style>

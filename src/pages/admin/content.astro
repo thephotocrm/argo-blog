@@ -5,6 +5,7 @@ import Dashboard from '../../components/admin/Dashboard.astro';
 import ContentPipeline from '../../components/admin/ContentPipeline.astro';
 import KeywordTable from '../../components/admin/KeywordTable.astro';
 import ContentDecay from '../../components/admin/ContentDecay.astro';
+import { getContentQueue, getContentLog } from '../../lib/data';
 
 import keywordData from '../../data/seo/keyword-research.json';
 import contentQueue from '../../data/seo/content-queue.json';
@@ -18,6 +19,17 @@ const statusCounts = {
   published: keywords.filter(k => k.status === 'published').length,
 };
 const decay = decayData?.data || {};
+
+// Live data from OpenClaw for review queue
+const liveQueue = getContentQueue();
+const contentLog = getContentLog();
+const items = liveQueue.items || [];
+const pending = items.filter((i: any) => i.status === 'pending_review');
+const approved = items.filter((i: any) => i.status === 'approved');
+const published = items.filter((i: any) => i.status === 'published');
+const autoApproved = items.filter((i: any) => i.status === 'auto_approved');
+const needsRevision = items.filter((i: any) => i.status === 'needs_revision');
+const logEntries = contentLog.entries || [];
 ---
 
 <Dashboard title="Content" activePage="content">
@@ -26,6 +38,76 @@ const decay = decayData?.data || {};
     <p class="last-updated">Data as of {keywordData.lastUpdated}</p>
   </div>
 
+  <!-- Review Queue -->
+  {pending.length > 0 && (
+    <section class="section">
+      <h2 class="section-title">Pending Review ({pending.length})</h2>
+      <div class="card-grid">
+        {pending.map((item: any) => (
+          <div class="content-card" data-slug={item.slug}>
+            <div class="card-header">
+              <span class="badge pending">Pending Review</span>
+              <span class="card-date">{item.created_at}</span>
+            </div>
+            <h3 class="card-title">{item.title}</h3>
+            <div class="card-meta">
+              <span class="meta-tag">{item.keyword}</span>
+              <span class="meta-sep">&middot;</span>
+              <span>{item.word_count?.toLocaleString()} words</span>
+              <span class="meta-sep">&middot;</span>
+              <span>{item.content_type}</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-preview" data-slug={item.slug}>Preview</button>
+              <button class="btn btn-approve" data-slug={item.slug}>Approve</button>
+              <button class="btn btn-reject" data-slug={item.slug}>Needs Revision</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {approved.length > 0 && (
+    <section class="section">
+      <h2 class="section-title">Approved (Ready to Publish)</h2>
+      <div class="card-grid">
+        {approved.map((item: any) => (
+          <div class="content-card" data-slug={item.slug}>
+            <div class="card-header">
+              <span class="badge approved">Approved</span>
+              <span class="card-date">{item.created_at}</span>
+            </div>
+            <h3 class="card-title">{item.title}</h3>
+            <div class="card-actions">
+              <button class="btn btn-preview" data-slug={item.slug}>Preview</button>
+              <button class="btn btn-publish" data-slug={item.slug}>Mark Published</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {needsRevision.length > 0 && (
+    <section class="section">
+      <h2 class="section-title">Needs Revision</h2>
+      <div class="card-grid">
+        {needsRevision.map((item: any) => (
+          <div class="content-card" data-slug={item.slug}>
+            <div class="card-header"><span class="badge revision">Needs Revision</span></div>
+            <h3 class="card-title">{item.title}</h3>
+            <div class="card-actions">
+              <button class="btn btn-preview" data-slug={item.slug}>Preview</button>
+              <button class="btn btn-approve" data-slug={item.slug}>Approve</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Existing pipeline & keyword components -->
   <ContentPipeline
     statusCounts={statusCounts}
     contentItems={contentQueue.items}
@@ -36,13 +118,115 @@ const decay = decayData?.data || {};
     pages={decay.pages}
   />
 
+  <!-- Published content -->
+  {(logEntries.length > 0 || published.length > 0) && (
+    <section class="section">
+      <h2 class="section-title">Published</h2>
+      <table class="data-table">
+        <thead>
+          <tr><th>Title</th><th>Keyword</th><th>Published</th><th>Words</th></tr>
+        </thead>
+        <tbody>
+          {[...published, ...logEntries].map((item: any) => (
+            <tr>
+              <td>{item.title}</td>
+              <td class="mono">{item.keyword}</td>
+              <td>{item.published_at}</td>
+              <td>{item.word_count?.toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  )}
+
+  {autoApproved.length > 0 && (
+    <section class="section">
+      <h2 class="section-title">Auto-Approved Pages ({autoApproved.length})</h2>
+      <table class="data-table">
+        <thead>
+          <tr><th>Title</th><th>Type</th><th>Created</th><th>Words</th></tr>
+        </thead>
+        <tbody>
+          {autoApproved.map((item: any) => (
+            <tr>
+              <td>{item.title}</td>
+              <td class="mono">{item.content_type}</td>
+              <td>{item.created_at}</td>
+              <td>{item.word_count?.toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  )}
+
   <KeywordTable keywords={keywords} />
+
+  <!-- Preview modal -->
+  <div id="preview-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Preview</h2>
+        <button id="modal-close" class="btn btn-close">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
 </Dashboard>
 
-<style>
-  .dashboard-header {
-    margin-bottom: 1.5rem;
+<script>
+  document.querySelectorAll('.btn-preview').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const slug = (btn as HTMLElement).dataset.slug;
+      const modal = document.getElementById('preview-modal')!;
+      const body = document.getElementById('modal-body')!;
+      const title = document.getElementById('modal-title')!;
+      body.innerHTML = '<p style="color:var(--color-slate)">Loading...</p>';
+      modal.classList.remove('hidden');
+      try {
+        const res = await fetch(`/api/blog-post/${slug}`);
+        if (!res.ok) throw new Error('Not found');
+        const data = await res.json();
+        title.textContent = slug;
+        body.innerHTML = `<div class="prose">${data.content.replace(/^#{1,3} (.+)/gm, '<h3>$1</h3>').replace(/\n\n/g, '</p><p>').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</div>`;
+      } catch {
+        body.innerHTML = '<p style="color:#ef4444">Could not load post.</p>';
+      }
+    });
+  });
+
+  document.getElementById('modal-close')?.addEventListener('click', () => {
+    document.getElementById('preview-modal')!.classList.add('hidden');
+  });
+  document.querySelector('.modal-backdrop')?.addEventListener('click', () => {
+    document.getElementById('preview-modal')!.classList.add('hidden');
+  });
+
+  async function updateStatus(slug: string, status: string) {
+    const res = await fetch(`/api/content-queue/${slug}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    });
+    if (res.ok) location.reload();
+    else alert('Update failed');
   }
+
+  document.querySelectorAll('.btn-approve').forEach(btn => {
+    btn.addEventListener('click', () => updateStatus((btn as HTMLElement).dataset.slug!, 'approved'));
+  });
+  document.querySelectorAll('.btn-reject').forEach(btn => {
+    btn.addEventListener('click', () => updateStatus((btn as HTMLElement).dataset.slug!, 'needs_revision'));
+  });
+  document.querySelectorAll('.btn-publish').forEach(btn => {
+    btn.addEventListener('click', () => updateStatus((btn as HTMLElement).dataset.slug!, 'published'));
+  });
+</script>
+
+<style>
+  .dashboard-header { margin-bottom: 1.5rem; }
   .dashboard-header h1 {
     font-family: var(--font-display);
     font-size: 1.75rem;
@@ -56,4 +240,125 @@ const decay = decayData?.data || {};
     color: var(--color-slate);
     margin-top: 0.25rem;
   }
+  .section { margin-bottom: 2rem; }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin-bottom: 0.75rem;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 0.75rem;
+  }
+  .content-card {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1rem;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .card-date { font-size: 0.65rem; color: var(--color-slate); }
+  .card-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-parchment);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .card-meta { font-size: 0.7rem; color: var(--color-slate); margin-bottom: 0.75rem; }
+  .meta-tag { font-family: var(--font-mono); font-size: 0.65rem; color: var(--color-compass-blue); }
+  .meta-sep { margin: 0 0.25rem; }
+  .card-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge.pending { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
+  .badge.approved { background: rgba(134,239,172,0.1); color: #86efac; }
+  .badge.revision { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: var(--color-starlight);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn:hover { background: rgba(255,255,255,0.05); }
+  .btn-approve { border-color: rgba(134,239,172,0.3); color: #86efac; }
+  .btn-approve:hover { background: rgba(134,239,172,0.1); }
+  .btn-reject { border-color: rgba(239,68,68,0.3); color: #ef4444; }
+  .btn-reject:hover { background: rgba(239,68,68,0.1); }
+  .btn-publish { border-color: rgba(201,162,39,0.3); color: var(--color-fleece-gold); }
+  .btn-publish:hover { background: rgba(201,162,39,0.1); }
+  .btn-preview { border-color: rgba(74,111,165,0.3); color: var(--color-compass-blue); }
+  .btn-preview:hover { background: rgba(74,111,165,0.1); }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+  }
+  .data-table th {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .data-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: var(--color-starlight);
+  }
+  .mono { font-family: var(--font-mono); font-size: 0.65rem; }
+  .modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; }
+  .modal.hidden { display: none; }
+  .modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.7); }
+  .modal-content {
+    position: relative;
+    background: var(--color-night);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .modal-header h2 { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-parchment); }
+  .btn-close { font-size: 1.25rem; border: none; background: none; color: var(--color-slate); cursor: pointer; }
+  .modal-body {
+    padding: 1.25rem;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--color-starlight);
+  }
+  .modal-body h3 { color: var(--color-parchment); margin: 1rem 0 0.5rem; font-size: 1rem; }
+  .modal-body p { margin-bottom: 0.75rem; }
 </style>

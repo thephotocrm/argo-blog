@@ -1,0 +1,424 @@
+---
+export const prerender = false;
+
+import Dashboard from '../../components/admin/Dashboard.astro';
+import { getLatestSerpSnapshot, getLatestContentGaps, getCompetitorChangelog, getKeywordCandidates } from '../../lib/data';
+
+const serp = getLatestSerpSnapshot();
+const gaps = getLatestContentGaps();
+const competitors = getCompetitorChangelog();
+const candidatesData = getKeywordCandidates();
+
+const keywords = serp.keywords || [];
+const gapsList = gaps.gaps || [];
+const entries = competitors.entries || [];
+const candidates = candidatesData.candidates || [];
+const unvalidated = candidates.filter((c: any) => c.decision === null);
+const included = candidates.filter((c: any) => c.decision === 'include');
+const excluded = candidates.filter((c: any) => c.decision === 'exclude');
+---
+
+<Dashboard title="SEO Intelligence" activePage="seo">
+  <div class="page-header">
+    <h1>SEO Intelligence</h1>
+    <p class="subtitle">{keywords.length} tracked keywords &middot; {gapsList.length} content gaps &middot; {unvalidated.length}/{candidates.length} candidates unvalidated</p>
+  </div>
+
+  <!-- SERP Positions -->
+  {keywords.length > 0 && (
+    <section class="section">
+      <h2 class="section-title">SERP Positions</h2>
+      <p class="section-note">Snapshot: {serp.date || 'latest'} &middot; {serp.search_engine || 'brave'}</p>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Keyword</th>
+              <th>Priority</th>
+              <th>Argo Position</th>
+              <th>AI Overview</th>
+              <th>Top 3 Competitors</th>
+            </tr>
+          </thead>
+          <tbody>
+            {keywords.map((kw: any) => (
+              <tr>
+                <td class="mono">{kw.keyword}</td>
+                <td><span class:list={['badge', `priority-${kw.priority}`]}>{kw.priority}</span></td>
+                <td class:list={['position', { 'pos-found': kw.argo_position }]}>
+                  {kw.argo_position || 'Not found'}
+                </td>
+                <td>
+                  {kw.ai_overview?.present ? (
+                    <span class:list={['badge', kw.ai_overview.argo_cited ? 'cited' : 'not-cited']}>
+                      {kw.ai_overview.argo_cited ? 'Cited' : 'Present'}
+                    </span>
+                  ) : <span class="badge none">None</span>}
+                </td>
+                <td class="competitors-cell">
+                  {(kw.top_results || []).slice(0, 3).map((r: any) => (
+                    <div class="comp-row">
+                      <span class="comp-pos">#{r.position}</span>
+                      <a href={r.url} target="_blank" rel="noopener" class="comp-link" title={r.title}>
+                        {r.title?.substring(0, 50)}{(r.title?.length || 0) > 50 ? '...' : ''}
+                      </a>
+                    </div>
+                  ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+
+  <!-- Content Gaps -->
+  {gapsList.length > 0 && (
+    <section class="section">
+      <h2 class="section-title">Content Gaps ({gapsList.length})</h2>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Topic</th><th>Volume</th><th>Difficulty</th><th>Priority</th><th>Competitors</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            {gapsList.map((gap: any) => (
+              <tr>
+                <td class="topic-cell">{gap.topic}</td>
+                <td class="mono">{gap.estimated_volume}</td>
+                <td><span class:list={['badge', `diff-${gap.difficulty}`]}>{gap.difficulty}</span></td>
+                <td><span class:list={['badge', `priority-${gap.priority}`]}>{gap.priority}</span></td>
+                <td class="mono small">{(gap.competitors_ranking || []).join(', ')}</td>
+                <td class="notes-cell">{gap.notes?.substring(0, 80)}{(gap.notes?.length || 0) > 80 ? '...' : ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+
+  <!-- Competitor Timeline -->
+  {entries.length > 0 && (
+    <section class="section">
+      <h2 class="section-title">Competitor Intelligence</h2>
+      {entries.map((entry: any) => (
+        <div class="competitor-block">
+          <div class="competitor-header">
+            <h3 class="competitor-name">{entry.competitor}</h3>
+            <span class="competitor-date">{entry.date}</span>
+          </div>
+          <div class="changes-list">
+            {(entry.changes || []).map((change: any) => (
+              <div class="change-item">
+                <span class:list={['change-type', `type-${change.type}`]}>{change.type}</span>
+                <p class="change-desc">{change.description}</p>
+                {change.strategic_note && (
+                  <p class="strategic-note">{change.strategic_note}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+  )}
+
+  <!-- Keyword Candidates -->
+  <section class="section">
+    <h2 class="section-title">Keyword Candidates</h2>
+    <p class="section-note">{unvalidated.length} unvalidated &middot; {included.length} included &middot; {excluded.length} excluded</p>
+
+    {unvalidated.length > 0 && (
+      <div class="candidates-controls">
+        <button class="btn btn-bulk" id="bulk-include">Include Selected</button>
+        <button class="btn btn-bulk-exclude" id="bulk-exclude">Exclude Selected</button>
+        <button class="btn" id="select-all">Select All</button>
+      </div>
+    )}
+
+    <div class="table-scroll">
+      <table class="data-table" id="candidates-table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="check-all" /></th>
+            <th>Keyword</th>
+            <th>Source</th>
+            <th>Seed</th>
+            <th>Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          {unvalidated.slice(0, 100).map((c: any) => (
+            <tr data-keyword={c.keyword}>
+              <td><input type="checkbox" class="cand-check" data-keyword={c.keyword} /></td>
+              <td class="mono">{c.keyword}</td>
+              <td class="mono small">{c.source}</td>
+              <td class="mono small">{c.seed_keyword}</td>
+              <td>
+                <div class="decision-btns">
+                  <button class="btn btn-sm btn-inc" data-keyword={c.keyword}>Include</button>
+                  <button class="btn btn-sm btn-exc" data-keyword={c.keyword}>Exclude</button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    {unvalidated.length > 100 && (
+      <p class="more-note">Showing first 100 of {unvalidated.length} unvalidated candidates</p>
+    )}
+  </section>
+</Dashboard>
+
+<script>
+  // Individual keyword decisions
+  document.querySelectorAll('.btn-inc').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const keyword = (btn as HTMLElement).dataset.keyword!;
+      await updateCandidates([{ keyword, decision: 'include' }]);
+    });
+  });
+
+  document.querySelectorAll('.btn-exc').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const keyword = (btn as HTMLElement).dataset.keyword!;
+      await updateCandidates([{ keyword, decision: 'exclude' }]);
+    });
+  });
+
+  // Bulk operations
+  document.getElementById('check-all')?.addEventListener('change', (e) => {
+    const checked = (e.target as HTMLInputElement).checked;
+    document.querySelectorAll('.cand-check').forEach(cb => {
+      (cb as HTMLInputElement).checked = checked;
+    });
+  });
+
+  document.getElementById('select-all')?.addEventListener('click', () => {
+    document.querySelectorAll('.cand-check').forEach(cb => {
+      (cb as HTMLInputElement).checked = true;
+    });
+  });
+
+  document.getElementById('bulk-include')?.addEventListener('click', async () => {
+    const updates = getSelectedKeywords().map(kw => ({ keyword: kw, decision: 'include' }));
+    if (updates.length === 0) return alert('No keywords selected');
+    await updateCandidates(updates);
+  });
+
+  document.getElementById('bulk-exclude')?.addEventListener('click', async () => {
+    const updates = getSelectedKeywords().map(kw => ({ keyword: kw, decision: 'exclude' }));
+    if (updates.length === 0) return alert('No keywords selected');
+    await updateCandidates(updates);
+  });
+
+  function getSelectedKeywords(): string[] {
+    return Array.from(document.querySelectorAll('.cand-check:checked'))
+      .map(cb => (cb as HTMLElement).dataset.keyword!)
+      .filter(Boolean);
+  }
+
+  async function updateCandidates(updates: Array<{ keyword: string; decision: string }>) {
+    const res = await fetch('/api/keyword-candidates', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ updates })
+    });
+    if (res.ok) location.reload();
+    else alert('Update failed');
+  }
+</script>
+
+<style>
+  .page-header { margin-bottom: 1.5rem; }
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+  }
+  .subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    margin-top: 0.25rem;
+  }
+  .section { margin-bottom: 2.5rem; }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin-bottom: 0.5rem;
+  }
+  .section-note {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    margin-bottom: 0.75rem;
+  }
+  .table-scroll { overflow-x: auto; }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+  }
+  .data-table th {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: var(--color-starlight);
+    vertical-align: top;
+  }
+  .mono { font-family: var(--font-mono); font-size: 0.65rem; }
+  .small { font-size: 0.6rem; }
+  .position { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-slate); }
+  .position.pos-found { color: #86efac; }
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .badge.priority-high { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
+  .badge.priority-medium { background: rgba(107,114,128,0.15); color: var(--color-slate); }
+  .badge.priority-low { background: rgba(107,114,128,0.08); color: var(--color-slate); }
+  .badge.diff-low { background: rgba(134,239,172,0.1); color: #86efac; }
+  .badge.diff-medium { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
+  .badge.diff-high { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .badge.cited { background: rgba(134,239,172,0.1); color: #86efac; }
+  .badge.not-cited { background: rgba(201,162,39,0.15); color: var(--color-fleece-gold); }
+  .badge.none { background: rgba(107,114,128,0.08); color: var(--color-slate); }
+  .competitors-cell { min-width: 250px; }
+  .comp-row {
+    display: flex;
+    gap: 0.35rem;
+    align-items: baseline;
+    margin-bottom: 0.15rem;
+  }
+  .comp-pos {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-slate);
+    flex-shrink: 0;
+  }
+  .comp-link {
+    font-size: 0.65rem;
+    color: var(--color-compass-blue);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .comp-link:hover { color: var(--color-parchment); }
+  .topic-cell { min-width: 200px; font-weight: 500; }
+  .notes-cell { font-size: 0.65rem; color: var(--color-slate); max-width: 300px; }
+
+  /* Competitor blocks */
+  .competitor-block {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .competitor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .competitor-name {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-parchment);
+  }
+  .competitor-date {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+  }
+  .changes-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .change-item {
+    border-left: 2px solid rgba(255,255,255,0.06);
+    padding-left: 0.75rem;
+  }
+  .change-type {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-block;
+    margin-bottom: 0.25rem;
+  }
+  .type-messaging { color: var(--color-compass-blue); }
+  .type-pricing { color: var(--color-fleece-gold); }
+  .type-content { color: #86efac; }
+  .type-feature { color: var(--color-pale-gold); }
+  .change-desc {
+    font-size: 0.75rem;
+    color: var(--color-starlight);
+    line-height: 1.5;
+  }
+  .strategic-note {
+    font-size: 0.7rem;
+    color: var(--color-fleece-gold);
+    background: rgba(201,162,39,0.08);
+    padding: 0.4rem 0.6rem;
+    border-radius: 3px;
+    margin-top: 0.35rem;
+    line-height: 1.4;
+  }
+
+  /* Candidates */
+  .candidates-controls {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: var(--color-starlight);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn:hover { background: rgba(255,255,255,0.05); }
+  .btn-bulk { border-color: rgba(134,239,172,0.3); color: #86efac; }
+  .btn-bulk-exclude { border-color: rgba(239,68,68,0.3); color: #ef4444; }
+  .btn-sm { font-size: 0.6rem; padding: 0.2rem 0.4rem; }
+  .btn-inc { border-color: rgba(134,239,172,0.3); color: #86efac; }
+  .btn-exc { border-color: rgba(239,68,68,0.3); color: #ef4444; }
+  .decision-btns { display: flex; gap: 0.25rem; }
+  .more-note {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    margin-top: 0.5rem;
+  }
+
+  input[type="checkbox"] {
+    accent-color: var(--color-fleece-gold);
+  }
+</style>
