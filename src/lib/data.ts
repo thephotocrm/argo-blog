@@ -12,6 +12,8 @@ import cronJobsData from '../data/synced/cron-jobs.json';
 import serpSnapshotData from '../data/synced/seo/serp-snapshot-latest.json';
 import contentGapsData from '../data/synced/seo/content-gaps-latest.json';
 import techSeoTasksData from '../data/synced/seo/tech-seo-tasks.json';
+import indexingStatusData from '../data/synced/seo/indexing-status-latest.json';
+import gscHistoryData from '../data/synced/seo/gsc-history-summary.json';
 
 // Data accessors — read from static imports (deployed via git sync)
 export function getContentQueue() {
@@ -64,4 +66,12 @@ export function getLatestContentGaps() {
 
 export function getTechSeoTasks() {
   return techSeoTasksData || { tasks: [] };
+}
+
+export function getIndexingStatus() {
+  return indexingStatusData || { date: '', total: 0, indexed: 0, crawled_not_indexed: 0, discovered_not_indexed: 0, pages: [] };
+}
+
+export function getGscHistory() {
+  return gscHistoryData || { lastUpdated: '', dailyTotals: [], topQueriesWithTrends: [] };
 }

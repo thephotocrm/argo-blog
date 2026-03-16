@@ -20,7 +20,7 @@ export const GET: APIRoute = async ({ url }) => {
     const credentials = JSON.parse(Buffer.from(keyJson, 'base64').toString());
     const auth = new google.auth.GoogleAuth({
       credentials,
-      scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
+      scopes: ['https://www.googleapis.com/auth/webmasters'],
     });
 
     const searchConsole = google.searchconsole({ version: 'v1', auth });

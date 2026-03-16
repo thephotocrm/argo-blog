@@ -23,6 +23,23 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
 
     await writeGitHubJSON(FILE_PATH, data, sha, `content-queue: update ${params.slug} → ${body.status}`);
 
+    // Request Google indexing when a post is published
+    if (body.status === 'published') {
+      const postUrl = `https://blog.argostudio.co/blog/${params.slug}/`;
+      try {
+        await fetch(new URL('/api/request-indexing', request.url).href, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Cookie: `admin_session=${cookies.get('admin_session')?.value}`,
+          },
+          body: JSON.stringify({ url: postUrl }),
+        });
+      } catch {
+        // Non-blocking — indexing request is best-effort
+      }
+    }
+
     return new Response(JSON.stringify(item), { status: 200 });
   } catch (err: any) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500 });

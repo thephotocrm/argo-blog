@@ -10,7 +10,7 @@ import RankingTable from '../../components/admin/RankingTable.astro';
 import TrafficChart from '../../components/admin/TrafficChart.astro';
 import KeywordTable from '../../components/admin/KeywordTable.astro';
 
-import { getContentQueue, getAuthorityOutbox, getCreators, getCronJobs, getKeywordResearch, getKeywordCandidates } from '../../lib/data';
+import { getContentQueue, getAuthorityOutbox, getCreators, getCronJobs, getKeywordResearch, getKeywordCandidates, getIndexingStatus, getGscHistory } from '../../lib/data';
 
 import keywordData from '../../data/seo/keyword-research.json';
 import contentQueue from '../../data/seo/content-queue.json';
@@ -33,6 +33,8 @@ const outbox = getAuthorityOutbox();
 const creators = getCreators();
 const cronData = getCronJobs();
 const candidates = getKeywordCandidates();
+const indexingStatus = getIndexingStatus();
+const gscHistory = getGscHistory();
 
 const pendingReviews = (liveQueue.items || []).filter((i: any) => i.status === 'pending_review').length;
 const pendingOutbox = (outbox.items || []).filter((i: any) => i.status === 'pending_review').length;
@@ -156,6 +158,98 @@ const systemHealth = siData?.data?.systemHealthScore ?? null;
     algoStatus={algoStatus}
     distributionQueue={distributionQueue}
   />
+
+  {/* Google Indexing Status + GSC Trends */}
+  <div class="two-col" style="margin-bottom: 1.5rem;">
+    <div class="indexing-card">
+      <h2 class="section-title">Google Indexing</h2>
+      {indexingStatus.total > 0 ? (
+        <div class="indexing-body">
+          <div class="indexing-stat-row">
+            <div class="indexing-stat">
+              <span class="indexing-num green">{indexingStatus.indexed}</span>
+              <span class="indexing-label">Indexed</span>
+            </div>
+            <div class="indexing-stat">
+              <span class="indexing-num gold">{indexingStatus.crawled_not_indexed}</span>
+              <span class="indexing-label">Crawled</span>
+            </div>
+            <div class="indexing-stat">
+              <span class="indexing-num slate">{indexingStatus.discovered_not_indexed}</span>
+              <span class="indexing-label">Discovered</span>
+            </div>
+            <div class="indexing-stat">
+              <span class="indexing-num">{indexingStatus.total}</span>
+              <span class="indexing-label">Total</span>
+            </div>
+          </div>
+          <div class="indexing-bar">
+            <div class="bar-indexed" style={`width: ${(indexingStatus.indexed / indexingStatus.total) * 100}%`}></div>
+            <div class="bar-crawled" style={`width: ${(indexingStatus.crawled_not_indexed / indexingStatus.total) * 100}%`}></div>
+          </div>
+          {indexingStatus.pages.filter((p: any) => p.verdict !== 'PASS').length > 0 && (
+            <details class="not-indexed-list">
+              <summary>{indexingStatus.total - indexingStatus.indexed} not yet indexed</summary>
+              <ul>
+                {indexingStatus.pages.filter((p: any) => p.verdict !== 'PASS').map((p: any) => (
+                  <li>
+                    <span class="page-url">{p.url.replace('https://blog.argostudio.co', '')}</span>
+                    <span class="page-state">{p.coverageState}</span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+          {indexingStatus.date && <div class="card-date">Updated {indexingStatus.date}</div>}
+        </div>
+      ) : (
+        <div class="no-data">No indexing data yet — run gsc-indexing-check.sh</div>
+      )}
+    </div>
+
+    <div class="gsc-trends-card">
+      <h2 class="section-title">GSC Trends</h2>
+      {gscHistory.dailyTotals && gscHistory.dailyTotals.length > 0 ? (
+        <div class="trends-body">
+          {(() => {
+            const totals = gscHistory.dailyTotals;
+            const latest = totals[totals.length - 1];
+            const prev = totals.length > 1 ? totals[totals.length - 2] : null;
+            const clickDelta = prev ? latest.clicks - prev.clicks : 0;
+            const impDelta = prev ? latest.impressions - prev.impressions : 0;
+            return (
+              <div class="trend-stats">
+                <div class="trend-stat">
+                  <span class="trend-num">{latest.clicks}</span>
+                  <span class="trend-label">Clicks</span>
+                  {prev && <span class:list={['trend-delta', { 'delta-up': clickDelta > 0, 'delta-down': clickDelta < 0 }]}>{clickDelta > 0 ? '+' : ''}{clickDelta}</span>}
+                </div>
+                <div class="trend-stat">
+                  <span class="trend-num">{latest.impressions}</span>
+                  <span class="trend-label">Impressions</span>
+                  {prev && <span class:list={['trend-delta', { 'delta-up': impDelta > 0, 'delta-down': impDelta < 0 }]}>{impDelta > 0 ? '+' : ''}{impDelta}</span>}
+                </div>
+                <div class="trend-stat">
+                  <span class="trend-num">{latest.avgPosition || '—'}</span>
+                  <span class="trend-label">Avg Position</span>
+                </div>
+              </div>
+            );
+          })()}
+          <div class="sparkline">
+            {gscHistory.dailyTotals.map((d: any, i: number) => {
+              const max = Math.max(...gscHistory.dailyTotals.map((t: any) => t.impressions), 1);
+              const height = Math.max((d.impressions / max) * 32, 2);
+              return <div class="spark-bar" style={`height: ${height}px`} title={`${d.date}: ${d.impressions} imp, ${d.clicks} clicks`}></div>;
+            })}
+          </div>
+          {gscHistory.lastUpdated && <div class="card-date">Updated {gscHistory.lastUpdated}</div>}
+        </div>
+      ) : (
+        <div class="no-data">No GSC history yet — run gsc-daily-snapshot.sh</div>
+      )}
+    </div>
+  </div>
 
   <AlertStrip alerts={alertsData?.data?.items} />
 
@@ -285,6 +379,137 @@ const systemHealth = siData?.data?.systemHealthScore ?? null;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
   }
+  /* Indexing card */
+  .indexing-card, .gsc-trends-card {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+  }
+  .indexing-body, .trends-body { margin-top: 0.5rem; }
+  .indexing-stat-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .indexing-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  .indexing-num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-parchment);
+  }
+  .indexing-num.green { color: #86efac; }
+  .indexing-num.gold { color: var(--color-fleece-gold); }
+  .indexing-num.slate { color: var(--color-slate); }
+  .indexing-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-slate);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .indexing-bar {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    display: flex;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+  .bar-indexed { background: #86efac; }
+  .bar-crawled { background: var(--color-fleece-gold); }
+  .not-indexed-list {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+  }
+  .not-indexed-list summary {
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+  }
+  .not-indexed-list ul {
+    list-style: none;
+    padding: 0;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  .not-indexed-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .page-url {
+    color: var(--color-parchment);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 60%;
+  }
+  .page-state { color: var(--color-slate); }
+
+  /* GSC trends card */
+  .trend-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .trend-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  .trend-num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-parchment);
+  }
+  .trend-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-slate);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .trend-delta {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+  }
+  .delta-up { color: #86efac; }
+  .delta-down { color: #ef4444; }
+  .sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 36px;
+    margin-bottom: 0.5rem;
+  }
+  .spark-bar {
+    flex: 1;
+    background: var(--color-compass-blue);
+    border-radius: 1px;
+    min-width: 3px;
+  }
+  .card-date {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-slate);
+    margin-top: 0.5rem;
+  }
+  .no-data {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    padding: 1rem 0;
+  }
+
   @media (max-width: 900px) {
     .two-col { grid-template-columns: 1fr; }
     .funnel-stages { flex-wrap: wrap; }
