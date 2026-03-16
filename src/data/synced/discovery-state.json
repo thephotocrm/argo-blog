@@ -1,0 +1,38 @@
+{
+  "lastSession": {
+    "date": "2026-03-14",
+    "platform": "instagram",
+    "hashtags": [
+      "#photographybusiness",
+      "#weddingphotographer",
+      "#portraitphotographer"
+    ],
+    "profilesViewed": 12,
+    "newCreatorsSaved": 5,
+    "sessionNumber": 1
+  },
+  "nextSession": {
+    "platform": "tiktok",
+    "sessionNumber": 2,
+    "suggestedHashtags": [
+      "#photographytips",
+      "#editingtutorial",
+      "#photographybusiness"
+    ]
+  },
+  "platformRotation": [
+    "instagram",
+    "tiktok",
+    "youtube",
+    "twitter",
+    "instagram-secondary"
+  ],
+  "currentRotationIndex": 1,
+  "lastAttempt": {
+    "date": "2026-03-16",
+    "platform": "tiktok",
+    "status": "failed",
+    "reason": "browser_unavailable",
+    "note": "Browser timed out. TikTok session still pending."
+  }
+}

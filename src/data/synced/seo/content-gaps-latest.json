@@ -1,0 +1,132 @@
+{
+  "date": "2026-03-16",
+  "analysis_note": "Gaps identified by comparing competitor blog content against Argo's published (1 post) and queued (3 posts) content.",
+  "gaps": [
+    {
+      "topic": "Photography business automation / workflow automation",
+      "estimated_volume": "medium-high",
+      "difficulty": "medium",
+      "competitors_ranking": ["HoneyBook", "Dubsado", "Studio Ninja", "Pixifi"],
+      "recommended_content_type": "blog",
+      "priority": "high",
+      "notes": "Multiple competitors publish heavily on automating client workflows, lead capture, and booking. Argo has nothing on this yet. Studio Ninja and Dubsado have multiple posts on workflow automation."
+    },
+    {
+      "topic": "How to start a photography business (beginner guide)",
+      "estimated_volume": "high",
+      "difficulty": "high",
+      "competitors_ranking": ["Pixifi", "Dubsado", "Studio Ninja"],
+      "recommended_content_type": "blog",
+      "priority": "high",
+      "notes": "Massive top-of-funnel keyword. Pixifi has 'How to Start a Photography Business', Dubsado targets first-time business owners. Argo should create a comprehensive photographer-specific version."
+    },
+    {
+      "topic": "Photography contracts and legal protection",
+      "estimated_volume": "medium-high",
+      "difficulty": "medium",
+      "competitors_ranking": ["Pixifi", "ShootProof"],
+      "recommended_content_type": "blog",
+      "priority": "high",
+      "notes": "Pixifi has multiple contract-related posts. ShootProof has e-sign contracts as a feature. Argo has no content on contracts, templates, or legal essentials for photographers."
+    },
+    {
+      "topic": "Client onboarding for photographers / client experience",
+      "estimated_volume": "medium",
+      "difficulty": "low",
+      "competitors_ranking": ["Dubsado", "Studio Ninja", "Pixifi"],
+      "recommended_content_type": "blog",
+      "priority": "high",
+      "notes": "Dubsado's 'seamless client onboarding' post, Studio Ninja's 'client experience revolution' and 'client journey audit' — this is a key decision-stage topic Argo is missing."
+    },
+    {
+      "topic": "Wedding photography business management",
+      "estimated_volume": "medium-high",
+      "difficulty": "medium",
+      "competitors_ranking": ["Studio Ninja", "Pixifi", "ShootProof"],
+      "recommended_content_type": "blog",
+      "priority": "high",
+      "notes": "Studio Ninja dominates wedding business content (managing multiple weddings, wedding CRM, 2026 couples expectations). Argo has zero wedding-specific content."
+    },
+    {
+      "topic": "Photography mini sessions / holiday sessions guide",
+      "estimated_volume": "medium (seasonal)",
+      "difficulty": "low",
+      "competitors_ranking": ["Pixifi", "ShootProof"],
+      "recommended_content_type": "blog",
+      "priority": "medium",
+      "notes": "Pixifi has multiple mini session and holiday session posts. Seasonal but high intent. Plan for Q3/Q4 publication."
+    },
+    {
+      "topic": "Burnout prevention / work-life balance for photographers",
+      "estimated_volume": "medium",
+      "difficulty": "low",
+      "competitors_ranking": ["HoneyBook", "Dubsado", "Studio Ninja"],
+      "recommended_content_type": "blog",
+      "priority": "medium",
+      "notes": "HoneyBook 'build business without burnout', Dubsado 'make space without burning out', Studio Ninja 'manage multiple weddings without burning out'. Emotional topic that builds brand affinity."
+    },
+    {
+      "topic": "Photography portfolio building",
+      "estimated_volume": "high",
+      "difficulty": "high",
+      "competitors_ranking": ["Pixifi", "Dubsado"],
+      "recommended_content_type": "blog",
+      "priority": "medium",
+      "notes": "Pixifi has 'Building a Photography Portfolio'. Dubsado has 'Find First 5 Clients Without a Portfolio'. Top-of-funnel content for beginners."
+    },
+    {
+      "topic": "Tave / VSCO Workspace alternatives (migration guide)",
+      "estimated_volume": "low-medium",
+      "difficulty": "low",
+      "competitors_ranking": [],
+      "recommended_content_type": "landing_page",
+      "priority": "high",
+      "notes": "URGENT OPPORTUNITY: Tave URLs are returning 410 errors. Confused Tave users are searching for alternatives NOW. Create a 'Switching from Tave to Argo' migration guide immediately."
+    },
+    {
+      "topic": "Small business finances / bookkeeping for photographers",
+      "estimated_volume": "medium",
+      "difficulty": "medium",
+      "competitors_ranking": ["HoneyBook", "Pixifi", "Dubsado"],
+      "recommended_content_type": "blog",
+      "priority": "medium",
+      "notes": "HoneyBook's 'managing finances' post, Pixifi's 'simplify finances during busy season', Dubsado's bookkeeping integration. Financial content builds trust and targets a real pain point."
+    },
+    {
+      "topic": "Photography business case studies / success stories",
+      "estimated_volume": "medium",
+      "difficulty": "low",
+      "competitors_ranking": ["HoneyBook", "ShootProof"],
+      "recommended_content_type": "blog",
+      "priority": "medium",
+      "notes": "HoneyBook publishes case studies aggressively (6-figure elopement photographer, beauty studio 3x revenue). Argo has zero customer stories. Even 2-3 would build credibility."
+    },
+    {
+      "topic": "AI tools for photographers / AI in photography business",
+      "estimated_volume": "medium-high (growing)",
+      "difficulty": "medium",
+      "competitors_ranking": ["HoneyBook"],
+      "recommended_content_type": "blog",
+      "priority": "medium",
+      "notes": "HoneyBook is leading heavily on AI positioning. Argo should either counter-position (human-first) or create content about AI tools photographers can actually use."
+    },
+    {
+      "topic": "Photography marketing / TikTok / social media for photographers",
+      "estimated_volume": "high",
+      "difficulty": "high",
+      "competitors_ranking": ["HoneyBook", "Pixifi"],
+      "recommended_content_type": "blog",
+      "priority": "medium",
+      "notes": "HoneyBook has TikTok guide and social media content. Pixifi has 'Creative Campaigns to Market Your Photography Business'. High-volume topic Argo hasn't touched."
+    },
+    {
+      "topic": "Discovery calls / lead conversion for photographers",
+      "estimated_volume": "low-medium",
+      "difficulty": "low",
+      "competitors_ranking": ["Dubsado", "Studio Ninja"],
+      "recommended_content_type": "blog",
+      "priority": "low",
+      "notes": "Dubsado's discovery call questions post, Studio Ninja's enquiry conversion rate content. Niche but high-intent."
+    }
+  ]
+}

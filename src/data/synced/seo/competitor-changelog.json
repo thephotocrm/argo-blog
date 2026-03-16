@@ -1,0 +1,213 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-16",
+  "entries": [
+    {
+      "date": "2026-03-16",
+      "competitor": "HoneyBook",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Homepage headline now positions as 'AI-powered client relationship platform' — heavy AI emphasis with dedicated AI section featuring email drafts, project recaps, business trends, and meeting notetaker",
+          "previous_value": "Clientflow management platform",
+          "new_value": "AI-powered client relationship platform with AI email drafts, project recaps, business trends, meeting notetaker",
+          "strategic_note": "HoneyBook is aggressively differentiating on AI. Argo should consider how to position its own AI capabilities or counter-position on photographer-specific depth."
+        },
+        {
+          "type": "pricing",
+          "description": "Three-tier pricing confirmed: Starter $29/mo, Essentials $49/mo (was $59, now 25% off), Premium $109/mo (was $129). All billed yearly.",
+          "previous_value": "Not tracked",
+          "new_value": "Starter $29/mo | Essentials $49/mo | Premium $109/mo (annual billing)",
+          "strategic_note": "HoneyBook's 25% discount on mid/premium tiers suggests competitive pressure. Argo can undercut on price while emphasizing photographer-specific features."
+        },
+        {
+          "type": "content",
+          "description": "Published product updates post for March 2026 highlighting new payment methods and file-building improvements. Heavy case study output — celebrity cake artist, social media agencies, beauty studios, elopement photographers, consultants.",
+          "previous_value": "Blog focused on general business tips",
+          "new_value": "Aggressive case study / success story publishing across multiple verticals (not just photographers)",
+          "strategic_note": "HoneyBook is broadening beyond photographers to all creative/service businesses. This is both a threat (bigger brand) and opportunity (less photographer-specific content)."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "Dubsado",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Homepage focuses on three verticals: Licensed & Specialized Services, Creatives, and Management/Events/Coordination. Added 'Business financing' feature (Dubsado Payments Capital).",
+          "previous_value": "General CRM for creatives",
+          "new_value": "Three-vertical positioning with business financing (Payments Capital) as new feature",
+          "strategic_note": "Dubsado adding business financing is a significant value-add. They're becoming a financial partner, not just a CRM."
+        },
+        {
+          "type": "pricing",
+          "description": "Two plans: Starter $335/yr (~$28/mo), Premier $525/yr (~$44/mo). Additional brands $10/mo. Users: 4-10 at $25/mo, 11-20 at $45/mo.",
+          "previous_value": "Not tracked",
+          "new_value": "Starter $335/yr | Premier $525/yr | Add-on brands $10/mo",
+          "strategic_note": "Dubsado is price-competitive with HoneyBook. Starter lacks automations/scheduling — similar gating strategy."
+        },
+        {
+          "type": "feature",
+          "description": "Launched Dubsado 3.0 — described as 'faster, more intuitive platform'. Ambassador program now active.",
+          "previous_value": "Dubsado 2.x",
+          "new_value": "Dubsado 3.0 with redesigned UI + Ambassador program",
+          "strategic_note": "Major platform refresh signals renewed investment. Ambassador program builds word-of-mouth moat."
+        },
+        {
+          "type": "content",
+          "description": "Strong content output: pricing guides, finding first clients, niche-finding, freelancing state report, discovery call questions, client onboarding. Emphasis on helping brand-new businesses.",
+          "previous_value": "Mixed content",
+          "new_value": "Heavy beginner-focused content targeting early-stage freelancers and creative businesses",
+          "strategic_note": "Dubsado is capturing top-of-funnel beginners. Argo should target the same audience with photographer-specific beginner content."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "Tave (now VSCO Workspace)",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Tave has been fully absorbed into VSCO Workspace. tave.com redirects to vsco.co/workspace. Positioned as 'Smart Tools to Run and Grow Your Business'.",
+          "previous_value": "Independent brand at tave.com",
+          "new_value": "Fully rebranded as VSCO Workspace — tave.com redirects to vsco.co/workspace",
+          "strategic_note": "CRITICAL CHANGE: Tave brand is effectively dead. VSCO Workspace now backed by VSCO's brand recognition among photographers. This is a bigger competitor than Tave was alone."
+        },
+        {
+          "type": "pricing",
+          "description": "Three tiers: Solo $22.49/mo (annual), Boutique $31.49/mo, Studio $44.99/mo. Includes SMS texting, phone support, free onboarding, and CRM migration support.",
+          "previous_value": "Tave pricing not tracked",
+          "new_value": "Solo $22.49/mo | Boutique $31.49/mo | Studio $44.99/mo (annual). Free onboarding + CRM migration.",
+          "strategic_note": "VSCO Workspace offers free CRM migration — directly targeting users of competitors. Aggressive customer acquisition play."
+        },
+        {
+          "type": "feature",
+          "description": "tave.com/pricing returns 410 'Brand Not Found' — migration of old Tave URLs appears incomplete",
+          "previous_value": "Active pricing page",
+          "new_value": "410 error on old Tave URLs",
+          "strategic_note": "Opportunity: Tave users searching for tave.com/pricing will hit dead links. Argo could create 'Tave alternatives' or 'VSCO Workspace alternatives' content to capture confused users."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "17hats",
+      "changes": [
+        {
+          "type": "pricing",
+          "description": "Single all-inclusive plan: $60/mo, $600/yr, $800/2yr. Currently running 50% off first purchase promo.",
+          "previous_value": "Not tracked",
+          "new_value": "$60/mo | $600/yr | $800/2yr (50% off first purchase promo active)",
+          "strategic_note": "17hats is the most expensive monthly option. Single plan simplifies decision but limits entry-level appeal. Pricing page URL changed (old /pricing.html returns 404)."
+        },
+        {
+          "type": "messaging",
+          "description": "Positioning as 'CRM + Business Management Platform for Solo Business Owners'. Emphasizes 25,000+ users and financial growth milestones.",
+          "previous_value": "Not tracked",
+          "new_value": "Solo business owner focus, 25K+ users, glass ceiling / growth messaging",
+          "strategic_note": "17hats targets solo operators exclusively — not teams. Smaller competitor but owns a niche."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "Pixieset",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Positioned as 'Pixieset Photographer Platform' — all-in-one with galleries, website, CRM. Claims 1M+ users, 6B+ photos delivered, $1.5B+ sold. Now includes Studio Manager for invoices/documents.",
+          "previous_value": "Primarily gallery/delivery platform",
+          "new_value": "Full photographer platform: galleries + website + Studio Manager (CRM/invoicing). 1M+ users.",
+          "strategic_note": "Pixieset expanding from galleries into full business management is a direct competitive threat to Argo. Their gallery dominance gives them a massive installed base to upsell."
+        },
+        {
+          "type": "pricing",
+          "description": "Gallery-focused pricing: Free ($0), Basic $8/mo, Plus $16/mo, Pro $24/mo, Ultimate $40/mo. Studio Manager pricing appears separate/bundled.",
+          "previous_value": "Not tracked",
+          "new_value": "Free → $8 → $16 → $24 → $40/mo (gallery tiers). Studio Manager bundled.",
+          "strategic_note": "Pixieset's free tier is a massive funnel. Hard to compete on price but easy to compete on depth of business management features."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "ShootProof",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Rebranded messaging as 'Emotional Support Software for Photographers' — quirky, community-focused positioning. Emphasizes $0 commission, $1B+ in user sales, 400K+ photographers.",
+          "previous_value": "Not tracked",
+          "new_value": "Emotional Support Software for Photographers. $0 commission. 400K+ users.",
+          "strategic_note": "ShootProof's emotional branding is distinctive and memorable. They're competing on community and support, not features. Hard to replicate but easy to out-feature."
+        },
+        {
+          "type": "pricing",
+          "description": "Storage-based tiers: 100 photos (free trial), 1,500 photos, 5,000 photos, 25,000 photos, Unlimited. All include unlimited galleries, contracts, invoicing. Specific dollar amounts require JS rendering.",
+          "previous_value": "Not tracked",
+          "new_value": "Photo-count tiers from 100 to Unlimited. All plans include contracts, invoicing, selling tools.",
+          "strategic_note": "Storage-based pricing is unique in this market. Good for portfolio photographers who need lots of storage."
+        },
+        {
+          "type": "feature",
+          "description": "Added online client booking, questionnaires (coming soon), and mobile gallery app across all tiers. Google Calendar integration.",
+          "previous_value": "Primarily gallery/print platform",
+          "new_value": "Now includes booking, contracts, invoicing, questionnaires (soon), mobile app",
+          "strategic_note": "ShootProof following Pixieset's playbook — expanding from galleries into full business management. Gallery-first platforms converging with CRM-first platforms."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "Bloom.io",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Positioned as 'All-in-one business workspace & CRM for pro services'. Not photographer-specific — targeting all creative professionals. Heavy influencer/educator endorsements (Chris Do, Matt Gray, Alexandra Fasulo).",
+          "previous_value": "Not tracked",
+          "new_value": "All-in-one workspace for pro services. Endorsed by major business educators/influencers.",
+          "strategic_note": "Bloom.io has strong influencer partnerships driving awareness. Pricing page didn't render content (JS-heavy) — may need browser visit for details."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "competitor": "Sprout Studio",
+      "changes": [
+        {
+          "type": "messaging",
+          "description": "Site returned 403 Forbidden on both homepage and pricing page — possible geo-blocking, bot protection, or site issues.",
+          "previous_value": "Active photographer studio management platform",
+          "new_value": "403 Forbidden — site inaccessible via automated fetch",
+          "strategic_note": "Need browser-based visit to confirm status. If Sprout Studio is having issues or shutting down, this creates opportunity to capture their users."
+        }
+      ]
+    },
+    {
+      "date": "2026-03-15",
+      "competitor": "HoneyBook",
+      "changes": [
+        {
+          "type": "blog_content",
+          "description": "Multiple blog posts tracked — finances, client acquisition, product updates, brochure creation, case studies across verticals",
+          "previous_value": "",
+          "new_value": "17 blog posts cataloged",
+          "strategic_note": "High content velocity across diverse topics"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-15",
+      "competitor": "Dubsado",
+      "changes": [
+        {
+          "type": "blog_content",
+          "description": "Multiple blog posts tracked — lead capture, goal-setting, work-life balance, freelancing report, ambassador program, pricing guides, client onboarding",
+          "previous_value": "",
+          "new_value": "18 blog posts cataloged",
+          "strategic_note": "Strong beginner-focused content strategy"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,830 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-15",
+  "clusters": {
+    "core": "Primary photography CRM terms",
+    "business-management": "Running a photography business",
+    "client-workflow": "Client management and workflow automation",
+    "pricing": "Photography pricing and packages",
+    "wedding": "Wedding photography business",
+    "comparisons": "Argo vs competitor tools",
+    "city": "City-specific photographer searches",
+    "niche": "Photography niche specializations",
+    "tools": "Specific tool and feature searches",
+    "integrations": "Software integrations and tech stack",
+    "pain-points": "Client communication pain points photographers face",
+    "templates": "Photography business templates and tools"
+  },
+  "keywords": [
+    {
+      "keyword": "photography crm",
+      "volume": 1900,
+      "difficulty": "medium",
+      "cluster": "core",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "keyword": "crm for photographers",
+      "volume": 1600,
+      "difficulty": "medium",
+      "cluster": "core",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "best crm for photographers",
+      "volume": 1300,
+      "difficulty": "high",
+      "cluster": "core",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photographer client management software",
+      "volume": 720,
+      "difficulty": "medium",
+      "cluster": "core",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "keyword": "photography business software",
+      "volume": 880,
+      "difficulty": "medium",
+      "cluster": "core",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "keyword": "photography studio management software",
+      "volume": 1100,
+      "difficulty": "medium",
+      "cluster": "core",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "how to run a photography business",
+      "volume": 2400,
+      "difficulty": "medium",
+      "cluster": "business-management",
+      "pillar": "photography-business-guide",
+      "intent": "informational",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "keyword": "photography business tips",
+      "volume": 1800,
+      "difficulty": "medium",
+      "cluster": "business-management",
+      "pillar": "photography-business-guide",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "starting a photography business",
+      "volume": 3600,
+      "difficulty": "high",
+      "cluster": "business-management",
+      "pillar": "photography-business-guide",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography business plan",
+      "volume": 1400,
+      "difficulty": "medium",
+      "cluster": "business-management",
+      "pillar": "photography-business-guide",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "freelance photographer business",
+      "volume": 590,
+      "difficulty": "low",
+      "cluster": "business-management",
+      "pillar": "photography-business-guide",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography business taxes",
+      "volume": 480,
+      "difficulty": "low",
+      "cluster": "business-management",
+      "pillar": "photography-business-guide",
+      "intent": "informational",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography client management",
+      "volume": 720,
+      "difficulty": "medium",
+      "cluster": "client-workflow",
+      "pillar": "client-workflow-automation",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "keyword": "photography workflow automation",
+      "volume": 390,
+      "difficulty": "low",
+      "cluster": "client-workflow",
+      "pillar": "client-workflow-automation",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "keyword": "photography client questionnaire",
+      "volume": 1200,
+      "difficulty": "low",
+      "cluster": "client-workflow",
+      "pillar": "client-workflow-automation",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography client portal",
+      "volume": 480,
+      "difficulty": "low",
+      "cluster": "client-workflow",
+      "pillar": "client-workflow-automation",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography booking system",
+      "volume": 880,
+      "difficulty": "medium",
+      "cluster": "client-workflow",
+      "pillar": "client-workflow-automation",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography lead management",
+      "volume": 260,
+      "difficulty": "low",
+      "cluster": "client-workflow",
+      "pillar": "client-workflow-automation",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography contracts template",
+      "volume": 2900,
+      "difficulty": "medium",
+      "cluster": "client-workflow",
+      "pillar": "client-workflow-automation",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography invoice template",
+      "volume": 2200,
+      "difficulty": "medium",
+      "cluster": "client-workflow",
+      "pillar": "client-workflow-automation",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "how to send photography gallery to clients",
+      "volume": 520,
+      "difficulty": "low",
+      "cluster": "client-workflow",
+      "pillar": "client-workflow-automation",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography pricing guide",
+      "volume": 3200,
+      "difficulty": "high",
+      "cluster": "pricing",
+      "pillar": "photography-pricing",
+      "intent": "informational",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "how to price photography",
+      "volume": 2600,
+      "difficulty": "medium",
+      "cluster": "pricing",
+      "pillar": "photography-pricing",
+      "intent": "informational",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "keyword": "photography packages and pricing",
+      "volume": 1900,
+      "difficulty": "medium",
+      "cluster": "pricing",
+      "pillar": "photography-pricing",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography pricing calculator",
+      "volume": 880,
+      "difficulty": "medium",
+      "cluster": "pricing",
+      "pillar": "photography-pricing",
+      "intent": "transactional",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "cost of photography business",
+      "volume": 320,
+      "difficulty": "low",
+      "cluster": "pricing",
+      "pillar": "photography-pricing",
+      "intent": "informational",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "wedding photography crm",
+      "volume": 480,
+      "difficulty": "medium",
+      "cluster": "wedding",
+      "pillar": "wedding-photography-business",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "wedding photography business",
+      "volume": 1600,
+      "difficulty": "high",
+      "cluster": "wedding",
+      "pillar": "wedding-photography-business",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "how to start a wedding photography business",
+      "volume": 1300,
+      "difficulty": "medium",
+      "cluster": "wedding",
+      "pillar": "wedding-photography-business",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "wedding photography workflow",
+      "volume": 390,
+      "difficulty": "low",
+      "cluster": "wedding",
+      "pillar": "wedding-photography-business",
+      "intent": "informational",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "wedding photography client experience",
+      "volume": 210,
+      "difficulty": "low",
+      "cluster": "wedding",
+      "pillar": "wedding-photography-business",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "wedding photographer booking process",
+      "volume": 260,
+      "difficulty": "low",
+      "cluster": "wedding",
+      "pillar": "wedding-photography-business",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "honeybook vs dubsado for photographers",
+      "volume": 1400,
+      "difficulty": "high",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "keyword": "honeybook alternative for photographers",
+      "volume": 720,
+      "difficulty": "medium",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "in_progress"
+    },
+    {
+      "keyword": "dubsado alternative",
+      "volume": 880,
+      "difficulty": "medium",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "honeybook for photographers",
+      "volume": 1100,
+      "difficulty": "high",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "dubsado for photographers",
+      "volume": 880,
+      "difficulty": "high",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "sprout studio vs honeybook",
+      "volume": 320,
+      "difficulty": "medium",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "tave vs honeybook",
+      "volume": 260,
+      "difficulty": "medium",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "pixifi vs honeybook",
+      "volume": 210,
+      "difficulty": "low",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "studio ninja vs honeybook",
+      "volume": 170,
+      "difficulty": "low",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "best crm for wedding photographers",
+      "volume": 590,
+      "difficulty": "medium",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photographer crm austin",
+      "volume": 50,
+      "difficulty": "low",
+      "cluster": "city",
+      "pillar": "city-photographer-guides",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photographer crm los angeles",
+      "volume": 70,
+      "difficulty": "low",
+      "cluster": "city",
+      "pillar": "city-photographer-guides",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photographer crm new york",
+      "volume": 70,
+      "difficulty": "low",
+      "cluster": "city",
+      "pillar": "city-photographer-guides",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "wedding photographer crm dallas",
+      "volume": 40,
+      "difficulty": "low",
+      "cluster": "city",
+      "pillar": "city-photographer-guides",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photographer crm chicago",
+      "volume": 50,
+      "difficulty": "low",
+      "cluster": "city",
+      "pillar": "city-photographer-guides",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photographer crm denver",
+      "volume": 40,
+      "difficulty": "low",
+      "cluster": "city",
+      "pillar": "city-photographer-guides",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photographer crm nashville",
+      "volume": 40,
+      "difficulty": "low",
+      "cluster": "city",
+      "pillar": "city-photographer-guides",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "portrait photography business",
+      "volume": 720,
+      "difficulty": "medium",
+      "cluster": "niche",
+      "pillar": "niche-photography-guides",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "newborn photography business",
+      "volume": 880,
+      "difficulty": "medium",
+      "cluster": "niche",
+      "pillar": "niche-photography-guides",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "elopement photography business",
+      "volume": 390,
+      "difficulty": "low",
+      "cluster": "niche",
+      "pillar": "niche-photography-guides",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "boudoir photography business",
+      "volume": 590,
+      "difficulty": "medium",
+      "cluster": "niche",
+      "pillar": "niche-photography-guides",
+      "intent": "informational",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "real estate photography crm",
+      "volume": 210,
+      "difficulty": "low",
+      "cluster": "niche",
+      "pillar": "niche-photography-guides",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "family photography business tips",
+      "volume": 480,
+      "difficulty": "low",
+      "cluster": "niche",
+      "pillar": "niche-photography-guides",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "headshot photography business",
+      "volume": 320,
+      "difficulty": "low",
+      "cluster": "niche",
+      "pillar": "niche-photography-guides",
+      "intent": "informational",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography gallery delivery",
+      "volume": 590,
+      "difficulty": "low",
+      "cluster": "tools",
+      "pillar": "photography-tools",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography email templates",
+      "volume": 1400,
+      "difficulty": "medium",
+      "cluster": "tools",
+      "pillar": "photography-tools",
+      "intent": "informational",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography scheduling tool",
+      "volume": 480,
+      "difficulty": "low",
+      "cluster": "tools",
+      "pillar": "photography-tools",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "online photography contract signing",
+      "volume": 320,
+      "difficulty": "low",
+      "cluster": "tools",
+      "pillar": "photography-tools",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography payment processing",
+      "volume": 260,
+      "difficulty": "low",
+      "cluster": "tools",
+      "pillar": "photography-tools",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography accounting software",
+      "volume": 390,
+      "difficulty": "low",
+      "cluster": "tools",
+      "pillar": "photography-tools",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography crm with contracts",
+      "volume": 260,
+      "difficulty": "low",
+      "cluster": "tools",
+      "pillar": "photography-tools",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography crm stripe integration",
+      "volume": 110,
+      "difficulty": "low",
+      "cluster": "integrations",
+      "pillar": "photography-integrations",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography crm quickbooks integration",
+      "volume": 140,
+      "difficulty": "low",
+      "cluster": "integrations",
+      "pillar": "photography-integrations",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography crm google calendar sync",
+      "volume": 170,
+      "difficulty": "low",
+      "cluster": "integrations",
+      "pillar": "photography-integrations",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography crm zapier",
+      "volume": 90,
+      "difficulty": "low",
+      "cluster": "integrations",
+      "pillar": "photography-integrations",
+      "intent": "commercial",
+      "priority": "low",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography crm with email marketing",
+      "volume": 170,
+      "difficulty": "low",
+      "cluster": "integrations",
+      "pillar": "photography-integrations",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography website with crm",
+      "volume": 210,
+      "difficulty": "low",
+      "cluster": "integrations",
+      "pillar": "photography-integrations",
+      "intent": "commercial",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography client not responding",
+      "volume": 320,
+      "difficulty": "low",
+      "cluster": "pain-points",
+      "pillar": "client-workflow-automation",
+      "intent": "informational",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography client ghosting",
+      "volume": 260,
+      "difficulty": "low",
+      "cluster": "pain-points",
+      "pillar": "client-workflow-automation",
+      "intent": "informational",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "how to follow up with photography leads",
+      "volume": 210,
+      "difficulty": "low",
+      "cluster": "pain-points",
+      "pillar": "client-workflow-automation",
+      "intent": "informational",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography no-show policy",
+      "volume": 170,
+      "difficulty": "low",
+      "cluster": "pain-points",
+      "pillar": "client-workflow-automation",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "honeybook pricing 2026",
+      "volume": 880,
+      "difficulty": "low",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "is honeybook worth it for photographers",
+      "volume": 480,
+      "difficulty": "low",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "cheaper alternative to honeybook",
+      "volume": 390,
+      "difficulty": "low",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "dubsado pricing 2026",
+      "volume": 590,
+      "difficulty": "low",
+      "cluster": "comparisons",
+      "pillar": "photography-crm-comparison",
+      "intent": "commercial",
+      "priority": "high",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography proposal template",
+      "volume": 1100,
+      "difficulty": "medium",
+      "cluster": "templates",
+      "pillar": "photography-tools",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography welcome guide template",
+      "volume": 720,
+      "difficulty": "low",
+      "cluster": "templates",
+      "pillar": "photography-tools",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "photography pricing spreadsheet",
+      "volume": 480,
+      "difficulty": "low",
+      "cluster": "templates",
+      "pillar": "photography-tools",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    },
+    {
+      "keyword": "raise photography prices email template",
+      "volume": 260,
+      "difficulty": "low",
+      "cluster": "templates",
+      "pillar": "photography-tools",
+      "intent": "informational",
+      "priority": "medium",
+      "status": "not_started"
+    }
+  ]
+}

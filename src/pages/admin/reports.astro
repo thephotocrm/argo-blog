@@ -2,33 +2,36 @@
 export const prerender = false;
 
 import Dashboard from '../../components/admin/Dashboard.astro';
-import { getReportsList, getReport, getTechSeoTasks } from '../../lib/data';
+import { getTechSeoTasks } from '../../lib/data';
 import { marked } from 'marked';
 
-const reportFiles = getReportsList();
 const techSeoTasks = getTechSeoTasks();
 
-// Render all markdown reports
-const reports = reportFiles
-  .filter(f => f.endsWith('.md'))
-  .map(f => {
-    const raw = getReport(f);
+// Load reports via glob (works on Vercel — bundled at build time)
+const mdFiles = import.meta.glob('../../data/synced/seo/reports/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const jsonFiles = import.meta.glob('../../data/synced/seo/reports/*.json', { eager: true }) as Record<string, { default: any }>;
+
+const reports = Object.entries(mdFiles)
+  .map(([path, raw]) => {
+    const name = path.split('/').pop() || '';
     return {
-      name: f,
-      displayName: f.replace(/\.md$/, '').replace(/-/g, ' '),
+      name,
+      displayName: name.replace(/\.md$/, '').replace(/-/g, ' '),
       html: raw ? marked(raw) : null,
     };
-  });
+  })
+  .sort((a, b) => b.name.localeCompare(a.name));
 
-// JSON reports
-const jsonReports = reportFiles
-  .filter(f => f.endsWith('.json'))
-  .map(f => {
-    const raw = getReport(f);
-    let data = null;
-    try { data = raw ? JSON.parse(raw) : null; } catch {}
-    return { name: f, displayName: f.replace(/\.json$/, '').replace(/-/g, ' '), data };
-  });
+const jsonReports = Object.entries(jsonFiles)
+  .map(([path, mod]) => {
+    const name = path.split('/').pop() || '';
+    return {
+      name,
+      displayName: name.replace(/\.json$/, '').replace(/-/g, ' '),
+      data: (mod as any).default || mod,
+    };
+  })
+  .sort((a, b) => b.name.localeCompare(a.name));
 
 const tasks = techSeoTasks.tasks || [];
 ---

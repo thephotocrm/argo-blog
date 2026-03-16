@@ -1,0 +1,460 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "16a52766-8c34-47d6-a2d0-25385a72d3f9",
+      "name": "argo-daily-discovery",
+      "description": "Daily creator discovery: rotates platforms, searches 2-3 hashtags, discovers up to 10 creators, auto-qualifies",
+      "enabled": true,
+      "createdAtMs": 1773350419932,
+      "updatedAtMs": 1773636586661,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * *",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-discover to find new creators. Rotate to the next platform in the sequence. Search 2-3 hashtags. After discovery, run argo-qualify to score all unscored creators. Report results."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773673200000,
+        "lastRunAtMs": 1773636531515,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 55146,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "f1fda751-5d21-4d91-8304-674260c43970",
+      "name": "argo-followup-check-am",
+      "description": "Morning follow-up check: drafts follow-ups for due creators, announces for approval",
+      "enabled": true,
+      "createdAtMs": 1773350428385,
+      "updatedAtMs": 1773636531509,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-followup to check for creators due for follow-up messages. Draft follow-ups for any that are due. Announce drafts for user approval. Do not send without approval."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773669600000,
+        "lastRunAtMs": 1773636516531,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 14978,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "b77e9bac-ebf1-4f9d-a036-7ff1710f8439",
+      "name": "argo-followup-check-pm",
+      "description": "Evening follow-up check: drafts follow-ups for due creators, announces for approval",
+      "enabled": true,
+      "createdAtMs": 1773350430718,
+      "updatedAtMs": 1773635984886,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 21 * * *",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-followup to check for creators due for follow-up messages. Draft follow-ups for any that are due. Announce drafts for user approval. Do not send without approval."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773712800000,
+        "lastRunAtMs": 1773635963790,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 21096,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    },
+    {
+      "id": "b40ce9b3-cf9a-4cf5-97a0-8ed4c8d583f5",
+      "name": "argo-weekly-report",
+      "description": "Monday morning pipeline report: full summary saved to pipeline-reports/",
+      "enabled": true,
+      "createdAtMs": 1773350433008,
+      "updatedAtMs": 1773636516525,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * 1",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-pipeline to generate a full weekly report. Save the report to ~/.openclaw/workspace/argo-data/pipeline-reports/ with filename format week-WW-YYYY.md. Announce the summary."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773666000000,
+        "lastRunAtMs": 1773636465902,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 50623,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a1b2c3d4-seo1-4000-a000-000000000001",
+      "name": "argo-seo-blog-weekly",
+      "description": "Generate 2-3 blog posts from keyword queue targeting photography business keywords",
+      "enabled": true,
+      "createdAtMs": 1773778800000,
+      "updatedAtMs": 1773636999605,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * 2",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-seo-content to generate 2-3 blog posts. Read keyword-research.json from ~/.openclaw/workspace/argo-data/seo/ and select the next high-priority keywords with status 'not_started'. Generate Markdown blog posts following the content templates and brand voice rules. Save posts to ~/OneDrive/Desktop/argo-blog/src/content/blog/. Run argo-seo-review on each post to validate brand voice and SEO checklist. Update content-queue.json with new entries (status: pending_review). Update keyword-research.json statuses."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773748800000,
+        "lastRunAtMs": 1773636706962,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 292643,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a1b2c3d4-seo2-4000-a000-000000000002",
+      "name": "argo-seo-programmatic-batch",
+      "description": "Generate batch of 10 programmatic pages (city, niche, comparison, integration)",
+      "enabled": true,
+      "createdAtMs": 1773778800000,
+      "updatedAtMs": 1773637507129,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * 4",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-seo-programmatic to generate a batch of 10 programmatic pages. Read cities.json, niches.json, competitors.json, and integrations.json from ~/.openclaw/workspace/skills/argo-seo-programmatic/references/. Prioritize: city pages first (until all 120+ done), then niche pages, then comparison pages. Generate Markdown with 60% templated structure + 40% unique content. Save to ~/OneDrive/Desktop/argo-blog/src/content/pages/. Run argo-seo-review on each. City/niche pages auto-approve if they pass checks. Comparison pages go to pending_review."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773921600000,
+        "lastRunAtMs": 1773637142140,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 364989,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a1b2c3d4-seo3-4000-a000-000000000003",
+      "name": "argo-seo-serp-daily",
+      "description": "Daily SERP position check for target photography CRM keywords",
+      "enabled": true,
+      "createdAtMs": 1773778800000,
+      "updatedAtMs": 1773636250199,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 6 * * *",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-seo-intel for daily SERP monitoring. Read serp-targets.json from ~/.openclaw/workspace/skills/argo-seo-intel/references/. For each high-priority keyword, search Google via browser and record Argo's position (if found in top 100). Save results to ~/.openclaw/workspace/argo-data/seo/serp-snapshots/ with filename YYYY-MM-DD.json. Note any significant position changes (up or down 5+ spots). Announce summary."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773658800000,
+        "lastRunAtMs": 1773636125977,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 124222,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a1b2c3d4-seo4-4000-a000-000000000004",
+      "name": "argo-seo-competitor-weekly",
+      "description": "Weekly competitor changelog and content gap analysis",
+      "enabled": true,
+      "createdAtMs": 1773778800000,
+      "updatedAtMs": 1773636465894,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * 1",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-seo-intel for weekly competitor tracking. Read competitor-urls.json from ~/.openclaw/workspace/skills/argo-seo-intel/references/. Visit each competitor homepage and pricing page via browser. Compare against previous snapshots and log changes to ~/.openclaw/workspace/argo-data/seo/competitor-changelog.json. Identify content gaps — topics competitors cover that Argo's blog hasn't addressed yet. Announce findings."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773666000000,
+        "lastRunAtMs": 1773636250208,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 215686,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a1b2c3d4-seo5-4000-a000-000000000005",
+      "name": "argo-seo-authority-weekly",
+      "description": "Weekly authority building: HARO pitch drafts and Reddit answer drafts",
+      "enabled": true,
+      "createdAtMs": 1773778800000,
+      "updatedAtMs": 1773637142131,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 3",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-seo-authority. Check target subreddits (from reddit-subreddits.json) via browser for recent posts where photography business tools, CRM recommendations, or workflow advice is discussed. Draft 2-3 helpful Reddit comment drafts that naturally reference Argo where relevant. Draft 1-2 HARO-style pitch templates for photography/small business queries. Save all drafts to ~/.openclaw/workspace/argo-data/seo/authority-outbox.json with status 'pending_review'. NEVER auto-post or auto-send anything. Announce drafts for review."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773842400000,
+        "lastRunAtMs": 1773636999612,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 142519,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a1b2c3d4-seo6-4000-a000-000000000006",
+      "name": "argo-seo-aeo-monthly",
+      "description": "Monthly AI Overview monitoring and citation audit",
+      "enabled": true,
+      "createdAtMs": 1773778800000,
+      "updatedAtMs": 1773637742098,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 1 * *",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-seo-aeo for monthly AEO audit. Search target keywords via browser and check if Google AI Overviews cite any Argo blog content. Audit existing blog posts for AEO readiness: check for definitive answer paragraphs after H2s, FAQ sections, Q&A structure. Identify posts that need AEO improvements. Save audit results to ~/.openclaw/workspace/argo-data/seo/reports/aeo-audit-YYYY-MM.json. Announce findings and recommendations."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1775044800000,
+        "lastRunAtMs": 1773637581508,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 160590,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a1b2c3d4-seo7-4000-a000-000000000007",
+      "name": "argo-seo-report-weekly",
+      "description": "Weekly SEO performance report with content stats and SERP trends",
+      "enabled": true,
+      "createdAtMs": 1773778800000,
+      "updatedAtMs": 1773637581501,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 5",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Generate a weekly SEO report. Read all data from ~/.openclaw/workspace/argo-data/seo/: content-log.json (published content this week), content-queue.json (pending reviews), serp-snapshots/ (SERP position trends), competitor-changelog.json (competitor changes), authority-outbox.json (outreach status). Compile into a report: total pages published, pages pending review, SERP position changes, competitor activity, authority outreach status. Save to ~/.openclaw/workspace/argo-data/seo/reports/seo-weekly-YYYY-WW.md. Announce summary."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1774018800000,
+        "lastRunAtMs": 1773637507137,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 74364,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a1b2c3d4-seo8-4000-a000-000000000008",
+      "name": "argo-seo-foundation-monthly",
+      "description": "Monthly technical SEO re-audit and Core Web Vitals check",
+      "enabled": true,
+      "createdAtMs": 1773778800000,
+      "updatedAtMs": 1773637880162,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 15 * *",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-seo-foundation for monthly technical SEO audit. Check blog.argostudio.co via browser: verify robots.txt accessible, sitemap-index.xml valid, llms.txt accessible. Sample 5 pages and verify: canonical URLs present, OG tags complete, JSON-LD valid, page load under 3s. Run Lighthouse audit if available. Check for broken internal links. Save audit results to ~/.openclaw/workspace/argo-data/seo/reports/tech-seo-audit-YYYY-MM.md. Announce findings and any issues."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1776254400000,
+        "lastRunAtMs": 1773637742105,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 138057,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "a1b2c3d4-over-4000-a000-000000000009",
+      "name": "argo-seo-overseer",
+      "description": "Daily health check of the entire Argo SEO automation system — monitors cron jobs, content pipeline, data freshness, and flags issues",
+      "enabled": true,
+      "createdAtMs": 1773778800000,
+      "updatedAtMs": 1773636706949,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 20 * * *",
+        "tz": "America/Chicago"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run argo-seo-overseer to perform the daily health check. Read ~/.openclaw/cron/jobs.json for all job states. Read run logs from ~/.openclaw/cron/runs/ for recent run details. Read all SEO data files from ~/.openclaw/workspace/argo-data/seo/ (keyword-research.json, keyword-candidates.json, content-queue.json, content-log.json, competitor-changelog.json, authority-outbox.json). Check serp-snapshots/ and reports/ directories for data freshness. Count blog posts in ~/OneDrive/Desktop/argo-blog/src/content/blog/. Generate a structured health report with alerts, job status table, pipeline stats, and data freshness. Save the report to ~/.openclaw/workspace/argo-data/seo/reports/overseer-YYYY-MM-DD.md. Announce the full report."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "discord",
+        "to": "channel:1476107505892327476",
+        "bestEffort": true
+      },
+      "state": {
+        "nextRunAtMs": 1773709200000,
+        "lastRunAtMs": 1773636586672,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 120277,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      }
+    }
+  ]
+}

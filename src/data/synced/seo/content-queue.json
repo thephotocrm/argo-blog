@@ -1,0 +1,184 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-16",
+  "items": [
+    {
+      "slug": "how-to-price-photography",
+      "title": "How to Price Photography: A Practical Guide for Working Photographers",
+      "content_type": "cluster",
+      "pillar": "photography-pricing",
+      "keyword": "how to price photography",
+      "status": "pending_review",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/how-to-price-photography.md",
+      "created_at": "2026-03-15",
+      "word_count": 1350
+    },
+    {
+      "slug": "photography-client-management",
+      "title": "Photography Client Management: From First Inquiry to Gallery Delivery",
+      "content_type": "cluster",
+      "pillar": "client-workflow-automation",
+      "keyword": "photography client management",
+      "status": "pending_review",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/photography-client-management.md",
+      "created_at": "2026-03-15",
+      "word_count": 1400
+    },
+    {
+      "slug": "honeybook-vs-dubsado-for-photographers",
+      "title": "HoneyBook vs Dubsado for Photographers: An Honest Comparison",
+      "content_type": "cluster",
+      "pillar": "photography-crm-comparison",
+      "keyword": "honeybook vs dubsado for photographers",
+      "status": "pending_review",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/honeybook-vs-dubsado-for-photographers.md",
+      "created_at": "2026-03-15",
+      "word_count": 1350
+    },
+    {
+      "slug": "why-photographers-need-a-crm",
+      "title": "Why Photographers Need a CRM in 2026",
+      "content_type": "cluster",
+      "pillar": "photography-crm-comparison",
+      "keyword": "photography crm",
+      "status": "published",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/why-photographers-need-a-crm.md",
+      "created_at": "2026-03-15",
+      "published_at": "2026-03-15",
+      "word_count": 830
+    },
+    {
+      "slug": "how-to-run-a-photography-business",
+      "title": "How to Run a Photography Business in 2026",
+      "content_type": "cluster",
+      "pillar": "photography-business-guide",
+      "keyword": "how to run a photography business",
+      "status": "pending_review",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/how-to-run-a-photography-business.md",
+      "created_at": "2026-03-16",
+      "word_count": 1634
+    },
+    {
+      "slug": "honeybook-alternative-for-photographers",
+      "title": "HoneyBook Alternatives for Photographers (2026)",
+      "content_type": "cluster",
+      "pillar": "photography-crm-comparison",
+      "keyword": "honeybook alternative for photographers",
+      "status": "pending_review",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/honeybook-alternative-for-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 1397
+    },
+    {
+      "slug": "photography-workflow-automation",
+      "title": "Photography Workflow Automation: A Guide",
+      "content_type": "cluster",
+      "pillar": "client-workflow-automation",
+      "keyword": "photography workflow automation",
+      "status": "pending_review",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/photography-workflow-automation.md",
+      "created_at": "2026-03-16",
+      "word_count": 1620
+    },
+    {
+      "slug": "argo-studio-new-york-ny-photographers",
+      "title": "Argo Studio for New York Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-new-york-ny-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 861,
+      "requires_review": false
+    },
+    {
+      "slug": "argo-studio-los-angeles-ca-photographers",
+      "title": "Argo Studio for Los Angeles Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-los-angeles-ca-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 842,
+      "requires_review": false
+    },
+    {
+      "slug": "argo-studio-chicago-il-photographers",
+      "title": "Argo Studio for Chicago Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-chicago-il-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 805,
+      "requires_review": false
+    },
+    {
+      "slug": "argo-studio-houston-tx-photographers",
+      "title": "Argo Studio for Houston Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-houston-tx-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 819,
+      "requires_review": false
+    },
+    {
+      "slug": "argo-studio-phoenix-az-photographers",
+      "title": "Argo Studio for Phoenix Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-phoenix-az-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 828,
+      "requires_review": false
+    },
+    {
+      "slug": "argo-studio-philadelphia-pa-photographers",
+      "title": "Argo Studio for Philadelphia Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-philadelphia-pa-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 834,
+      "requires_review": false
+    },
+    {
+      "slug": "argo-studio-san-antonio-tx-photographers",
+      "title": "Argo Studio for San Antonio Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-san-antonio-tx-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 836,
+      "requires_review": false
+    },
+    {
+      "slug": "argo-studio-san-diego-ca-photographers",
+      "title": "Argo Studio for San Diego Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-san-diego-ca-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 809,
+      "requires_review": false
+    },
+    {
+      "slug": "argo-studio-dallas-tx-photographers",
+      "title": "Argo Studio for Dallas Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-dallas-tx-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 838,
+      "requires_review": false
+    },
+    {
+      "slug": "argo-studio-austin-tx-photographers",
+      "title": "Argo Studio for Austin Photographers",
+      "content_type": "programmatic-city",
+      "status": "auto_approved",
+      "file_path": "~/OneDrive/Desktop/argo-blog/src/content/pages/city/argo-studio-austin-tx-photographers.md",
+      "created_at": "2026-03-16",
+      "word_count": 864,
+      "requires_review": false
+    }
+  ]
+}

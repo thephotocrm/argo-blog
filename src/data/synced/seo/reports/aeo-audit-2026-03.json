@@ -1,0 +1,305 @@
+{
+  "version": "1.0",
+  "auditDate": "2026-03-16",
+  "auditType": "monthly-aeo",
+  "summary": {
+    "totalContentPagesAudited": 10,
+    "blogPosts": 3,
+    "cityPages": 7,
+    "publishedPosts": 0,
+    "draftPosts": 3,
+    "averageAeoScore": 3.2,
+    "pagesNeedingImprovements": 10,
+    "aiOverviewCitations": 0,
+    "featuredSnippetsCaptured": 0
+  },
+  "aiOverviewMonitoring": {
+    "searchEngine": "brave_web_search",
+    "note": "Brave Search used as proxy. Google AI Overviews cannot be directly checked via API. No Argo content appeared in any search results for target keywords — the blog is too new (launched 2026-03-15) with only draft content.",
+    "keywordsChecked": [
+      {
+        "keyword": "photography crm",
+        "volume": 1900,
+        "aiOverviewPresent": false,
+        "argoCited": false,
+        "argoInTop10": false,
+        "topCitedCompetitors": ["adventureinstead.com", "kylegoldie.com", "pixieset.com", "adventureweddingacademy.com", "format.com"]
+      },
+      {
+        "keyword": "best crm for photographers",
+        "volume": 1300,
+        "aiOverviewPresent": false,
+        "argoCited": false,
+        "argoInTop10": false,
+        "topCitedCompetitors": ["blog.bloom.io", "adventureweddingacademy.com", "adventureinstead.com", "aftershoot.com", "kylegoldie.com"]
+      },
+      {
+        "keyword": "photography business software",
+        "volume": 880,
+        "aiOverviewPresent": false,
+        "argoCited": false,
+        "argoInTop10": false,
+        "topCitedCompetitors": ["flothemes.com", "emmathurgood.com", "studioninja.co", "pixieset.com", "vsco.co"]
+      },
+      {
+        "keyword": "photography client management",
+        "volume": 720,
+        "aiOverviewPresent": false,
+        "argoCited": false,
+        "argoInTop10": false,
+        "topCitedCompetitors": ["studioninja.co", "flowlu.com", "pixieset.com", "flothemes.com", "plutio.com"]
+      },
+      {
+        "keyword": "how to run a photography business",
+        "volume": 2400,
+        "aiOverviewPresent": false,
+        "argoCited": false,
+        "argoInTop10": false,
+        "topCitedCompetitors": ["studio29blog.com", "zachnicholz.com", "taileephotography.com", "catieronquillo.com", "squareup.com"]
+      },
+      {
+        "keyword": "photography workflow automation",
+        "volume": 590,
+        "aiOverviewPresent": false,
+        "argoCited": false,
+        "argoInTop10": false,
+        "topCitedCompetitors": ["imagen-ai.com", "digital-photography-school.com", "colorexpertsbd.com", "pps.innovatureinc.com"]
+      },
+      {
+        "keyword": "honeybook alternative for photographers",
+        "volume": 480,
+        "aiOverviewPresent": false,
+        "argoCited": false,
+        "argoInTop10": false,
+        "topCitedCompetitors": ["blog.bloom.io", "productive.io", "hellobonsai.com", "agencyhandy.com", "coliejames.com"]
+      }
+    ]
+  },
+  "contentAudit": {
+    "blogPosts": [
+      {
+        "slug": "honeybook-alternative-for-photographers",
+        "title": "HoneyBook Alternatives for Photographers (2026)",
+        "status": "draft",
+        "wordCount": 1397,
+        "aeoScore": 4,
+        "strengths": [
+          "Clear H2 structure with descriptive headings",
+          "Key Takeaway boxes after major sections serve as quotable summaries",
+          "FAQ section with 3 Q&A pairs answering real questions",
+          "Direct, factual language — avoids promotional fluff in answer sections",
+          "Comparison structure is AI-friendly for overview generation",
+          "Specific pricing data makes content citation-worthy"
+        ],
+        "weaknesses": [
+          "No FAQPage JSON-LD schema markup",
+          "Missing definitive answer paragraph immediately after H1 — the intro is narrative, not answer-first",
+          "FAQ section has only 3 questions — needs at least 5 for proper FAQPage schema",
+          "No structured data of any kind in frontmatter beyond basic SEO",
+          "Key Takeaway boxes use blockquote format which may not be parsed as answers by AI crawlers"
+        ],
+        "recommendations": [
+          "Add a 2-sentence definitive answer paragraph after the H1: 'The best HoneyBook alternatives for photographers are Dubsado, Argo Studio, Sprout Studio, Táve, and Pixifi. Each excels in a different area...'",
+          "Add FAQPage JSON-LD schema with at least 5 Q&A pairs",
+          "Add 2 more FAQ questions (e.g., 'Which HoneyBook alternative is best for wedding photographers?', 'Does Dubsado have a free plan?')",
+          "Add definitive answer paragraphs after each H2 (2-3 sentences, direct)",
+          "Move key comparison facts to the opening paragraph of each alternative section"
+        ]
+      },
+      {
+        "slug": "how-to-run-a-photography-business",
+        "title": "How to Run a Photography Business in 2026",
+        "status": "draft",
+        "wordCount": 1634,
+        "aeoScore": 3.5,
+        "strengths": [
+          "Strong H2 structure with clear topical divisions",
+          "Key Takeaway boxes after every section — excellent for AI extraction",
+          "Specific numbers throughout (25-30% tax, $1,275/session, 40% booking rate)",
+          "FAQ section with 5 Q&A pairs — meets FAQPage schema minimum",
+          "Answers real questions photographers ask",
+          "Inverted pyramid structure in most sections"
+        ],
+        "weaknesses": [
+          "No FAQPage JSON-LD schema markup despite having 5 Q&As",
+          "H1 intro is narrative/anecdotal — buries the direct answer",
+          "No definitive answer paragraph at the top summarizing the full article",
+          "Section H2s use imperative phrasing ('Set Your Pricing') rather than question phrasing which AI systems prefer",
+          "No structured data in frontmatter"
+        ],
+        "recommendations": [
+          "Add definitive answer paragraph after H1: 'Running a photography business requires getting five fundamentals right: pricing based on your cost of doing business, a repeatable client workflow, disciplined time management, solid legal/financial foundations, and marketing where your clients actually are.'",
+          "Add FAQPage JSON-LD schema for the 5 existing Q&A pairs",
+          "Consider adding H3 sub-questions under each H2 (e.g., 'How should photographers set their prices?')",
+          "Add a summary/TL;DR section near the top for quick AI extraction",
+          "Add HowTo schema markup for the step-by-step sections"
+        ]
+      },
+      {
+        "slug": "photography-workflow-automation",
+        "title": "Photography Workflow Automation: A Practical Guide for Photographers",
+        "status": "draft",
+        "wordCount": 1620,
+        "aeoScore": 3.5,
+        "strengths": [
+          "Excellent structure with clear, specific H2 headings",
+          "Key Takeaway boxes serve as extractable answers",
+          "Numbered lists for automation sequences (5-step onboarding, 5-step post-delivery)",
+          "FAQ section with 3 Q&A pairs",
+          "Specific data points (5 minutes response time, 21x more likely stat)",
+          "Template structure provided for auto-responses"
+        ],
+        "weaknesses": [
+          "No FAQPage JSON-LD schema",
+          "FAQ section only has 3 questions — needs 5 minimum",
+          "H1 intro paragraph is narrative, not answer-first",
+          "Missing definitive answer paragraphs after H2s — sections start with explanatory text, not direct answers",
+          "No structured data markup of any kind",
+          "Numbered automation steps could be enhanced with HowTo schema"
+        ],
+        "recommendations": [
+          "Add definitive answer paragraph after H1: 'Photography workflow automation means using software to handle repetitive business tasks — inquiry responses, client onboarding, session prep, gallery delivery, and follow-up — so you can spend more time shooting and less time on admin.'",
+          "Add FAQPage JSON-LD with 5+ Q&A pairs",
+          "Add 2 more FAQ questions (e.g., 'What tasks should photographers NOT automate?', 'How long does it take to set up photography workflow automation?')",
+          "Add definitive answer paragraphs after each H2",
+          "Add HowTo schema for the step-by-step sequences"
+        ]
+      }
+    ],
+    "cityPages": {
+      "count": 7,
+      "representativePage": "argo-studio-new-york-ny-photographers",
+      "averageAeoScore": 2.5,
+      "commonStrengths": [
+        "FAQ section present with photography-specific questions",
+        "json_ld: true flag in frontmatter (schema intent)",
+        "Local SEO signals (city, state, venue names)",
+        "Clear H2 structure"
+      ],
+      "commonWeaknesses": [
+        "No definitive answer paragraphs after H2s",
+        "H2 sections open with narrative text, not direct answers",
+        "Markdown tables not ideal for AI extraction",
+        "No Q&A or FAQ structured data implemented",
+        "Too promotional in body sections — AI systems prefer neutral, factual content",
+        "Missing entity markup (LocalBusiness, Product schema)"
+      ],
+      "recommendations": [
+        "Add definitive answer paragraph after each H2 that directly answers the implied question",
+        "Replace markdown tables with structured lists for better AI parsing",
+        "Add LocalBusiness + Product JSON-LD schema to all city pages",
+        "Make FAQ answers more direct and factual, less promotional",
+        "Add 'What do photographers in [City] look for in a CRM?' type Q&A content"
+      ]
+    }
+  },
+  "overallFindings": {
+    "positives": [
+      "Content quality is high — well-researched, specific, factual",
+      "Key Takeaway boxes are a strong AEO pattern — easy for AI to extract as summary answers",
+      "FAQ sections exist on all posts — foundation for FAQPage schema is there",
+      "Brand voice is authoritative without being promotional in answer sections",
+      "Specific numbers and data throughout (pricing, percentages, timeframes)"
+    ],
+    "criticalGaps": [
+      "ZERO structured data markup (no FAQPage, HowTo, Article, or Product schema on any page)",
+      "No published content yet — all 3 blog posts are still in draft status",
+      "No definitive answer paragraphs after H1 headings (all posts start with narrative intros)",
+      "No llms.txt file created yet",
+      "No entity pages (About, Philosophy) created yet",
+      "Blog is brand new (launched 2026-03-15) — zero search visibility or AI citations"
+    ],
+    "priorityActions": [
+      {
+        "priority": 1,
+        "action": "Publish draft blog posts",
+        "rationale": "Nothing can rank or get cited while in draft. The 3 existing posts are high-quality and ready for publication after review.",
+        "effort": "Low"
+      },
+      {
+        "priority": 2,
+        "action": "Add FAQPage JSON-LD schema to all posts",
+        "rationale": "Every post already has FAQ content. Adding the schema markup is the highest-ROI AEO task.",
+        "effort": "Medium"
+      },
+      {
+        "priority": 3,
+        "action": "Add definitive answer paragraphs after every H1 and H2",
+        "rationale": "AI systems extract the first 1-2 sentences after headings. Currently these are narrative. Make them direct, quotable answers.",
+        "effort": "Medium"
+      },
+      {
+        "priority": 4,
+        "action": "Expand FAQ sections to 5+ questions each",
+        "rationale": "More Q&A pairs = more chances to appear in People Also Ask and AI Overviews.",
+        "effort": "Low"
+      },
+      {
+        "priority": 5,
+        "action": "Create llms.txt for the blog subdomain",
+        "rationale": "Helps AI crawlers understand site structure and authoritative content areas.",
+        "effort": "Low"
+      },
+      {
+        "priority": 6,
+        "action": "Create About Argo and Philosophy entity pages",
+        "rationale": "Entity content helps AI knowledge graphs identify and cite Argo as an authority.",
+        "effort": "Medium"
+      },
+      {
+        "priority": 7,
+        "action": "Add Article and Product schema to blog posts and product pages",
+        "rationale": "Structured data improves discoverability across all AI answer engines.",
+        "effort": "Medium"
+      }
+    ]
+  },
+  "competitorCitationAnalysis": {
+    "note": "These competitors consistently appear in top positions across Argo's target keywords. If/when AI Overviews appear for these terms, these are the most likely sources to be cited.",
+    "topCompetitors": [
+      {
+        "domain": "adventureinstead.com",
+        "appearances": 2,
+        "keywords": ["photography crm", "photography client management"],
+        "strength": "Long-form honest comparison with photographer credibility"
+      },
+      {
+        "domain": "adventureweddingacademy.com",
+        "appearances": 2,
+        "keywords": ["photography crm", "best crm for photographers"],
+        "strength": "Updated for 2026, community-sourced recommendations"
+      },
+      {
+        "domain": "kylegoldie.com",
+        "appearances": 2,
+        "keywords": ["photography crm", "best crm for photographers"],
+        "strength": "Authentic photographer voice, video content"
+      },
+      {
+        "domain": "blog.bloom.io",
+        "appearances": 2,
+        "keywords": ["best crm for photographers", "honeybook alternative"],
+        "strength": "15-product roundup, comprehensive, regularly updated"
+      },
+      {
+        "domain": "imagen-ai.com",
+        "appearances": 3,
+        "keywords": ["photography workflow automation"],
+        "strength": "Multiple pages targeting workflow terms, glossary + guides + tips"
+      },
+      {
+        "domain": "pixieset.com",
+        "appearances": 2,
+        "keywords": ["photography crm", "photography client management"],
+        "strength": "Product page ranking for informational terms (brand authority)"
+      }
+    ],
+    "argoOpportunities": [
+      "Competitor roundup posts rarely mention Argo — getting included in 3rd-party lists is a backlink/mention priority",
+      "Many competitor posts are from 2023-2024 and not updated for 2026 — freshness advantage",
+      "Reddit threads are ranking for high-volume terms — Argo could participate in relevant subreddits",
+      "No competitor has strong llms.txt or AI-specific optimization — first-mover advantage available"
+    ]
+  },
+  "nextAuditDate": "2026-04-16"
+}

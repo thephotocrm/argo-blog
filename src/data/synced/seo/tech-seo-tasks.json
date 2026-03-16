@@ -1,0 +1,8 @@
+{
+  "tasks": [
+    { "id": 1, "issue": "OG image returns 404", "status": "open", "category": "meta" },
+    { "id": 2, "issue": "Missing /blog listing page", "status": "open", "category": "structure" },
+    { "id": 3, "issue": "Admin/config pages in sitemap", "status": "open", "category": "sitemap" },
+    { "id": 4, "issue": "Placeholder social media links", "status": "open", "category": "meta" }
+  ]
+}

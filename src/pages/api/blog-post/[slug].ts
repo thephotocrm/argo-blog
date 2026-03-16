@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getBlogPost } from '../../../lib/data';
+import { getCollection } from 'astro:content';
 
 export const prerender = false;
 
@@ -8,11 +8,12 @@ export const GET: APIRoute = async ({ params, cookies }) => {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
   }
 
-  const raw = getBlogPost(params.slug as string);
-  if (!raw) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404 });
+  const posts = await getCollection('blog');
+  const post = posts.find(p => p.id === params.slug);
+  if (!post) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404 });
 
-  // Strip frontmatter
-  const content = raw.replace(/^---[\s\S]*?---\n*/, '');
+  // Return the raw body (markdown without frontmatter)
+  const content = post.body || '';
 
   return new Response(JSON.stringify({ slug: params.slug, content }), { status: 200 });
 };

@@ -1,0 +1,168 @@
+{
+  "date": "2026-03-16",
+  "search_engine": "brave_web_search",
+  "note": "First baseline snapshot. No previous data for comparison.",
+  "keywords": [
+    {
+      "keyword": "photography crm",
+      "priority": "high",
+      "argo_position": null,
+      "ai_overview": {"present": false, "argo_cited": false, "summary": ""},
+      "featured_snippet": {"present": false, "holder": ""},
+      "people_also_ask": [],
+      "top_results": [
+        {"position": 1, "title": "7 Best CRMs for Photographers in 2025: An Honest Comparison", "url": "https://adventureinstead.com/academy/blog/best-crms-for-photographers/", "snippet": "Roundup comparing photographer CRMs"},
+        {"position": 2, "title": "Best CRMs For Photographers | An Honest & Ultimate Guide", "url": "https://kylegoldie.com/best-crms-for-photographers/", "snippet": "Mentions Dubsado, Tave, Sprout Studio"},
+        {"position": 3, "title": "CRM Photography (photographer website)", "url": "https://www.photosbycrm.com/", "snippet": "Photographer named CRM, not software"},
+        {"position": 4, "title": "r/CRM - Photographer's CRM", "url": "https://www.reddit.com/r/CRM/comments/1hgfyyh/photographers_crm/", "snippet": "Reddit discussion"},
+        {"position": 5, "title": "Pixieset", "url": "https://pixieset.com/", "snippet": "All-in-one platform for photographers"},
+        {"position": 6, "title": "CRM Photography | Facebook", "url": "https://www.facebook.com/crmpics/", "snippet": "Facebook page for photographer"},
+        {"position": 7, "title": "The Best Studio Management CRMs for Photographers for 2026", "url": "https://adventureweddingacademy.com/the-best-crm-for-photographers/", "snippet": "Dubsado and Studio Ninja favorites"},
+        {"position": 8, "title": "20 Amazing Photography Studio Management Software", "url": "https://www.format.com/magazine/resources/photography/studio-management-software", "snippet": "Format roundup"},
+        {"position": 9, "title": "Free CRM for Photographers", "url": "https://www.espocrm.com/solutions/crm-for-photographers/", "snippet": "EspoCRM solution page"},
+        {"position": 10, "title": "DSLR Photographer's CRM", "url": "https://www.dslr.app/", "snippet": "CRM solution for photography studios"}
+      ]
+    },
+    {
+      "keyword": "best crm for photographers",
+      "priority": "high",
+      "argo_position": null,
+      "ai_overview": {"present": false, "argo_cited": false, "summary": ""},
+      "featured_snippet": {"present": false, "holder": ""},
+      "people_also_ask": [],
+      "top_results": [
+        {"position": 1, "title": "The Best Studio Management CRMs for Photographers for 2026", "url": "https://adventureweddingacademy.com/the-best-crm-for-photographers/", "snippet": "Studio Ninja and Dubsado favorites"},
+        {"position": 2, "title": "What is best CRM for photographers? - Quora", "url": "https://www.quora.com/What-is-best-CRM-for-photographers", "snippet": "Quora discussion"},
+        {"position": 3, "title": "Why Honeybook is the Best CRM for Photographers", "url": "https://allybdesigns.com/best-crm-for-photographers/", "snippet": "Team Honeybook advocacy"},
+        {"position": 4, "title": "Best CRMs For Photographers | An Honest & Ultimate Guide", "url": "https://kylegoldie.com/best-crms-for-photographers/", "snippet": "HoneyBook, Studio Ninja, Tave, 17hats, Sprout Studio"},
+        {"position": 5, "title": "r/WeddingPhotography - Which CRM?", "url": "https://www.reddit.com/r/WeddingPhotography/comments/18f5734/which_crm/", "snippet": "Reddit discussion"},
+        {"position": 6, "title": "Photography CRM Software - HoneyBook", "url": "https://www.honeybook.com/crm-for-photographers", "snippet": "HoneyBook product page"},
+        {"position": 7, "title": "Free CRM for photographers - Flowlu", "url": "https://www.flowlu.com/uses/free-crm-for-photographers/", "snippet": "Free CRM solution"},
+        {"position": 8, "title": "Photographer's Guide: How to Choose the Best CRM - Sprout Studio", "url": "https://getsproutstudio.com/edu/articles/photographers-guide-how-to-choose-the-best-crm-for-your-business/", "snippet": "Sprout Studio guide"},
+        {"position": 9, "title": "Best CRM for Photographers - Wonderful Machine", "url": "https://wonderfulmachine.com/article/expert-advice-best-crm-for-photographers/", "snippet": "CRM comparison list"},
+        {"position": 10, "title": "Best CRM tools for photographers - Wooden Banana", "url": "https://www.woodenbanana.com/post/best-crm-tools-for-photographers", "snippet": "HoneyBook, Studio Ninja, Tave, 17hats, Sprout Studio"}
+      ]
+    },
+    {
+      "keyword": "photography business software",
+      "priority": "high",
+      "argo_position": null,
+      "ai_overview": {"present": false, "argo_cited": false, "summary": ""},
+      "featured_snippet": {"present": false, "holder": ""},
+      "people_also_ask": [],
+      "top_results": [
+        {"position": 1, "title": "9 Best Studio Management Software for Photographers", "url": "https://flothemes.com/best-studio-management-software-for-photographers/", "snippet": "Tave, 17Hats, Pixieset, ShootQ, Pixifi, Honeybook, Dubsado, Studio Ninja, Sprout Studio"},
+        {"position": 2, "title": "Best Photography Business Management Software Apps", "url": "https://emmathurgood.com/photography-business-management-software/", "snippet": "Picsello highlighted"},
+        {"position": 3, "title": "#1 Photography Business Management App | Studio Ninja", "url": "https://www.studioninja.co/", "snippet": "Studio Ninja product page"},
+        {"position": 4, "title": "Tools and Software I Use to Run My Photography Business", "url": "https://www.ssphotographydesign.com/blog/the-tools-and-software-i-use-to-run-my-photography-business", "snippet": "Pic-Time, HoneyBook"},
+        {"position": 5, "title": "r/photography - What software do you use?", "url": "https://www.reddit.com/r/photography/comments/1n9b0q3/", "snippet": "Sprout Studio mentioned"},
+        {"position": 6, "title": "My Favourite Photography Business Software", "url": "https://wildconnectionsphotography.com/my-favourite-photography-business-software/", "snippet": "Business tools roundup"},
+        {"position": 7, "title": "23 Top Photography Studio Management Software", "url": "https://homestudiolist.com/top-photo-locations/photography-studio-management-software", "snippet": "Large roundup"},
+        {"position": 8, "title": "VSCO Workspace | Studio Management & Photography CRM", "url": "https://www.vsco.co/workspace", "snippet": "VSCO Workspace (formerly Tave)"},
+        {"position": 9, "title": "Photography Studio Management Software Guide", "url": "https://www.slrlounge.com/photography-studio-management-software-guide/", "snippet": "SLR Lounge updated guide"},
+        {"position": 10, "title": "Top 10 Must-Have Elopement Photography Business tools", "url": "https://www.willkhoury.com/guides/top-10-photography-business-tool-programs-software", "snippet": "HoneyBook, Pic-Time"}
+      ]
+    },
+    {
+      "keyword": "photography client management",
+      "priority": "high",
+      "argo_position": null,
+      "ai_overview": {"present": false, "argo_cited": false, "summary": ""},
+      "featured_snippet": {"present": false, "holder": ""},
+      "people_also_ask": [],
+      "top_results": [
+        {"position": 1, "title": "#1 Photography Business Management App | Studio Ninja", "url": "https://www.studioninja.co/", "snippet": "Studio Ninja product page"},
+        {"position": 2, "title": "Free CRM for photographers - Flowlu", "url": "https://www.flowlu.com/uses/free-crm-for-photographers/", "snippet": "Free CRM option"},
+        {"position": 3, "title": "Pixieset", "url": "https://pixieset.com/", "snippet": "All-in-one platform"},
+        {"position": 4, "title": "9 Best Studio Management Software for Photographers", "url": "https://flothemes.com/best-studio-management-software-for-photographers/", "snippet": "Pixieset Studio Manager highlighted"},
+        {"position": 5, "title": "Best Client Management Software for Photographers in 2026", "url": "https://www.plutio.com/solutions/photographers/client-management", "snippet": "Plutio solution page"},
+        {"position": 6, "title": "Adobe Creative Cloud", "url": "https://www.adobe.com/creativecloud.html", "snippet": "Not directly relevant"},
+        {"position": 7, "title": "Pixieset Studio Manager", "url": "https://pixieset.com/studio-manager/", "snippet": "Studio management software"},
+        {"position": 8, "title": "Tools and Software I Use to Run My Photography Business", "url": "https://www.ssphotographydesign.com/blog/the-tools-and-software-i-use-to-run-my-photography-business", "snippet": "HoneyBook CRM"},
+        {"position": 9, "title": "7 Best CRMs for Photographers in 2025", "url": "https://adventureinstead.com/academy/blog/best-crms-for-photographers/", "snippet": "CRM comparison"},
+        {"position": 10, "title": "Best Photography Business Management Software Apps", "url": "https://emmathurgood.com/photography-business-management-software/", "snippet": "Picsello highlighted"}
+      ]
+    },
+    {
+      "keyword": "wedding photography crm",
+      "priority": "high",
+      "argo_position": null,
+      "ai_overview": {"present": false, "argo_cited": false, "summary": ""},
+      "featured_snippet": {"present": false, "holder": ""},
+      "people_also_ask": [],
+      "top_results": [
+        {"position": 1, "title": "Why Honeybook is the Best CRM for Wedding Photographers", "url": "https://joymichelle.co/best-crm-for-wedding-photographers/", "snippet": "HoneyBook advocacy"},
+        {"position": 2, "title": "Free CRM for photographers - Flowlu", "url": "https://www.flowlu.com/uses/free-crm-for-photographers/", "snippet": "Free CRM"},
+        {"position": 3, "title": "The Wedding Photography Workflow (CRM) Template - Notion", "url": "https://www.notion.com/templates/the-wedding-photography-workflow", "snippet": "Notion template"},
+        {"position": 4, "title": "r/WeddingPhotography - Which CRM?", "url": "https://www.reddit.com/r/WeddingPhotography/comments/18f5734/which_crm/", "snippet": "Reddit discussion"},
+        {"position": 5, "title": "Best CRMs For Photographers | An Honest & Ultimate Guide", "url": "https://kylegoldie.com/best-crms-for-photographers/", "snippet": "Dubsado highlighted for customization"},
+        {"position": 6, "title": "The Best Studio Management CRMs for Photographers for 2026", "url": "https://adventureweddingacademy.com/the-best-crm-for-photographers/", "snippet": "Studio Ninja recommended"},
+        {"position": 7, "title": "CRM for Wedding Photographers: The Complete Guide", "url": "https://www.pixsoffice.com/blog/crm-for-wedding-photographers-the-complete-guide", "snippet": "PixsOffice guide"},
+        {"position": 8, "title": "The 15 Best CRMs for Photographers [2026 Edition] | Bloom", "url": "https://blog.bloom.io/best-crm-photographers/", "snippet": "Studio Ninja, Dubsado, HoneyBook"},
+        {"position": 9, "title": "Wedding and Event Management CRM Software | Harpsen", "url": "https://www.harpsen.com/blog/best-photography-crm-software-2025-guide", "snippet": "Harpsen guide"},
+        {"position": 10, "title": "Why Dubsado is the Best CRM", "url": "https://leahgoetzel.com/why-dubsado-is-the-best-crm/", "snippet": "Dubsado advocacy for wedding photographers"}
+      ]
+    },
+    {
+      "keyword": "crm for wedding photographers",
+      "priority": "high",
+      "argo_position": null,
+      "ai_overview": {"present": false, "argo_cited": false, "summary": ""},
+      "featured_snippet": {"present": false, "holder": ""},
+      "people_also_ask": [],
+      "top_results": [
+        {"position": 1, "title": "7 Best CRMs for Photographers in 2025", "url": "https://adventureinstead.com/academy/blog/best-crms-for-photographers/", "snippet": "Comprehensive comparison"},
+        {"position": 2, "title": "WHAT CRM SOFTWARE DO YOU USE? - Facebook Group", "url": "https://www.facebook.com/groups/beginnersphotographygroup/posts/25599632312991359/", "snippet": "Facebook discussion"},
+        {"position": 3, "title": "Best CRMs For Photographers | An Honest & Ultimate Guide", "url": "https://kylegoldie.com/best-crms-for-photographers/", "snippet": "Dubsado highlighted"},
+        {"position": 4, "title": "r/WeddingPhotography - Which CRM?", "url": "https://www.reddit.com/r/WeddingPhotography/comments/18f5734/which_crm/", "snippet": "Reddit discussion"},
+        {"position": 5, "title": "The Best CRM for Photographers for the 2025 Booking Season", "url": "https://rokeeandco.com/crm-for-photographers/", "snippet": "CRM roundup"},
+        {"position": 6, "title": "Why Dubsado is the Best CRM", "url": "https://leahgoetzel.com/why-dubsado-is-the-best-crm/", "snippet": "Dubsado for wedding photographers"},
+        {"position": 7, "title": "CRM For wedding photography? - dpreview", "url": "https://www.dpreview.com/forums/threads/crm-for-wedding-photography.4355268/", "snippet": "Forum discussion"},
+        {"position": 8, "title": "Best CRM for photographers - Underground Studio", "url": "https://undergroundstudiopv.com/en/best-crm-for-photographers/", "snippet": "Studio Ninja recommended"},
+        {"position": 9, "title": "The Wedding Photography Workflow (CRM) Template - Notion", "url": "https://www.notion.com/templates/the-wedding-photography-workflow", "snippet": "Notion template"},
+        {"position": 10, "title": "Best CRM for Photographers: Real Tools, Real Results - SLR Lounge", "url": "https://www.slrlounge.com/best-crm-for-photographers-real-tools-real-photographers-real-results/", "snippet": "Studio Ninja sweet spot"}
+      ]
+    },
+    {
+      "keyword": "how to price photography",
+      "priority": "high",
+      "argo_position": null,
+      "ai_overview": {"present": false, "argo_cited": false, "summary": ""},
+      "featured_snippet": {"present": false, "holder": ""},
+      "people_also_ask": [],
+      "top_results": [
+        {"position": 1, "title": "How to price photography sessions - Facebook Group", "url": "https://www.facebook.com/groups/beginnersphotographygroup/posts/7675457959168736/", "snippet": "Facebook discussion"},
+        {"position": 2, "title": "How to Price Photography Wall Art Prints", "url": "https://www.georgewheelhouse.com/post/how-to-price-photography-wall-art-prints", "snippet": "Pricing wall art prints"},
+        {"position": 3, "title": "How to Price Your Photography - Format", "url": "https://www.format.com/magazine/how-to-price-photography", "snippet": "Overhead calculation guide"},
+        {"position": 4, "title": "How to Price Your Fine Art Photography - PetaPixel", "url": "https://petapixel.com/pricing-fine-art-photography/", "snippet": "$1 per square inch method"},
+        {"position": 5, "title": "r/AskPhotography - Fair price to charge?", "url": "https://www.reddit.com/r/AskPhotography/comments/1ceml9h/", "snippet": "Reddit pricing discussion"},
+        {"position": 6, "title": "Photography Pricing: A Comprehensive Guide - VSCO", "url": "https://www.vsco.co/learn/photography-pricing-guide", "snippet": "Usage-based pricing calculator"},
+        {"position": 7, "title": "How much should I, as a new photographer, charge? - BP4U", "url": "https://www.bp4ublog.com/photo-tips/how-much-should-i-as-a-new-photographer-charge/", "snippet": "Beginner pricing advice"},
+        {"position": 8, "title": "How to price your photography: pricing 101", "url": "https://twoblooms.com/how-to-price-your-photography-pricing-101-for-photographers/", "snippet": "Pricing 101 guide"},
+        {"position": 9, "title": "How To Price Your Fine Art Photography - FM Forums", "url": "https://www.fredmiranda.com/forum/next/1769229", "snippet": "Forum discussion"},
+        {"position": 10, "title": "r/photography - How do you price your prints?", "url": "https://www.reddit.com/r/photography/comments/6svmx2/how_do_you_price_your_prints/", "snippet": "3-4x cost method"}
+      ]
+    }
+  ],
+  "summary": {
+    "total_keywords_searched": 7,
+    "argo_found_in_results": 0,
+    "dominant_competitors": [
+      "HoneyBook",
+      "Studio Ninja",
+      "Dubsado",
+      "Sprout Studio",
+      "Pixieset",
+      "VSCO Workspace (Tave)",
+      "17hats"
+    ],
+    "top_content_publishers": [
+      "adventureinstead.com",
+      "kylegoldie.com",
+      "adventureweddingacademy.com",
+      "flothemes.com",
+      "slrlounge.com",
+      "format.com"
+    ]
+  }
+}

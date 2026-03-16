@@ -1,0 +1,64 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-16",
+  "items": [
+    {
+      "id": "2026-03-16T04:56:00Z-reddit_answer-1",
+      "type": "reddit_answer",
+      "status": "pending_review",
+      "created": "2026-03-16T04:56:00Z",
+      "subreddit": "r/photography",
+      "thread_title": "What's your current system for managing photo files?",
+      "thread_url": "https://www.reddit.com/r/photography/comments/1rpzlis/whats_your_current_system_for_managing_photo_files/",
+      "answer": "After years of trying different setups, the system that finally stuck for me separates the creative archive from the business side entirely.\n\nFor the actual photo files: year/client-name/deliverable-type folder structure on a NAS with nightly offsite backup. I stopped trying to get clever with tags and metadata for file management — a consistent naming convention does 90% of the work. Every shoot gets a folder the day it's booked, not the day it's shot, so there's always a place for things to land.\n\nFor the client-facing side (contracts, invoices, timelines, communications), I keep that in a separate system entirely. Mixing business documents into your Lightroom catalog or photo folder structure is how things get lost. I use Argo Studio for that piece since it was built around how photographers actually work — the booking-to-delivery arc rather than a generic sales funnel.\n\nThe real breakthrough was automating the handoff between the two. When a gallery is delivered, the business side knows. When a contract is signed, a shoot folder gets created. Sounds small, but eliminating those manual steps across 40+ shoots a year saves genuine hours.\n\nBiggest lesson: the best system is the one you'll actually maintain at 11pm after a long wedding day. Keep it simple.",
+      "mentions_argo": true,
+      "notes": "Thread is 4 days old, still active. Comment leads with genuine file management advice and mentions Argo naturally in context of business-side tooling, not as the main point. Follows r/photography no-self-promotion rules by keeping focus on the workflow advice."
+    },
+    {
+      "id": "2026-03-16T04:56:00Z-reddit_answer-2",
+      "type": "reddit_answer",
+      "status": "pending_review",
+      "created": "2026-03-16T04:56:00Z",
+      "subreddit": "r/smallbusiness",
+      "thread_title": "Honestly, what is the best CRM for small business in 2026? I needed for 5 person team",
+      "thread_url": "https://www.reddit.com/r/smallbusiness/comments/1r71vm8/honestly_what_is_the_best_crm_for_small_business/",
+      "answer": "The honest answer nobody wants to hear: the best one depends entirely on what your business actually does day to day.\n\nI ran a photography business for years and wasted months on HubSpot and Dubsado before realizing the problem wasn't the tool — it was that generic platforms force you to build workflows from scratch that should already exist for your industry.\n\nFor a 5-person team under $25/user, a few paths depending on your type of business:\n\n- **Service-based with appointments/bookings**: Look for something built for your specific vertical. The onboarding cost of a generic tool (customizing pipelines, building automations, training your team) usually exceeds the sticker price difference.\n- **Sales-heavy with a deal pipeline**: Pipedrive is genuinely good at this one thing and stays affordable. Their free tier is useless but the $14/user tier is solid.\n- **Mixed (some sales, some service delivery)**: This is where most small teams live and where generic tools struggle most. You end up needing integrations to connect your client management to your actual delivery workflow.\n\nThe per-user pricing trap is real. Some platforms charge per seat but give you unlimited contacts and automations. Others are cheap per seat but nickel-and-dime on features. Always calculate the total annual cost with the features you'll actually need by month three, not just the base price.\n\nWhat kind of business are you running? That'd narrow it down a lot.",
+      "mentions_argo": false,
+      "notes": "Thread is ~1 month old but these CRM recommendation threads stay active for weeks on r/smallbusiness. This comment does NOT mention Argo directly — it positions the author as a knowledgeable photographer-turned-founder and opens conversation. If OP or others reply about service businesses or photography specifically, a natural follow-up mentioning Argo becomes possible."
+    },
+    {
+      "id": "2026-03-16T04:56:00Z-reddit_answer-3",
+      "type": "reddit_answer",
+      "status": "pending_review",
+      "created": "2026-03-16T04:56:00Z",
+      "subreddit": "r/smallbusiness",
+      "thread_title": "CRM software? Help",
+      "thread_url": "https://www.reddit.com/r/smallbusiness/comments/1rdlcer/crm_software_help/",
+      "answer": "Before picking a tool, write down the five things you do most often with clients. Not what you think you should be doing — what you actually do every week.\n\nFor most small service businesses, it comes down to:\n1. Tracking who inquired and when\n2. Sending contracts or proposals\n3. Getting paid (invoices, deposits)\n4. Scheduling or booking\n5. Following up after delivery\n\nIf your list looks like that, you don't need a traditional CRM at all. You need a client management system. The difference matters — CRMs are built around sales pipelines and deal stages. Client management tools are built around the relationship lifecycle from first inquiry to repeat booking.\n\nI learned this the hard way running a photography business. Spent a year forcing Salesforce into a shape it didn't want to be, then another year with HubSpot's free tier hitting walls everywhere. Finally switched to something purpose-built for service businesses and the difference was night and day — not because the features were wildly different, but because the default workflows already matched how I actually worked.\n\nWhat type of service do you run? Happy to give a more specific recommendation.",
+      "mentions_argo": false,
+      "notes": "3 weeks old. Similar strategy to comment #2 — establish credibility and open a dialogue. Positions the CRM vs client-management distinction which is core Argo messaging. No direct mention; creates opportunity for organic follow-up if someone asks what tool specifically."
+    },
+    {
+      "id": "2026-03-16T04:56:00Z-haro_pitch-1",
+      "type": "haro_pitch",
+      "status": "pending_review",
+      "created": "2026-03-16T04:56:00Z",
+      "query_summary": "Template pitch for: What tools do photographers use to run their business? / Best business tools for creative professionals",
+      "deadline": "Evergreen — adapt to specific query when matched",
+      "pitch": "Subject: Re: [Query Topic] — Photographer & Photography Business Platform Founder\n\nHi [Journalist Name],\n\nAs someone who spent eight years running a wedding and portrait photography business before building Argo Studio, I can speak directly to the tools question from both sides.\n\nThe single biggest workflow problem most photographers face isn't editing — it's everything that happens before and after the shoot. The average wedding photographer spends 6-8 hours per booking on non-photography tasks: responding to inquiries, sending contracts, chasing deposits, building timelines, delivering galleries, and following up for reviews. Most photographers I know cobble together 4-5 separate tools to handle this, which creates gaps where client details fall through.\n\nWhat actually works is consolidating the client journey into one system that understands how photography businesses operate. Not a generic project management tool or a CRM designed for sales teams — something that mirrors the natural arc from inquiry to gallery delivery. The photographers I see thriving in 2026 have reduced their admin tool stack to two things: their editing software and one platform that handles everything client-facing.\n\nThe mistake most photographers make is optimizing their editing workflow (where they spend 30% of their time) while ignoring their business workflow (where they spend the other 70%).\n\n---\nFormer wedding & portrait photographer, Founder of Argo Studio\nBuilt a business management platform for photographers after years of fighting tools that weren't designed for how we actually work.\n[website]",
+      "bio": "Former wedding & portrait photographer, Founder of Argo Studio — business management built by photographers, for photographers.",
+      "notes": "Evergreen template for photography business tools queries. Adapt the subject line, journalist name, and specific angle to match each query. Core stat (6-8 hours admin per booking) and the 30/70 split are strong quotable elements. Keep the Argo mention in the bio only."
+    },
+    {
+      "id": "2026-03-16T04:56:00Z-haro_pitch-2",
+      "type": "haro_pitch",
+      "status": "pending_review",
+      "created": "2026-03-16T04:56:00Z",
+      "query_summary": "Template pitch for: How small business owners manage client relationships without enterprise software / Affordable alternatives to big CRMs",
+      "deadline": "Evergreen — adapt to specific query when matched",
+      "pitch": "Subject: Re: [Query Topic] — Small Business Owner on Ditching Enterprise Software\n\nHi [Journalist Name],\n\nI can share a perspective on this from both sides — as a small business owner who struggled with enterprise tools, and as someone who eventually built an alternative.\n\nWhen I was running my photography business with 200+ clients a year, I tried the enterprise route. Salesforce, HubSpot, Dubsado — each one required weeks of setup to approximate what I needed, and none of them understood that my \"pipeline\" was actually a series of creative relationships, not sales deals. I was spending Sunday evenings maintaining my tools instead of my client relationships.\n\nThe turning point was realizing that small service businesses don't have the same needs as sales organizations. We don't need lead scoring or drip campaigns. We need to know: who inquired today, who has an unsigned contract, who's getting married next Saturday, and who I haven't followed up with after their gallery delivery. That's four questions. Enterprise tools make those four questions require four different dashboards.\n\nWhat works for small service businesses is purpose-built simplicity. One screen that shows you what needs attention today. Automation that handles the repetitive follow-ups so you can focus on the creative work your clients actually hired you for. The cost savings matter, but the time savings matter more — most solopreneurs I talk to reclaim 5-10 hours per week when they stop fighting their tools.\n\n---\nFormer photographer, Founder of Argo Studio\nBuilt client management software for photographers after spending too many years wrestling with tools designed for someone else.\n[website]",
+      "bio": "Former photographer & Founder of Argo Studio — client management built for creative service businesses.",
+      "notes": "Targets the 'CRM alternatives for small business' angle that appears frequently in business media. The 200+ clients and Sunday-evening-maintenance details make it feel personal and real. Adapt the specific questions (unsigned contract, wedding date) to match the journalist's audience if not photography-specific."
+    }
+  ]
+}

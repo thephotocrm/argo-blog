@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
-import keywordData from '../../data/seo/keyword-research.json';
-import contentQueue from '../../data/seo/content-queue.json';
+import keywordData from '../../data/synced/seo/keyword-research.json';
+import contentQueue from '../../data/synced/seo/content-queue.json';
 
 export const prerender = false;
 
