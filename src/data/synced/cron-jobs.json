@@ -138,7 +138,8 @@
         "lastDurationMs": 50623,
         "lastDelivered": true,
         "lastDeliveryStatus": "delivered",
-        "consecutiveErrors": 0
+        "consecutiveErrors": 0,
+        "runningAtMs": 1773666000003
       }
     },
     {
@@ -278,7 +279,8 @@
         "lastDurationMs": 215686,
         "lastDelivered": true,
         "lastDeliveryStatus": "delivered",
-        "consecutiveErrors": 0
+        "consecutiveErrors": 0,
+        "runningAtMs": 1773666000003
       }
     },
     {
