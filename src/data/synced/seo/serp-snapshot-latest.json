@@ -1,7 +1,8 @@
 {
   "date": "2026-03-16",
   "search_engine": "brave_web_search",
-  "note": "First baseline snapshot. No previous data for comparison.",
+  "refreshed_at": "2026-03-16T11:00:00Z",
+  "note": "Daily SERP monitoring — high-priority keywords only. Argo not found in top 10 for any keyword. No previous day snapshot exists for comparison.",
   "keywords": [
     {
       "keyword": "photography crm",
@@ -12,7 +13,7 @@
       "people_also_ask": [],
       "top_results": [
         {"position": 1, "title": "7 Best CRMs for Photographers in 2025: An Honest Comparison", "url": "https://adventureinstead.com/academy/blog/best-crms-for-photographers/", "snippet": "Roundup comparing photographer CRMs"},
-        {"position": 2, "title": "Best CRMs For Photographers | An Honest & Ultimate Guide", "url": "https://kylegoldie.com/best-crms-for-photographers/", "snippet": "Mentions Dubsado, Tave, Sprout Studio"},
+        {"position": 2, "title": "Best CRMs For Photographers | An Honest & Ultimate Guide", "url": "https://kylegoldie.com/best-crms-for-photographers/", "snippet": "Dubsado, Tave, Sprout Studio compared"},
         {"position": 3, "title": "CRM Photography (photographer website)", "url": "https://www.photosbycrm.com/", "snippet": "Photographer named CRM, not software"},
         {"position": 4, "title": "r/CRM - Photographer's CRM", "url": "https://www.reddit.com/r/CRM/comments/1hgfyyh/photographers_crm/", "snippet": "Reddit discussion"},
         {"position": 5, "title": "Pixieset", "url": "https://pixieset.com/", "snippet": "All-in-one platform for photographers"},
@@ -20,7 +21,7 @@
         {"position": 7, "title": "The Best Studio Management CRMs for Photographers for 2026", "url": "https://adventureweddingacademy.com/the-best-crm-for-photographers/", "snippet": "Dubsado and Studio Ninja favorites"},
         {"position": 8, "title": "20 Amazing Photography Studio Management Software", "url": "https://www.format.com/magazine/resources/photography/studio-management-software", "snippet": "Format roundup"},
         {"position": 9, "title": "Free CRM for Photographers", "url": "https://www.espocrm.com/solutions/crm-for-photographers/", "snippet": "EspoCRM solution page"},
-        {"position": 10, "title": "DSLR Photographer's CRM", "url": "https://www.dslr.app/", "snippet": "CRM solution for photography studios"}
+        {"position": 10, "title": "DSLR Photographer's CRM", "url": "https://www.dslr.app/", "snippet": "CRM for photography studios"}
       ]
     },
     {
@@ -146,7 +147,9 @@
   ],
   "summary": {
     "total_keywords_searched": 7,
+    "high_priority_searched": 7,
     "argo_found_in_results": 0,
+    "significant_position_changes": [],
     "dominant_competitors": [
       "HoneyBook",
       "Studio Ninja",
@@ -154,7 +157,7 @@
       "Sprout Studio",
       "Pixieset",
       "VSCO Workspace (Tave)",
-      "17hats"
+      "Flowlu"
     ],
     "top_content_publishers": [
       "adventureinstead.com",
@@ -162,7 +165,9 @@
       "adventureweddingacademy.com",
       "flothemes.com",
       "slrlounge.com",
-      "format.com"
-    ]
+      "format.com",
+      "blog.bloom.io"
+    ],
+    "notes": "No previous day snapshot exists — this is the first daily run. Results are stable compared to earlier baseline taken today. SERPs dominated by roundup articles from photographer bloggers and competitor product pages. Reddit/Facebook/Quora discussions also rank well, suggesting community content is a viable entry point."
   }
 }
