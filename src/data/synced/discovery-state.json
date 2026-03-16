@@ -33,6 +33,6 @@
     "platform": "tiktok",
     "status": "failed",
     "reason": "browser_unavailable",
-    "note": "Browser timed out. TikTok session still pending."
+    "note": "Browser timed out again on second attempt. TikTok discovery still pending. Gateway restart needed."
   }
 }

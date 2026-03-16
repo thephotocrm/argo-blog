@@ -7,7 +7,7 @@
       "description": "Daily creator discovery: rotates platforms, searches 2-3 hashtags, discovers up to 10 creators, auto-qualifies",
       "enabled": true,
       "createdAtMs": 1773350419932,
-      "updatedAtMs": 1773636586661,
+      "updatedAtMs": 1773673306357,
       "schedule": {
         "kind": "cron",
         "expr": "0 10 * * *",
@@ -26,15 +26,14 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773673200000,
-        "lastRunAtMs": 1773636531515,
+        "nextRunAtMs": 1773759600000,
+        "lastRunAtMs": 1773673200009,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 55146,
+        "lastDurationMs": 106348,
         "lastDeliveryStatus": "delivered",
         "consecutiveErrors": 0,
-        "lastDelivered": true,
-        "runningAtMs": 1773673200006
+        "lastDelivered": true
       }
     },
     {
