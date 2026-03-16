@@ -1,0 +1,43 @@
+---
+export const prerender = false;
+
+import Dashboard from '../../components/admin/Dashboard.astro';
+import RankingTrends from '../../components/admin/RankingTrends.astro';
+
+import rankingsData from '../../data/seo/dashboard/rankings.json';
+
+const data = rankingsData?.data || {};
+---
+
+<Dashboard title="Rankings" activePage="rankings">
+  <div class="dashboard-header">
+    <h1>Rankings</h1>
+    <p class="last-updated">{rankingsData?.lastUpdated ? `Updated ${rankingsData.lastUpdated}` : 'Awaiting first data sync'}</p>
+  </div>
+
+  <RankingTrends
+    distribution={data.distribution}
+    movement={data.movement}
+    keywords={data.keywords}
+    snippets={data.snippets}
+  />
+</Dashboard>
+
+<style>
+  .dashboard-header {
+    margin-bottom: 1.5rem;
+  }
+  .dashboard-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0;
+  }
+  .last-updated {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    margin-top: 0.25rem;
+  }
+</style>

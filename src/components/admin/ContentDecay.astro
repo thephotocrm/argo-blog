@@ -1,0 +1,182 @@
+---
+interface DecayPage {
+  url: string;
+  title: string;
+  peakPos: number;
+  currentPos: number;
+  drop: number;
+  commercialValue: 'high' | 'medium' | 'low';
+  refreshStatus: 'pending' | 'in_progress' | 'done' | 'none';
+}
+
+interface Props {
+  counts?: { critical: number; high: number; normal: number };
+  pages?: DecayPage[];
+}
+
+const { counts, pages } = Astro.props;
+const c = counts || { critical: 0, high: 0, normal: 0 };
+const items = pages || [];
+---
+
+<section class="panel">
+  <h2>Content Decay</h2>
+  <p class="subtitle">Pages losing rankings · Weekly</p>
+
+  <div class="severity-cards">
+    <div class="sev-card critical">
+      <span class="sev-label">Critical</span>
+      <span class="sev-value">{c.critical}</span>
+    </div>
+    <div class="sev-card high">
+      <span class="sev-label">High</span>
+      <span class="sev-value">{c.high}</span>
+    </div>
+    <div class="sev-card normal">
+      <span class="sev-label">Normal</span>
+      <span class="sev-value">{c.normal}</span>
+    </div>
+  </div>
+
+  {items.length === 0 ? (
+    <div class="notice"><p>No decaying content detected yet.</p></div>
+  ) : (
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Peak</th>
+            <th>Current</th>
+            <th>Drop</th>
+            <th>Value</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map(page => (
+            <tr>
+              <td class="title-cell" title={page.url}>{page.title}</td>
+              <td class="mono">{page.peakPos}</td>
+              <td class="mono">
+                <span class={page.currentPos <= 10 ? 'pos-good' : page.currentPos <= 20 ? 'pos-ok' : 'pos-low'}>
+                  {page.currentPos}
+                </span>
+              </td>
+              <td class="mono"><span class="change-down">-{page.drop}</span></td>
+              <td><span class={`badge val-${page.commercialValue}`}>{page.commercialValue}</span></td>
+              <td><span class={`badge refresh-${page.refreshStatus}`}>{page.refreshStatus.replace('_', ' ')}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</section>
+
+<style>
+  .panel {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0 0 0.25rem 0;
+  }
+  .subtitle {
+    font-size: 0.8rem;
+    color: var(--color-slate);
+    margin-bottom: 1rem;
+  }
+  .notice {
+    background: rgba(107, 114, 128, 0.1);
+    border: 1px solid rgba(107, 114, 128, 0.2);
+    border-radius: 3px;
+    padding: 1rem;
+    color: var(--color-slate);
+    font-size: 0.85rem;
+  }
+  .severity-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .sev-card {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .sev-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .sev-value {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: block;
+    line-height: 1.2;
+  }
+  .sev-card.critical .sev-label { color: #fca5a5; }
+  .sev-card.critical .sev-value { color: #fca5a5; }
+  .sev-card.critical { border-color: rgba(239, 68, 68, 0.2); }
+  .sev-card.high .sev-label { color: var(--color-fleece-gold); }
+  .sev-card.high .sev-value { color: var(--color-fleece-gold); }
+  .sev-card.normal .sev-label { color: var(--color-slate); }
+  .sev-card.normal .sev-value { color: var(--color-starlight); }
+  .table-scroll { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  td {
+    padding: 0.45rem 0.6rem;
+    color: var(--color-starlight);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  .title-cell { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mono { font-family: var(--font-mono); font-size: 0.75rem; }
+  .pos-good { color: #86efac; }
+  .pos-ok { color: var(--color-pale-gold); }
+  .pos-low { color: var(--color-slate); }
+  .change-down { color: #fca5a5; }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .val-high { background: rgba(201, 162, 39, 0.2); color: var(--color-fleece-gold); }
+  .val-medium { background: rgba(107, 114, 128, 0.2); color: var(--color-starlight); }
+  .val-low { background: rgba(107, 114, 128, 0.1); color: var(--color-slate); }
+  .refresh-pending { background: rgba(201, 162, 39, 0.15); color: var(--color-pale-gold); }
+  .refresh-in_progress { background: rgba(74, 111, 165, 0.2); color: #93bbee; }
+  .refresh-done { background: rgba(34, 197, 94, 0.15); color: #86efac; }
+  .refresh-none { background: rgba(107, 114, 128, 0.1); color: var(--color-slate); }
+</style>

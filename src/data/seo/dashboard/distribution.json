@@ -1,0 +1,14 @@
+{
+  "lastUpdated": null,
+  "source": "seo-distribution-tracker-weekly",
+  "data": {
+    "funnel": { "pending": 0, "approved": 0, "posted": 0 },
+    "platforms": {
+      "reddit": { "posts": 0, "engagement": 0, "referrals": 0 },
+      "quora": { "posts": 0, "engagement": 0, "referrals": 0 },
+      "outreach": { "posts": 0, "engagement": 0, "referrals": 0 }
+    },
+    "pendingDrafts": [],
+    "postedContent": []
+  }
+}

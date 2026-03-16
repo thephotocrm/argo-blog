@@ -1,0 +1,97 @@
+---
+interface AlertItem {
+  severity: 'critical' | 'warning' | 'info';
+  message: string;
+  source: string;
+  timestamp: string;
+}
+
+interface Props {
+  alerts?: AlertItem[];
+}
+
+const { alerts } = Astro.props;
+const items = (alerts || []).slice(0, 5);
+---
+
+{items.length > 0 ? (
+  <section class="alert-strip">
+    {items.map(alert => (
+      <div class={`alert-item severity-${alert.severity}`}>
+        <span class={`severity-dot ${alert.severity}`}></span>
+        <span class="alert-time">{new Date(alert.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+        <span class="alert-message">{alert.message}</span>
+        <span class="alert-source">{alert.source}</span>
+      </div>
+    ))}
+  </section>
+) : (
+  <section class="alert-strip empty">
+    <p class="no-data">No recent alerts</p>
+  </section>
+)}
+
+<style>
+  .alert-strip {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .alert-strip.empty {
+    padding: 1rem;
+  }
+  .no-data {
+    color: var(--color-slate);
+    font-size: 0.8rem;
+  }
+  .alert-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+  }
+  .severity-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .severity-dot.critical { background: #ef4444; }
+  .severity-dot.warning { background: var(--color-fleece-gold); }
+  .severity-dot.info { background: var(--color-compass-blue); }
+  .alert-time {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-slate);
+    flex-shrink: 0;
+    min-width: 50px;
+  }
+  .alert-message {
+    color: var(--color-starlight);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .severity-critical .alert-message { color: #fca5a5; }
+  .alert-source {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  @media (max-width: 768px) {
+    .alert-source { display: none; }
+  }
+</style>

@@ -4,9 +4,13 @@ interface Props {
   ga4Totals?: { sessions: number; pageviews: number };
   publishedPosts: number;
   totalKeywords: number;
+  systemHealth?: number | null;
+  cronStatus?: { succeeded: number; total: number } | null;
+  algoStatus?: string | null;
+  distributionQueue?: number | null;
 }
 
-const { gscTotals, ga4Totals, publishedPosts, totalKeywords } = Astro.props;
+const { gscTotals, ga4Totals, publishedPosts, totalKeywords, systemHealth, cronStatus, algoStatus, distributionQueue } = Astro.props;
 ---
 
 <div class="stats-grid">
@@ -39,6 +43,26 @@ const { gscTotals, ga4Totals, publishedPosts, totalKeywords } = Astro.props;
     <span class="stat-label">Keywords Tracked</span>
     <span class="stat-value">{totalKeywords}</span>
     <span class="stat-source">SEO Engine</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">System Health</span>
+    <span class="stat-value">{systemHealth != null ? systemHealth : '—'}</span>
+    <span class="stat-source">SEO Engine</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Crons 24h</span>
+    <span class="stat-value">{cronStatus ? `${cronStatus.succeeded}/${cronStatus.total}` : '—'}</span>
+    <span class="stat-source">SEO Engine</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Algo Status</span>
+    <span class={`stat-value ${algoStatus === 'Update Detected' ? 'stat-warn' : ''}`}>{algoStatus || '—'}</span>
+    <span class="stat-source">SEO Engine</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Dist. Queue</span>
+    <span class="stat-value">{distributionQueue != null ? distributionQueue : '—'}</span>
+    <span class="stat-source">Distribution</span>
   </div>
 </div>
 
@@ -75,5 +99,9 @@ const { gscTotals, ga4Totals, publishedPosts, totalKeywords } = Astro.props;
   .stat-source {
     font-size: 0.7rem;
     color: var(--color-slate);
+  }
+  .stat-warn {
+    color: #fca5a5;
+    font-size: 1rem;
   }
 </style>

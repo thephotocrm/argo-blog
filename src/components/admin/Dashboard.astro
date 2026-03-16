@@ -1,9 +1,20 @@
 ---
 interface Props {
   title: string;
+  activePage?: string;
 }
 
-const { title } = Astro.props;
+const { title, activePage = 'overview' } = Astro.props;
+
+const tabs = [
+  { id: 'overview', label: 'Overview', href: '/admin' },
+  { id: 'rankings', label: 'Rankings', href: '/admin/rankings' },
+  { id: 'content', label: 'Content', href: '/admin/content' },
+  { id: 'distribution', label: 'Distribution', href: '/admin/distribution' },
+  { id: 'technical', label: 'Technical', href: '/admin/technical' },
+  { id: 'competitors', label: 'Competitors', href: '/admin/competitors' },
+  { id: 'system', label: 'System', href: '/admin/system' },
+];
 ---
 
 <!doctype html>
@@ -57,6 +68,15 @@ const { title } = Astro.props;
           <a href="/admin/login" class="admin-link logout">Sign Out</a>
         </nav>
       </div>
+      <div class="admin-tabs">
+        <div class="admin-tabs-inner">
+          {tabs.map(tab => (
+            <a href={tab.href} class={`tab ${activePage === tab.id ? 'active' : ''}`}>
+              {tab.label}
+            </a>
+          ))}
+        </div>
+      </div>
     </header>
 
     <main class="admin-main">
@@ -65,13 +85,12 @@ const { title } = Astro.props;
 
     <style>
       .admin-header {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        padding: 0.75rem 1.5rem;
         background: var(--color-deep-water);
       }
       .admin-header-inner {
         max-width: 1200px;
         margin: 0 auto;
+        padding: 0.75rem 1.5rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -118,6 +137,38 @@ const { title } = Astro.props;
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem 1.5rem;
+      }
+      .admin-tabs {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: var(--color-deep-water);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .admin-tabs-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        display: flex;
+        gap: 0;
+      }
+      .tab {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--color-slate);
+        text-decoration: none;
+        padding: 0.75rem 1rem;
+        border-bottom: 2px solid transparent;
+        white-space: nowrap;
+        transition: color 0.15s;
+      }
+      .tab:hover {
+        color: var(--color-starlight);
+      }
+      .tab.active {
+        color: var(--color-fleece-gold);
+        border-bottom-color: var(--color-fleece-gold);
       }
     </style>
   </body>

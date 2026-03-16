@@ -3,6 +3,8 @@ export const prerender = false;
 
 import Dashboard from '../../components/admin/Dashboard.astro';
 import StatsCards from '../../components/admin/StatsCards.astro';
+import AlertStrip from '../../components/admin/AlertStrip.astro';
+import CronHeatmap from '../../components/admin/CronHeatmap.astro';
 import ContentPipeline from '../../components/admin/ContentPipeline.astro';
 import RankingTable from '../../components/admin/RankingTable.astro';
 import TrafficChart from '../../components/admin/TrafficChart.astro';
@@ -10,6 +12,13 @@ import KeywordTable from '../../components/admin/KeywordTable.astro';
 
 import keywordData from '../../data/seo/keyword-research.json';
 import contentQueue from '../../data/seo/content-queue.json';
+
+// Load dashboard JSON files
+import alertsData from '../../data/seo/dashboard/alerts.json';
+import cronStatusData from '../../data/seo/dashboard/cron-status.json';
+import algoData from '../../data/seo/dashboard/algo-updates.json';
+import distData from '../../data/seo/dashboard/distribution.json';
+import siData from '../../data/seo/dashboard/self-improvement.json';
 
 // Count published blog posts
 import { getCollection } from 'astro:content';
@@ -43,9 +52,27 @@ try {
     ga4Data = await ga4Res.json();
   }
 } catch {}
+
+// Compute SEO engine stats
+const cronRuns = cronStatusData?.data?.runs || [];
+const now = new Date();
+const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+const recentRuns = cronRuns.filter((r: any) => r.timestamp && new Date(r.timestamp) > oneDayAgo);
+const cronStatus = recentRuns.length > 0 ? {
+  succeeded: recentRuns.filter((r: any) => r.status === 'success').length,
+  total: recentRuns.length,
+} : null;
+
+const algoStatus = algoData?.data?.status === 'active_update' ? 'Update Detected'
+  : algoData?.data?.status === 'monitoring' ? 'Monitoring'
+  : algoData?.data?.status === 'normal' ? 'Normal'
+  : null;
+
+const distributionQueue = distData?.data?.funnel?.pending ?? null;
+const systemHealth = siData?.data?.systemHealthScore ?? null;
 ---
 
-<Dashboard title="Dashboard">
+<Dashboard title="Dashboard" activePage="overview">
   <div class="dashboard-header">
     <h1>SEO Dashboard</h1>
     <p class="last-updated">Data as of {keywordData.lastUpdated}</p>
@@ -56,7 +83,15 @@ try {
     ga4Totals={ga4Data?.totals}
     publishedPosts={publishedPosts}
     totalKeywords={keywords.length}
+    systemHealth={systemHealth}
+    cronStatus={cronStatus}
+    algoStatus={algoStatus}
+    distributionQueue={distributionQueue}
   />
+
+  <AlertStrip alerts={alertsData?.data?.items} />
+
+  <CronHeatmap runs={cronStatusData?.data?.runs} />
 
   <ContentPipeline
     statusCounts={statusCounts}

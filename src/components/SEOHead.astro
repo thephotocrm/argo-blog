@@ -8,6 +8,8 @@ interface Props {
   publishedDate?: string;
   keywords?: string[];
   jsonLd?: object;
+  breadcrumbs?: Array<{ name: string; url: string }>;
+  pageType?: 'comparison' | 'alternative' | 'niche' | 'city' | 'integration' | 'blog' | 'tool' | 'default';
 }
 
 const {
@@ -19,6 +21,8 @@ const {
   publishedDate,
   keywords = [],
   jsonLd,
+  breadcrumbs,
+  pageType = 'default',
 } = Astro.props;
 
 const fullTitle = title.includes('Argo') ? title : `${title} | Argo Studio`;
@@ -45,6 +49,42 @@ const websiteSchema = {
   },
 };
 
+const softwareSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Argo Studio',
+  applicationCategory: 'BusinessApplication',
+  applicationSubCategory: 'Photography CRM',
+  operatingSystem: 'Web',
+  url: 'https://argostudio.co',
+  description: 'Photography CRM built exclusively for photographers. Manage clients, contracts, invoices, scheduling, and gallery delivery in one platform.',
+  offers: {
+    '@type': 'Offer',
+    price: '17',
+    priceCurrency: 'USD',
+    priceValidUntil: '2026-12-31',
+    availability: 'https://schema.org/InStock',
+    url: 'https://argostudio.co/pricing',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.8',
+    ratingCount: '47',
+    bestRating: '5',
+    worstRating: '1',
+  },
+  featureList: [
+    'Client Portal',
+    'Contract Automation',
+    'Invoice Management',
+    'Session Scheduling',
+    'Gallery Delivery Integration',
+    'Shot List Management',
+    'Payment Reminders',
+    'Workflow Automation',
+  ],
+};
+
 const articleSchema = type === 'article' ? {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -66,8 +106,20 @@ const articleSchema = type === 'article' ? {
   },
 } : null;
 
-const schemas = [organizationSchema, websiteSchema];
+const breadcrumbSchema = breadcrumbs && breadcrumbs.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((crumb, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: crumb.name,
+    item: crumb.url,
+  })),
+} : null;
+
+const schemas = [organizationSchema, websiteSchema, softwareSchema];
 if (articleSchema) schemas.push(articleSchema);
+if (breadcrumbSchema) schemas.push(breadcrumbSchema);
 if (jsonLd) schemas.push(jsonLd);
 ---
 

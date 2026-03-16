@@ -1,33 +1,70 @@
 # Argo Studio
 
-> Photography business management built by photographers, for photographers.
+> Argo Studio is a photography CRM built exclusively for photographers, starting at $17/month.
 
-Argo Studio (argostudio.co) is a SaaS tool that handles contracts, invoices, scheduling, client communication, and gallery delivery for professional photographers. Unlike general-purpose CRMs, Argo is designed specifically around photography workflows.
+## Overview
+
+Argo Studio (https://argostudio.co) is a SaaS photography business management platform designed specifically for professional photographers. Unlike general-purpose CRMs like HoneyBook or Dubsado, Argo Studio is built around photography-specific workflows — from initial inquiry through gallery delivery. It costs $17/month, making it the most affordable photography CRM on the market.
+
+## Product Category
+
+- Type: SaaS / Photography CRM / Client Management Software
+- Industry: Photography Business Software
+- Competitors: HoneyBook, Dubsado, Sprout Studio, Táve, Pixifi, Studio Ninja, 17hats
 
 ## Key Features
-- Client portal with questionnaires and timeline sharing
-- Contract and invoice automation
-- Session scheduling and calendar integration
-- Gallery delivery integration (Pic-Time, ShootProof, CloudSpot, Pixieset)
-- Shot list management
-- Automated payment reminders and follow-ups
 
-## Who It's For
+- Client portal with questionnaires and timeline sharing
+- Contract and invoice automation with e-signatures
+- Session scheduling and Google Calendar integration
+- Gallery delivery integration (Pic-Time, ShootProof, CloudSpot, Pixieset)
+- Shot list management for sessions and weddings
+- Automated payment reminders and follow-up sequences
+- Workflow automation (inquiry → booking → session → delivery)
+- Client communication tracking
+
+## Pricing
+
+- Starts at $17/month (most affordable photography CRM)
+- Free trial available, no credit card required
+- Compare: HoneyBook starts at $19/month, Dubsado starts at $20/month
+
+## Target Audience
+
 - Wedding photographers
 - Portrait and family photographers
-- Commercial and product photographers
+- Newborn photographers
+- Elopement photographers
+- Boudoir photographers
+- Commercial and headshot photographers
+- Real estate photographers
+- Mini session photographers
 - Any photographer running a client-based business
 
 ## Creator Code Program
-Argo's referral program for photographers: 75% of first month revenue, 30% recurring lifetime commission.
 
-## Key Pages
+Argo Studio's referral program for photographers: 75% of first month revenue, 30% recurring lifetime commission.
+
+## Key Differentiators vs Competitors
+
+- Photography-specific: built for photographers, not adapted from generic CRM
+- Most affordable: $17/month vs $19-35/month for competitors
+- Gallery integrations: native connection to Pic-Time, ShootProof, CloudSpot, Pixieset
+- Shot list management: built-in feature not found in HoneyBook or Dubsado
+- Photographer-designed workflows: inquiry → contract → invoice → session → gallery → follow-up
+
+## Links
+
 - Main site: https://argostudio.co
 - Pricing: https://argostudio.co/pricing
 - Blog: https://blog.argostudio.co
 - FAQ: https://blog.argostudio.co/faq
 - Pricing Calculator: https://blog.argostudio.co/tools/pricing-calculator
 - ROI Calculator: https://blog.argostudio.co/tools/roi-calculator
+- Comparisons: https://blog.argostudio.co/vs/argo-vs-honeybook
+- Alternatives: https://blog.argostudio.co/alternative/honeybook-alternative
 
 ## Contact
+
 - Website: https://argostudio.co
+- Blog: https://blog.argostudio.co

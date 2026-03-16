@@ -1,0 +1,334 @@
+---
+interface KeywordRanking {
+  keyword: string;
+  currentPos: number | null;
+  change7d: number | null;
+  change30d: number | null;
+  bestPos: number | null;
+  volume: number;
+  hasSnippet: boolean;
+  ownsSnippet: boolean;
+  history: number[];
+}
+
+interface Props {
+  distribution?: { top3: number; top10: number; top20: number; top50: number; unranked: number };
+  movement?: { improved: number; declined: number; stable: number };
+  keywords?: KeywordRanking[];
+  snippets?: Array<{ keyword: string; owned: boolean }>;
+}
+
+const { distribution, movement, keywords, snippets } = Astro.props;
+
+const dist = distribution || { top3: 0, top10: 0, top20: 0, top50: 0, unranked: 0 };
+const distTotal = dist.top3 + dist.top10 + dist.top20 + dist.top50 + dist.unranked;
+const mov = movement || { improved: 0, declined: 0, stable: 0 };
+const kws = keywords || [];
+const snips = snippets || [];
+---
+
+<section class="panel">
+  <h2>Position Distribution</h2>
+
+  {distTotal === 0 ? (
+    <div class="notice"><p>No ranking data yet. Data appears after the first SERP tracking run.</p></div>
+  ) : (
+    <div>
+      <div class="dist-bar">
+        {dist.top3 > 0 && <div class="dist-seg seg-top3" style={`flex: ${dist.top3}`}><span>{dist.top3}</span></div>}
+        {dist.top10 > 0 && <div class="dist-seg seg-top10" style={`flex: ${dist.top10}`}><span>{dist.top10}</span></div>}
+        {dist.top20 > 0 && <div class="dist-seg seg-top20" style={`flex: ${dist.top20}`}><span>{dist.top20}</span></div>}
+        {dist.top50 > 0 && <div class="dist-seg seg-top50" style={`flex: ${dist.top50}`}><span>{dist.top50}</span></div>}
+        {dist.unranked > 0 && <div class="dist-seg seg-unranked" style={`flex: ${dist.unranked}`}><span>{dist.unranked}</span></div>}
+      </div>
+      <div class="dist-legend">
+        <span class="legend-item"><span class="dot top3"></span> Top 3</span>
+        <span class="legend-item"><span class="dot top10"></span> Top 10</span>
+        <span class="legend-item"><span class="dot top20"></span> Top 20</span>
+        <span class="legend-item"><span class="dot top50"></span> Top 50</span>
+        <span class="legend-item"><span class="dot unranked"></span> Unranked</span>
+      </div>
+    </div>
+  )}
+</section>
+
+<div class="movement-cards">
+  <div class="move-card improved">
+    <span class="move-label">Improved</span>
+    <span class="move-value">{mov.improved}</span>
+  </div>
+  <div class="move-card declined">
+    <span class="move-label">Declined</span>
+    <span class="move-value">{mov.declined}</span>
+  </div>
+  <div class="move-card stable">
+    <span class="move-label">Stable</span>
+    <span class="move-value">{mov.stable}</span>
+  </div>
+</div>
+
+<section class="panel">
+  <h2>Keyword Rankings</h2>
+  <p class="subtitle">SERP Tracker · Daily</p>
+
+  {kws.length === 0 ? (
+    <div class="notice"><p>No keyword ranking data yet.</p></div>
+  ) : (
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th>Pos</th>
+            <th>7d</th>
+            <th>30d</th>
+            <th>Best</th>
+            <th>Volume</th>
+            <th>Snippet</th>
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody>
+          {kws.map(kw => (
+            <tr>
+              <td><code>{kw.keyword}</code></td>
+              <td class="mono">
+                <span class={kw.currentPos != null ? (kw.currentPos <= 10 ? 'pos-good' : kw.currentPos <= 20 ? 'pos-ok' : 'pos-low') : ''}>
+                  {kw.currentPos != null ? kw.currentPos : '—'}
+                </span>
+              </td>
+              <td class="mono">
+                {kw.change7d != null ? (
+                  <span class={kw.change7d > 0 ? 'change-up' : kw.change7d < 0 ? 'change-down' : 'change-flat'}>
+                    {kw.change7d > 0 ? `+${kw.change7d}` : kw.change7d}
+                  </span>
+                ) : '—'}
+              </td>
+              <td class="mono">
+                {kw.change30d != null ? (
+                  <span class={kw.change30d > 0 ? 'change-up' : kw.change30d < 0 ? 'change-down' : 'change-flat'}>
+                    {kw.change30d > 0 ? `+${kw.change30d}` : kw.change30d}
+                  </span>
+                ) : '—'}
+              </td>
+              <td class="mono">{kw.bestPos != null ? kw.bestPos : '—'}</td>
+              <td class="mono">{kw.volume.toLocaleString()}</td>
+              <td>
+                {kw.hasSnippet ? (
+                  <span class={`badge ${kw.ownsSnippet ? 'snippet-owned' : 'snippet-competitor'}`}>
+                    {kw.ownsSnippet ? 'Owned' : 'Competitor'}
+                  </span>
+                ) : '—'}
+              </td>
+              <td>
+                <div class="sparkline">
+                  {(kw.history || []).slice(-7).map((pos, i) => (
+                    <span
+                      class="spark-dot"
+                      style={`bottom: ${pos > 0 ? Math.max(2, (1 - (pos - 1) / 99) * 100) : 0}%`}
+                    ></span>
+                  ))}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</section>
+
+{snips.length > 0 && (
+  <section class="panel">
+    <h2>Featured Snippets</h2>
+    <p class="subtitle">Keywords with snippet detection</p>
+    <div class="snippet-list">
+      {snips.map(s => (
+        <div class="snippet-item">
+          <code>{s.keyword}</code>
+          <span class={`badge ${s.owned ? 'snippet-owned' : 'snippet-competitor'}`}>
+            {s.owned ? 'Owned' : 'Competitor'}
+          </span>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .panel {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0 0 0.25rem 0;
+  }
+  .subtitle {
+    font-size: 0.8rem;
+    color: var(--color-slate);
+    margin-bottom: 1rem;
+  }
+  .notice {
+    background: rgba(107, 114, 128, 0.1);
+    border: 1px solid rgba(107, 114, 128, 0.2);
+    border-radius: 3px;
+    padding: 1rem;
+    color: var(--color-slate);
+    font-size: 0.85rem;
+  }
+  .dist-bar {
+    display: flex;
+    height: 28px;
+    border-radius: 3px;
+    overflow: hidden;
+    gap: 2px;
+  }
+  .dist-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-night);
+    min-width: 28px;
+  }
+  .seg-top3 { background: var(--color-fleece-gold); }
+  .seg-top10 { background: var(--color-pale-gold); }
+  .seg-top20 { background: var(--color-compass-blue); }
+  .seg-top50 { background: rgba(107, 114, 128, 0.6); color: var(--color-frost); }
+  .seg-unranked { background: rgba(107, 114, 128, 0.3); color: var(--color-frost); }
+  .dist-legend {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--color-starlight);
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.35rem; }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .dot.top3 { background: var(--color-fleece-gold); }
+  .dot.top10 { background: var(--color-pale-gold); }
+  .dot.top20 { background: var(--color-compass-blue); }
+  .dot.top50 { background: rgba(107, 114, 128, 0.6); }
+  .dot.unranked { background: rgba(107, 114, 128, 0.3); }
+  .movement-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .move-card {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .move-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .move-value {
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    font-weight: 700;
+    display: block;
+    line-height: 1.2;
+  }
+  .move-card.improved .move-label { color: #86efac; }
+  .move-card.improved .move-value { color: #86efac; }
+  .move-card.declined .move-label { color: #fca5a5; }
+  .move-card.declined .move-value { color: #fca5a5; }
+  .move-card.stable .move-label { color: var(--color-slate); }
+  .move-card.stable .move-value { color: var(--color-starlight); }
+  .table-scroll { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    min-width: 700px;
+  }
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  td {
+    padding: 0.45rem 0.6rem;
+    color: var(--color-starlight);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+  }
+  .mono { font-family: var(--font-mono); font-size: 0.75rem; }
+  .pos-good { color: #86efac; }
+  .pos-ok { color: var(--color-pale-gold); }
+  .pos-low { color: var(--color-slate); }
+  .change-up { color: #86efac; }
+  .change-down { color: #fca5a5; }
+  .change-flat { color: var(--color-slate); }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .snippet-owned { background: rgba(34, 197, 94, 0.15); color: #86efac; }
+  .snippet-competitor { background: rgba(220, 38, 38, 0.15); color: #fca5a5; }
+  .sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 20px;
+    position: relative;
+  }
+  .spark-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-fleece-gold);
+    position: relative;
+  }
+  .snippet-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .snippet-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+</style>

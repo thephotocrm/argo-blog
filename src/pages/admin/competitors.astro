@@ -1,0 +1,42 @@
+---
+export const prerender = false;
+
+import Dashboard from '../../components/admin/Dashboard.astro';
+import CompetitorIntel from '../../components/admin/CompetitorIntel.astro';
+
+import compData from '../../data/seo/dashboard/competitors.json';
+
+const data = compData?.data || {};
+---
+
+<Dashboard title="Competitors" activePage="competitors">
+  <div class="dashboard-header">
+    <h1>Competitors</h1>
+    <p class="last-updated">{compData?.lastUpdated ? `Updated ${compData.lastUpdated}` : 'Awaiting first data sync'}</p>
+  </div>
+
+  <CompetitorIntel
+    activity={data.activity}
+    contentGaps={data.contentGaps}
+    threats={data.threats}
+  />
+</Dashboard>
+
+<style>
+  .dashboard-header {
+    margin-bottom: 1.5rem;
+  }
+  .dashboard-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0;
+  }
+  .last-updated {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    margin-top: 0.25rem;
+  }
+</style>

@@ -1,0 +1,293 @@
+---
+interface Props {
+  funnel?: { pending: number; approved: number; posted: number };
+  platforms?: {
+    reddit: { posts: number; engagement: number; referrals: number };
+    quora: { posts: number; engagement: number; referrals: number };
+    outreach: { posts: number; engagement: number; referrals: number };
+  };
+  pendingDrafts?: Array<{ title: string; platform: string; keyword: string; created: string }>;
+  postedContent?: Array<{ title: string; platform: string; url: string; engagement: number; status: 'live' | 'removed' }>;
+}
+
+const { funnel, platforms, pendingDrafts, postedContent } = Astro.props;
+const f = funnel || { pending: 0, approved: 0, posted: 0 };
+const fTotal = f.pending + f.approved + f.posted;
+const plats = platforms || {
+  reddit: { posts: 0, engagement: 0, referrals: 0 },
+  quora: { posts: 0, engagement: 0, referrals: 0 },
+  outreach: { posts: 0, engagement: 0, referrals: 0 },
+};
+const drafts = pendingDrafts || [];
+const posted = postedContent || [];
+---
+
+<div class="info-banner">
+  Draft approvals happen in Discord. This page is read-only tracking.
+</div>
+
+<section class="panel">
+  <h2>Draft Funnel</h2>
+
+  {fTotal === 0 ? (
+    <div class="notice"><p>No distribution data yet.</p></div>
+  ) : (
+    <div>
+      <div class="funnel-bar">
+        {f.posted > 0 && <div class="funnel-seg seg-posted" style={`flex: ${f.posted}`}><span>{f.posted}</span></div>}
+        {f.approved > 0 && <div class="funnel-seg seg-approved" style={`flex: ${f.approved}`}><span>{f.approved}</span></div>}
+        {f.pending > 0 && <div class="funnel-seg seg-pending" style={`flex: ${f.pending}`}><span>{f.pending}</span></div>}
+      </div>
+      <div class="funnel-legend">
+        <span class="legend-item"><span class="dot posted"></span> Posted</span>
+        <span class="legend-item"><span class="dot approved"></span> Approved</span>
+        <span class="legend-item"><span class="dot pending"></span> Pending</span>
+      </div>
+    </div>
+  )}
+</section>
+
+<div class="platform-cards">
+  {(['reddit', 'quora', 'outreach'] as const).map(name => {
+    const p = plats[name];
+    return (
+      <div class="plat-card">
+        <span class="plat-name">{name}</span>
+        <div class="plat-stats">
+          <div class="plat-stat">
+            <span class="plat-label">Posts</span>
+            <span class="plat-value">{p.posts}</span>
+          </div>
+          <div class="plat-stat">
+            <span class="plat-label">Engagement</span>
+            <span class="plat-value">{p.engagement}</span>
+          </div>
+          <div class="plat-stat">
+            <span class="plat-label">Referrals</span>
+            <span class="plat-value">{p.referrals}</span>
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+{drafts.length > 0 && (
+  <section class="panel">
+    <h2>Pending Drafts</h2>
+    <p class="subtitle">Awaiting approval in Discord</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Platform</th>
+            <th>Keyword</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {drafts.map(d => (
+            <tr>
+              <td class="title-cell">{d.title}</td>
+              <td><span class="badge plat-badge">{d.platform}</span></td>
+              <td><code>{d.keyword}</code></td>
+              <td class="mono">{d.created}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+)}
+
+{posted.length > 0 && (
+  <section class="panel">
+    <h2>Posted Content</h2>
+    <p class="subtitle">Recent distribution posts</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Platform</th>
+            <th>Engagement</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {posted.map(p => (
+            <tr>
+              <td class="title-cell">{p.title}</td>
+              <td><span class="badge plat-badge">{p.platform}</span></td>
+              <td class="mono">{p.engagement}</td>
+              <td><span class={`badge status-${p.status}`}>{p.status}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+)}
+
+<style>
+  .info-banner {
+    background: rgba(74, 111, 165, 0.1);
+    border: 1px solid rgba(74, 111, 165, 0.2);
+    border-radius: 3px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    color: #93bbee;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+  .panel {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0 0 0.25rem 0;
+  }
+  .subtitle {
+    font-size: 0.8rem;
+    color: var(--color-slate);
+    margin-bottom: 1rem;
+  }
+  .notice {
+    background: rgba(107, 114, 128, 0.1);
+    border: 1px solid rgba(107, 114, 128, 0.2);
+    border-radius: 3px;
+    padding: 1rem;
+    color: var(--color-slate);
+    font-size: 0.85rem;
+  }
+  .funnel-bar {
+    display: flex;
+    height: 28px;
+    border-radius: 3px;
+    overflow: hidden;
+    gap: 2px;
+  }
+  .funnel-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-night);
+    min-width: 28px;
+  }
+  .seg-posted { background: var(--color-fleece-gold); }
+  .seg-approved { background: var(--color-pale-gold); }
+  .seg-pending { background: var(--color-slate); color: var(--color-frost); }
+  .funnel-legend {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--color-starlight);
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.35rem; }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .dot.posted { background: var(--color-fleece-gold); }
+  .dot.approved { background: var(--color-pale-gold); }
+  .dot.pending { background: var(--color-slate); }
+  .platform-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .plat-card {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.25rem;
+  }
+  .plat-name {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-fleece-gold);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .plat-stats {
+    display: flex;
+    gap: 1rem;
+  }
+  .plat-stat { display: flex; flex-direction: column; gap: 0.1rem; }
+  .plat-label {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate);
+  }
+  .plat-value {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-parchment);
+  }
+  .table-scroll { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  td {
+    padding: 0.45rem 0.6rem;
+    color: var(--color-starlight);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  .title-cell { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+  }
+  .mono { font-family: var(--font-mono); font-size: 0.75rem; }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .plat-badge { background: rgba(74, 111, 165, 0.2); color: #93bbee; }
+  .status-live { background: rgba(34, 197, 94, 0.15); color: #86efac; }
+  .status-removed { background: rgba(220, 38, 38, 0.15); color: #fca5a5; }
+  @media (max-width: 768px) {
+    .platform-cards { grid-template-columns: 1fr; }
+  }
+</style>

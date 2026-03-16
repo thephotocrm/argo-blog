@@ -1,0 +1,386 @@
+---
+interface CannibalizationCase {
+  keyword: string;
+  pages: string[];
+  severity: 'high' | 'medium' | 'low';
+  action: string;
+}
+
+interface InternalLinkRec {
+  from: string;
+  to: string;
+  anchor: string;
+}
+
+interface Props {
+  healthScore?: number | null;
+  issues?: { critical: number; warning: number; info: number };
+  cwv?: { lcp: number | null; cls: number | null; inp: number | null };
+  cannibalization?: CannibalizationCase[];
+  internalLinks?: { orphanCount: number; underlinkedCount: number; recommendations: InternalLinkRec[] };
+}
+
+const { healthScore, issues, cwv, cannibalization, internalLinks } = Astro.props;
+const iss = issues || { critical: 0, warning: 0, info: 0 };
+const vitals = cwv || { lcp: null, cls: null, inp: null };
+const canCases = cannibalization || [];
+const links = internalLinks || { orphanCount: 0, underlinkedCount: 0, recommendations: [] };
+
+// CWV thresholds
+const lcpPass = vitals.lcp != null && vitals.lcp <= 2500;
+const clsPass = vitals.cls != null && vitals.cls <= 0.1;
+const inpPass = vitals.inp != null && vitals.inp <= 200;
+---
+
+<section class="panel">
+  <h2>Site Health</h2>
+  <p class="subtitle">Technical audit · Weekly</p>
+
+  <div class="health-row">
+    <div class="health-score">
+      <span class="score-value">{healthScore != null ? healthScore : '—'}</span>
+      <span class="score-label">Health Score</span>
+    </div>
+
+    <div class="issue-bars">
+      <div class="issue-row">
+        <span class="issue-label critical-text">Critical</span>
+        <div class="issue-bar-track">
+          <div class="issue-bar-fill critical-fill" style={`width: ${iss.critical > 0 ? Math.max(5, Math.min(100, iss.critical * 10)) : 0}%`}></div>
+        </div>
+        <span class="issue-count">{iss.critical}</span>
+      </div>
+      <div class="issue-row">
+        <span class="issue-label warning-text">Warning</span>
+        <div class="issue-bar-track">
+          <div class="issue-bar-fill warning-fill" style={`width: ${iss.warning > 0 ? Math.max(5, Math.min(100, iss.warning * 5)) : 0}%`}></div>
+        </div>
+        <span class="issue-count">{iss.warning}</span>
+      </div>
+      <div class="issue-row">
+        <span class="issue-label info-text">Info</span>
+        <div class="issue-bar-track">
+          <div class="issue-bar-fill info-fill" style={`width: ${iss.info > 0 ? Math.max(5, Math.min(100, iss.info * 3)) : 0}%`}></div>
+        </div>
+        <span class="issue-count">{iss.info}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Core Web Vitals</h2>
+  <div class="cwv-cards">
+    <div class={`cwv-card ${vitals.lcp != null ? (lcpPass ? 'pass' : 'fail') : ''}`}>
+      <span class="cwv-label">LCP</span>
+      <span class="cwv-value">{vitals.lcp != null ? `${(vitals.lcp / 1000).toFixed(1)}s` : '—'}</span>
+      {vitals.lcp != null && <span class={`cwv-status ${lcpPass ? 'pass' : 'fail'}`}>{lcpPass ? 'Good' : 'Needs Work'}</span>}
+    </div>
+    <div class={`cwv-card ${vitals.cls != null ? (clsPass ? 'pass' : 'fail') : ''}`}>
+      <span class="cwv-label">CLS</span>
+      <span class="cwv-value">{vitals.cls != null ? vitals.cls.toFixed(3) : '—'}</span>
+      {vitals.cls != null && <span class={`cwv-status ${clsPass ? 'pass' : 'fail'}`}>{clsPass ? 'Good' : 'Needs Work'}</span>}
+    </div>
+    <div class={`cwv-card ${vitals.inp != null ? (inpPass ? 'pass' : 'fail') : ''}`}>
+      <span class="cwv-label">INP</span>
+      <span class="cwv-value">{vitals.inp != null ? `${vitals.inp}ms` : '—'}</span>
+      {vitals.inp != null && <span class={`cwv-status ${inpPass ? 'pass' : 'fail'}`}>{inpPass ? 'Good' : 'Needs Work'}</span>}
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Keyword Cannibalization</h2>
+  <p class="subtitle">Biweekly detection</p>
+
+  {canCases.length === 0 ? (
+    <div class="notice"><p>No cannibalization cases detected.</p></div>
+  ) : (
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th>Competing Pages</th>
+            <th>Severity</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {canCases.map(c => (
+            <tr>
+              <td><code>{c.keyword}</code></td>
+              <td class="mono">{c.pages.length}</td>
+              <td><span class={`badge sev-${c.severity}`}>{c.severity}</span></td>
+              <td class="action-cell">{c.action}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</section>
+
+<section class="panel">
+  <h2>Internal Link Health</h2>
+  <p class="subtitle">Weekly link graph analysis</p>
+
+  <div class="link-stats">
+    <div class="link-stat">
+      <span class="link-stat-label">Orphan Pages</span>
+      <span class={`link-stat-value ${links.orphanCount > 0 ? 'warn' : ''}`}>{links.orphanCount}</span>
+    </div>
+    <div class="link-stat">
+      <span class="link-stat-label">Underlinked</span>
+      <span class={`link-stat-value ${links.underlinkedCount > 0 ? 'warn' : ''}`}>{links.underlinkedCount}</span>
+    </div>
+  </div>
+
+  {links.recommendations.length > 0 && (
+    <div class="recs">
+      <h3>Top Recommendations</h3>
+      {links.recommendations.slice(0, 5).map(rec => (
+        <div class="rec-item">
+          <span class="rec-from" title={rec.from}>{rec.from}</span>
+          <span class="rec-arrow">&rarr;</span>
+          <span class="rec-to" title={rec.to}>{rec.to}</span>
+        </div>
+      ))}
+    </div>
+  )}
+</section>
+
+<style>
+  .panel {
+    background: var(--color-deep-water);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 0 0 0.25rem 0;
+  }
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-parchment);
+    margin: 1rem 0 0.75rem 0;
+  }
+  .subtitle {
+    font-size: 0.8rem;
+    color: var(--color-slate);
+    margin-bottom: 1rem;
+  }
+  .notice {
+    background: rgba(107, 114, 128, 0.1);
+    border: 1px solid rgba(107, 114, 128, 0.2);
+    border-radius: 3px;
+    padding: 1rem;
+    color: var(--color-slate);
+    font-size: 0.85rem;
+  }
+  .health-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  .health-score { text-align: center; }
+  .score-value {
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--color-parchment);
+    display: block;
+    line-height: 1;
+  }
+  .score-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-slate);
+    margin-top: 0.25rem;
+    display: block;
+  }
+  .issue-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .issue-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 30px;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .issue-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .critical-text { color: #fca5a5; }
+  .warning-text { color: var(--color-pale-gold); }
+  .info-text { color: var(--color-compass-blue); }
+  .issue-bar-track {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .issue-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    min-width: 0;
+  }
+  .critical-fill { background: rgba(239, 68, 68, 0.6); }
+  .warning-fill { background: rgba(201, 162, 39, 0.6); }
+  .info-fill { background: rgba(74, 111, 165, 0.6); }
+  .issue-count {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-starlight);
+    text-align: right;
+  }
+  .cwv-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .cwv-card {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .cwv-card.pass { border-color: rgba(34, 197, 94, 0.2); }
+  .cwv-card.fail { border-color: rgba(239, 68, 68, 0.2); }
+  .cwv-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-fleece-gold);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .cwv-value {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-parchment);
+    display: block;
+    line-height: 1.2;
+  }
+  .cwv-status {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+    display: block;
+  }
+  .cwv-status.pass { color: #86efac; }
+  .cwv-status.fail { color: #fca5a5; }
+  .table-scroll { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  td {
+    padding: 0.45rem 0.6rem;
+    color: var(--color-starlight);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+  }
+  .mono { font-family: var(--font-mono); font-size: 0.75rem; }
+  .action-cell { font-size: 0.75rem; max-width: 200px; }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .sev-high { background: rgba(220, 38, 38, 0.15); color: #fca5a5; }
+  .sev-medium { background: rgba(201, 162, 39, 0.15); color: var(--color-pale-gold); }
+  .sev-low { background: rgba(107, 114, 128, 0.15); color: var(--color-slate); }
+  .link-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .link-stat {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .link-stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-fleece-gold);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .link-stat-value {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-parchment);
+    display: block;
+  }
+  .link-stat-value.warn { color: #fca5a5; }
+  .recs {
+    margin-top: 0.5rem;
+  }
+  .rec-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+  .rec-from, .rec-to {
+    color: var(--color-starlight);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+  .rec-arrow { color: var(--color-fleece-gold); flex-shrink: 0; }
+  @media (max-width: 768px) {
+    .health-row { grid-template-columns: 1fr; }
+    .cwv-cards { grid-template-columns: 1fr; }
+  }
+</style>
