@@ -2,125 +2,20 @@
   "version": "1.0",
   "lastUpdated": "2026-03-16",
   "tasks": [
-    {
-      "id": 1,
-      "task": "Create scholarship page ($500 Photography Scholarship)",
-      "category": "link_bait",
-      "status": "done",
-      "priority": "high",
-      "notes": ""
-    },
-    {
-      "id": 2,
-      "task": "Create 'Photography Industry Statistics 2026' data page",
-      "category": "link_bait",
-      "status": "open",
-      "priority": "high",
-      "notes": ""
-    },
-    {
-      "id": 3,
-      "task": "Create author bio pages with Person schema",
-      "category": "eeat",
-      "status": "open",
-      "priority": "high",
-      "notes": ""
-    },
-    {
-      "id": 4,
-      "task": "Set up Google Business Profile (service area)",
-      "category": "local_seo",
-      "status": "open",
-      "priority": "high",
-      "notes": ""
-    },
-    {
-      "id": 5,
-      "task": "Create YouTube channel + first tutorial video",
-      "category": "video_seo",
-      "status": "open",
-      "priority": "medium",
-      "notes": ""
-    },
-    {
-      "id": 6,
-      "task": "Pitch founder as guest on 3 photography podcasts",
-      "category": "authority",
-      "status": "open",
-      "priority": "medium",
-      "notes": ""
-    },
-    {
-      "id": 7,
-      "task": "Research and buy 2-3 expired photography domains for 301 redirects",
-      "category": "greyhat",
-      "status": "open",
-      "priority": "medium",
-      "notes": ""
-    },
-    {
-      "id": 8,
-      "task": "Seed brand searches: share 'argo studio vs honeybook' search prompts in communities",
-      "category": "greyhat",
-      "status": "open",
-      "priority": "medium",
-      "notes": ""
-    },
-    {
-      "id": 9,
-      "task": "Create LinkedIn newsletter for cross-posting blog content",
-      "category": "distribution",
-      "status": "open",
-      "priority": "high",
-      "notes": ""
-    },
-    {
-      "id": 10,
-      "task": "Set up Medium publication with canonical tags",
-      "category": "distribution",
-      "status": "open",
-      "priority": "high",
-      "notes": ""
-    },
-    {
-      "id": 11,
-      "task": "Add FAQ sections + FAQPage schema to all blog posts",
-      "category": "rich_results",
-      "status": "open",
-      "priority": "high",
-      "notes": ""
-    },
-    {
-      "id": 12,
-      "task": "Add HowTo schema to instructional blog posts",
-      "category": "rich_results",
-      "status": "open",
-      "priority": "medium",
-      "notes": ""
-    },
-    {
-      "id": 13,
-      "task": "Fill Organization schema sameAs with real social URLs",
-      "category": "eeat",
-      "status": "open",
-      "priority": "high",
-      "notes": ""
-    },
-    {
-      "id": 14,
-      "task": "Add dateModified to Article schema + update old posts",
-      "category": "freshness",
-      "status": "open",
-      "priority": "medium",
-      "notes": ""
-    },
-    {
-      "id": 15,
-      "task": "Create 'What is Argo Studio?' entity page for AI citation",
-      "category": "ai_seo",
-      "status": "open",
-      "priority": "medium",
-      "notes": ""
-    }
+    { "id": 1, "task": "Create scholarship page ($500 Photography Scholarship)", "description": "Create a /scholarships page offering a $500 photography scholarship. Link-bait strategy — .edu sites link to scholarship pages. Include application form, deadline, and eligibility criteria.", "category": "link_bait", "status": "done", "priority": "high", "notes": "" },
+    { "id": 2, "task": "Create 'Photography Industry Statistics 2026' data page", "description": "Build a /photography-statistics page with curated industry data (market size, average rates, gear spending). Data pages earn organic backlinks from journalists and bloggers citing stats.", "category": "link_bait", "status": "open", "priority": "high", "notes": "" },
+    { "id": 3, "task": "Create author bio pages with Person schema", "description": "Create /about/team with founder bio, headshot, credentials, and Person schema markup. Critical for E-E-A-T — Google needs to see real humans behind the content.", "category": "eeat", "status": "open", "priority": "high", "notes": "" },
+    { "id": 4, "task": "Set up Google Business Profile (service area)", "description": "Claim and verify a Google Business Profile as a service-area business. Enables local pack visibility and Google Maps presence for 'photography CRM' searches.", "category": "local_seo", "status": "open", "priority": "high", "notes": "" },
+    { "id": 5, "task": "Create YouTube channel + first tutorial video", "description": "Set up a branded YouTube channel and publish one tutorial (e.g. 'How to set up your photography workflow'). Video results dominate SERPs for how-to queries.", "category": "video_seo", "status": "open", "priority": "medium", "notes": "" },
+    { "id": 6, "task": "Pitch founder as guest on 3 photography podcasts", "description": "Research photography business podcasts (e.g. The Portrait System, Bokeh Podcast) and send personalized pitches. Podcast appearances build authority signals and backlinks from show notes.", "category": "authority", "status": "open", "priority": "medium", "notes": "" },
+    { "id": 7, "task": "Research and buy 2-3 expired photography domains for 301 redirects", "description": "Use ExpiredDomains.net or similar to find expired domains with existing backlinks in the photography niche. 301 redirect them to pass link equity. Check spam scores first.", "category": "greyhat", "status": "open", "priority": "medium", "notes": "" },
+    { "id": 8, "task": "Seed brand searches: share 'argo studio vs honeybook' search prompts in communities", "description": "Naturally mention comparison searches in photography forums and groups to generate branded search volume. Google interprets brand searches as an authority signal.", "category": "greyhat", "status": "open", "priority": "medium", "notes": "" },
+    { "id": 9, "task": "Create LinkedIn newsletter for cross-posting blog content", "description": "Set up a LinkedIn newsletter from the founder's profile. Newsletters get push-notified to all connections/followers. Cross-post blog content with canonical tags pointing back.", "category": "distribution", "status": "open", "priority": "high", "notes": "" },
+    { "id": 10, "task": "Set up Medium publication with canonical tags", "description": "Create a Medium publication for Argo Studio. Use Medium's 'import story' feature which automatically sets canonical URLs to the original blog post.", "category": "distribution", "status": "open", "priority": "high", "notes": "" },
+    { "id": 11, "task": "Add FAQ sections + FAQPage schema to all blog posts", "description": "Add 3-5 FAQ questions to each blog post with FAQPage structured data. Enables rich result FAQ dropdowns in SERPs, dramatically increasing click-through rate.", "category": "rich_results", "status": "open", "priority": "high", "notes": "" },
+    { "id": 12, "task": "Add HowTo schema to instructional blog posts", "description": "Add HowTo structured data to step-by-step posts (pricing guide, client management). Enables rich how-to cards in search results with step previews.", "category": "rich_results", "status": "open", "priority": "medium", "notes": "" },
+    { "id": 13, "task": "Fill Organization schema sameAs with real social URLs", "description": "Update the Organization schema markup to include actual social media profile URLs in the sameAs array. Currently empty — Google uses these to verify entity identity.", "category": "eeat", "status": "open", "priority": "high", "notes": "" },
+    { "id": 14, "task": "Add dateModified to Article schema + update old posts", "description": "Add dateModified to Article structured data and refresh older posts with current information. Google favors recently updated content for competitive queries.", "category": "freshness", "status": "open", "priority": "medium", "notes": "" },
+    { "id": 15, "task": "Create 'What is Argo Studio?' entity page for AI citation", "description": "Create a dedicated entity page with clear factual statements about what Argo Studio is, who built it, and what it does. Optimized for AI models to cite when answering questions.", "category": "ai_seo", "status": "open", "priority": "medium", "notes": "" }
   ]
 }

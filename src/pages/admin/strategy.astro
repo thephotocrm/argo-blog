@@ -22,8 +22,9 @@ const thisWeek = entries.filter((e: any) => {
   return d >= weekAgo;
 }).length;
 
-// Directory stats
-const dirItems = directories.items || [];
+// Directory stats — sort by priority
+const priorityOrder: Record<string, number> = { high: 0, medium: 1, low: 2 };
+const dirItems = (directories.items || []).sort((a: any, b: any) => (priorityOrder[a.priority] ?? 9) - (priorityOrder[b.priority] ?? 9));
 const dirNotStarted = dirItems.filter((d: any) => d.status === 'not_started').length;
 const dirSubmitted = dirItems.filter((d: any) => d.status === 'submitted').length;
 const dirLive = dirItems.filter((d: any) => d.status === 'live').length;
@@ -34,10 +35,32 @@ const linkFound = linkItems.filter((l: any) => l.status === 'found').length;
 const linkContacted = linkItems.filter((l: any) => l.status === 'contacted').length;
 const linkWon = linkItems.filter((l: any) => l.status === 'won').length;
 
-// Growth tasks stats
-const tasks = growthTasks.tasks || [];
+// Growth tasks stats — sort: open first, then by priority
+const tasks = (growthTasks.tasks || []).sort((a: any, b: any) => {
+  if (a.status !== b.status) return a.status === 'open' ? -1 : 1;
+  return (priorityOrder[a.priority] ?? 9) - (priorityOrder[b.priority] ?? 9);
+});
 const tasksOpen = tasks.filter((t: any) => t.status === 'open').length;
 const tasksDone = tasks.filter((t: any) => t.status === 'done').length;
+
+// Group tasks by category
+const tasksByCategory = tasks.reduce((acc: Record<string, any[]>, t: any) => {
+  const cat = t.category;
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(t);
+  return acc;
+}, {} as Record<string, any[]>);
+
+// Sort categories: categories with open high-priority tasks first
+const sortedCategories = Object.keys(tasksByCategory).sort((a, b) => {
+  const aHasOpenHigh = tasksByCategory[a].some((t: any) => t.status === 'open' && t.priority === 'high');
+  const bHasOpenHigh = tasksByCategory[b].some((t: any) => t.status === 'open' && t.priority === 'high');
+  if (aHasOpenHigh !== bHasOpenHigh) return aHasOpenHigh ? -1 : 1;
+  const aOpen = tasksByCategory[a].some((t: any) => t.status === 'open');
+  const bOpen = tasksByCategory[b].some((t: any) => t.status === 'open');
+  if (aOpen !== bOpen) return aOpen ? -1 : 1;
+  return 0;
+});
 
 // Distribution stats
 const posts = distribution.posts || [];
@@ -67,24 +90,121 @@ const categoryLabels: Record<string, string> = {
   freshness: 'Freshness',
   ai_seo: 'AI SEO',
 };
+
+// Platform compose URLs
+const platformComposeUrls: Record<string, string> = {
+  medium: 'https://medium.com/new-story',
+  linkedin: 'https://www.linkedin.com/post/new',
+  reddit: 'https://www.reddit.com/submit',
+  quora: 'https://www.quora.com/answer',
+};
 ---
 
 <Dashboard title="Strategy" activePage="strategy">
   <div class="page-header">
     <h1>Strategy Execution</h1>
-    <p class="subtitle">{dirNotStarted} directories pending · {linkFound} link opportunities · {tasksOpen} growth tasks open · {postedSlots}/{totalPlatformSlots} cross-posted</p>
+    <p class="subtitle">{tasksOpen} growth tasks open · {dirNotStarted} directories pending · {postedSlots}/{totalPlatformSlots} cross-posted · {linkFound} link opportunities</p>
   </div>
 
-  <!-- Section Nav -->
+  <!-- Section Nav — reordered by priority -->
   <nav class="section-nav">
-    <a href="#directories">Directories</a>
-    <a href="#link-building">Link Building</a>
-    <a href="#velocity">Velocity</a>
-    <a href="#distribution">Distribution</a>
     <a href="#growth">Growth Tasks</a>
+    <a href="#distribution">Distribution</a>
+    <a href="#directories">Directories</a>
     <a href="#eeat">E-E-A-T</a>
+    <a href="#link-building">Link Building</a>
     <a href="#reviews">Reviews</a>
+    <a href="#velocity">Velocity</a>
   </nav>
+
+  <!-- ===== GROWTH TASKS ===== -->
+  <section id="growth" class="section">
+    <h2 class="section-title">Growth Tasks</h2>
+    <div class="stat-row">
+      <div class="mini-stat"><span class="mini-num">{tasksOpen}</span><span class="mini-label">Open</span></div>
+      <div class="mini-stat"><span class="mini-num green">{tasksDone}</span><span class="mini-label">Done</span></div>
+    </div>
+    {sortedCategories.map((cat: string) => {
+      const catTasks = tasksByCategory[cat];
+      const catLabel = categoryLabels[cat] || cat;
+      const openCount = catTasks.filter((t: any) => t.status === 'open').length;
+      return (
+        <div class="task-group">
+          <h3 class="task-group-title">
+            {catLabel}
+            <span class="task-group-count">{openCount} open</span>
+          </h3>
+          <div class="checklist">
+            {catTasks.map((t: any) => (
+              <div class="check-item" data-id={t.id}>
+                <div class="check-main">
+                  <input type="checkbox" class="growth-check" data-id={t.id} checked={t.status === 'done'} />
+                  <div class="check-content">
+                    <span class={`check-text ${t.status === 'done' ? 'done' : ''}`}>{t.task}</span>
+                    {t.description && (
+                      <p class="task-desc">{t.description}</p>
+                    )}
+                  </div>
+                  <span class={`badge ${t.priority === 'high' ? 'gold' : t.priority === 'medium' ? 'blue' : 'slate'}`}>{t.priority}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    })}
+  </section>
+
+  <!-- ===== DISTRIBUTION TRACKER ===== -->
+  <section id="distribution" class="section">
+    <h2 class="section-title">Distribution Tracker</h2>
+    <div class="table-wrap">
+      <table class="data-table dist-table">
+        <thead>
+          <tr>
+            <th>Post</th>
+            <th>
+              <a href={platformComposeUrls.medium} target="_blank" class="th-link">Medium <span class="th-icon">&#8599;</span></a>
+            </th>
+            <th>
+              <a href={platformComposeUrls.linkedin} target="_blank" class="th-link">LinkedIn <span class="th-icon">&#8599;</span></a>
+            </th>
+            <th>
+              <a href={platformComposeUrls.reddit} target="_blank" class="th-link">Reddit <span class="th-icon">&#8599;</span></a>
+            </th>
+            <th>
+              <a href={platformComposeUrls.quora} target="_blank" class="th-link">Quora <span class="th-icon">&#8599;</span></a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.map((p: any) => (
+            <tr>
+              <td class="name-cell">
+                <a href={`/blog/${p.slug}`} target="_blank" class="post-link">{p.title}</a>
+                <button class="btn-copy-url" data-url={`https://blog.argostudio.co/blog/${p.slug}`} title="Copy blog URL">&#128203;</button>
+              </td>
+              {['medium', 'linkedin', 'reddit', 'quora'].map((platform: string) => {
+                const pl = p.platforms[platform];
+                const isPosted = pl.status === 'posted';
+                return (
+                  <td class="platform-cell">
+                    {isPosted ? (
+                      <a href={pl.url || '#'} target="_blank" class="badge green">posted</a>
+                    ) : (
+                      <button class="btn btn-sm btn-dist-toggle" data-slug={p.slug} data-platform={platform}>
+                        not posted
+                      </button>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
 
   <!-- ===== DIRECTORY SUBMISSIONS ===== -->
   <section id="directories" class="section">
@@ -102,6 +222,7 @@ const categoryLabels: Record<string, string> = {
             <th>Category</th>
             <th>Priority</th>
             <th>Status</th>
+            <th>Submit</th>
             <th>Listing</th>
             <th>Actions</th>
           </tr>
@@ -116,6 +237,13 @@ const categoryLabels: Record<string, string> = {
                 <span class={`badge ${d.status === 'live' ? 'green' : d.status === 'submitted' ? 'blue' : d.status === 'rejected' ? 'red' : 'slate'}`}>
                   {d.status.replace('_', ' ')}
                 </span>
+              </td>
+              <td>
+                {d.submissionUrl ? (
+                  <a href={d.submissionUrl} target="_blank" class="btn btn-sm btn-go">Go Submit &#8594;</a>
+                ) : (
+                  <span class="text-muted text-sm">search manually</span>
+                )}
               </td>
               <td>
                 {d.listingUrl ? <a href={d.listingUrl} target="_blank" class="link-ext">View</a> : <span class="text-muted">—</span>}
@@ -135,11 +263,50 @@ const categoryLabels: Record<string, string> = {
     </div>
   </section>
 
+  <!-- ===== E-E-A-T SCORECARD ===== -->
+  <section id="eeat" class="section">
+    <h2 class="section-title">E-E-A-T Scorecard</h2>
+    <div class="eeat-score">
+      <span class="score-num">{eeat.overallScore || eatPassed}</span>
+      <span class="score-slash">/</span>
+      <span class="score-total">{eeat.maxScore || eatTotal}</span>
+    </div>
+    <div class="eeat-bar">
+      <div class="eeat-bar-fill" style={`width: ${(eatPassed / Math.max(eatTotal, 1)) * 100}%`}></div>
+    </div>
+    {['expertise', 'experience', 'authority', 'trust'].map((cat: string) => {
+      const catChecks = checks.filter((c: any) => c.category === cat);
+      if (catChecks.length === 0) return null;
+      return (
+        <div class="eeat-group">
+          <h3 class="eeat-cat">{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
+          {catChecks.map((c: any) => (
+            <div class={`eeat-check ${c.status}`}>
+              <span class={`eeat-icon ${c.status}`}>{c.status === 'pass' ? '\u2713' : '\u2717'}</span>
+              <div class="eeat-check-content">
+                <span class="eeat-label">{c.label}</span>
+                {c.notes && <span class="eeat-notes">{c.notes}</span>}
+                {c.status === 'fail' && c.action && (
+                  <div class="eeat-action">
+                    <span class="eeat-action-text">{c.action}</span>
+                    {c.relatedTaskId && (
+                      <a href="#growth" class="eeat-task-link">&#8594; See Growth Task #{c.relatedTaskId}</a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    })}
+  </section>
+
   <!-- ===== LINK BUILDING PIPELINE ===== -->
   <section id="link-building" class="section">
     <h2 class="section-title">Link Building Pipeline</h2>
     {linkItems.length === 0 ? (
-      <div class="empty-state">No link opportunities found yet. Bot will populate this via roundup discovery and broken link scanning.</div>
+      <div class="empty-state">No opportunities found yet. You can manually search for roundup posts targeting your keywords, or wait for the next bot scan (runs daily).</div>
     ) : (
       <>
         <div class="stat-row">
@@ -179,116 +346,6 @@ const categoryLabels: Record<string, string> = {
     )}
   </section>
 
-  <!-- ===== CONTENT VELOCITY ===== -->
-  <section id="velocity" class="section">
-    <h2 class="section-title">Content Velocity</h2>
-    <div class="stat-row">
-      <div class="mini-stat"><span class="mini-num">{totalPublished}</span><span class="mini-label">Published</span></div>
-      <div class="mini-stat"><span class="mini-num gold">{thisWeek}</span><span class="mini-label">This Week</span></div>
-    </div>
-    {entries.length > 0 ? (
-      <div class="velocity-list">
-        {entries.slice(0, 10).map((e: any) => (
-          <div class="velocity-item">
-            <span class="velocity-date">{e.published_at}</span>
-            <span class="velocity-title">{e.title}</span>
-            <span class="velocity-words">{e.word_count} words</span>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div class="empty-state">No published content in log yet.</div>
-    )}
-  </section>
-
-  <!-- ===== DISTRIBUTION TRACKER ===== -->
-  <section id="distribution" class="section">
-    <h2 class="section-title">Distribution Tracker</h2>
-    <div class="table-wrap">
-      <table class="data-table dist-table">
-        <thead>
-          <tr>
-            <th>Post</th>
-            <th>Medium</th>
-            <th>LinkedIn</th>
-            <th>Reddit</th>
-            <th>Quora</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.map((p: any) => (
-            <tr>
-              <td class="name-cell">{p.title}</td>
-              {['medium', 'linkedin', 'reddit', 'quora'].map((platform: string) => {
-                const pl = p.platforms[platform];
-                const isPosted = pl.status === 'posted';
-                return (
-                  <td class="platform-cell">
-                    {isPosted ? (
-                      <a href={pl.url || '#'} target="_blank" class="badge green">posted</a>
-                    ) : (
-                      <button class="btn btn-sm btn-dist-toggle" data-slug={p.slug} data-platform={platform}>
-                        not posted
-                      </button>
-                    )}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ===== GROWTH TASKS ===== -->
-  <section id="growth" class="section">
-    <h2 class="section-title">Growth Tasks</h2>
-    <div class="stat-row">
-      <div class="mini-stat"><span class="mini-num">{tasksOpen}</span><span class="mini-label">Open</span></div>
-      <div class="mini-stat"><span class="mini-num green">{tasksDone}</span><span class="mini-label">Done</span></div>
-    </div>
-    <div class="checklist">
-      {tasks.map((t: any) => (
-        <label class="check-item" data-id={t.id}>
-          <input type="checkbox" class="growth-check" data-id={t.id} checked={t.status === 'done'} />
-          <span class={`check-text ${t.status === 'done' ? 'done' : ''}`}>{t.task}</span>
-          <span class={`badge ${t.priority === 'high' ? 'gold' : 'slate'}`}>{t.priority}</span>
-          <span class={`badge ${categoryLabels[t.category] ? 'blue' : 'slate'}`}>{categoryLabels[t.category] || t.category}</span>
-        </label>
-      ))}
-    </div>
-  </section>
-
-  <!-- ===== E-E-A-T SCORECARD ===== -->
-  <section id="eeat" class="section">
-    <h2 class="section-title">E-E-A-T Scorecard</h2>
-    <div class="eeat-score">
-      <span class="score-num">{eeat.overallScore || eatPassed}</span>
-      <span class="score-slash">/</span>
-      <span class="score-total">{eeat.maxScore || eatTotal}</span>
-    </div>
-    <div class="eeat-bar">
-      <div class="eeat-bar-fill" style={`width: ${(eatPassed / Math.max(eatTotal, 1)) * 100}%`}></div>
-    </div>
-    {['expertise', 'experience', 'authority', 'trust'].map((cat: string) => {
-      const catChecks = checks.filter((c: any) => c.category === cat);
-      if (catChecks.length === 0) return null;
-      return (
-        <div class="eeat-group">
-          <h3 class="eeat-cat">{cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
-          {catChecks.map((c: any) => (
-            <div class={`eeat-check ${c.status}`}>
-              <span class={`eeat-icon ${c.status}`}>{c.status === 'pass' ? '\u2713' : '\u2717'}</span>
-              <span class="eeat-label">{c.label}</span>
-              {c.notes && <span class="eeat-notes">{c.notes}</span>}
-            </div>
-          ))}
-        </div>
-      );
-    })}
-  </section>
-
   <!-- ===== REVIEW SOLICITATION ===== -->
   <section id="reviews" class="section">
     <h2 class="section-title">Review Solicitation</h2>
@@ -302,6 +359,9 @@ const categoryLabels: Record<string, string> = {
           </div>
         </div>
       ))}
+    </div>
+    <div class="review-actions-bar">
+      <button class="btn btn-sm btn-add-contact" id="btn-add-contact">+ Add Contact</button>
     </div>
     {(reviews.contacts || []).length > 0 ? (
       <div class="table-wrap">
@@ -332,7 +392,29 @@ const categoryLabels: Record<string, string> = {
         </table>
       </div>
     ) : (
-      <div class="empty-state">No review contacts added yet. Add contacts as you onboard early users.</div>
+      <div class="empty-state">No contacts yet. Add your first beta users or early customers above to start collecting reviews.</div>
+    )}
+  </section>
+
+  <!-- ===== CONTENT VELOCITY ===== -->
+  <section id="velocity" class="section">
+    <h2 class="section-title">Content Velocity</h2>
+    <div class="stat-row">
+      <div class="mini-stat"><span class="mini-num">{totalPublished}</span><span class="mini-label">Published</span></div>
+      <div class="mini-stat"><span class="mini-num gold">{thisWeek}</span><span class="mini-label">This Week</span></div>
+    </div>
+    {entries.length > 0 ? (
+      <div class="velocity-list">
+        {entries.slice(0, 10).map((e: any) => (
+          <div class="velocity-item">
+            <span class="velocity-date">{e.published_at}</span>
+            <span class="velocity-title">{e.title}</span>
+            <span class="velocity-words">{e.word_count} words</span>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">No published content in log yet.</div>
     )}
   </section>
 </Dashboard>
@@ -461,6 +543,7 @@ const categoryLabels: Record<string, string> = {
     flex-wrap: wrap;
   }
   .text-muted { color: var(--color-slate); }
+  .text-sm { font-size: 0.65rem; }
   .link-ext {
     color: var(--color-compass-blue);
     text-decoration: none;
@@ -502,6 +585,18 @@ const categoryLabels: Record<string, string> = {
     color: var(--color-parchment);
   }
   .btn.btn-sm { font-size: 0.6rem; padding: 0.2rem 0.5rem; }
+
+  /* Go Submit button — gold accent for primary action */
+  .btn-go {
+    border-color: var(--color-fleece-gold);
+    color: var(--color-fleece-gold);
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-go:hover {
+    background: rgba(201,162,39,0.15);
+    color: var(--color-fleece-gold);
+  }
 
   /* Card grid (link building) */
   .card-grid {
@@ -558,17 +653,64 @@ const categoryLabels: Record<string, string> = {
 
   /* Distribution table */
   .dist-table .platform-cell { text-align: center; }
+  .th-link {
+    color: var(--color-slate);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .th-link:hover { color: var(--color-compass-blue); }
+  .th-icon {
+    font-size: 0.55rem;
+    opacity: 0.6;
+  }
+  .post-link {
+    color: var(--color-parchment);
+    text-decoration: none;
+  }
+  .post-link:hover {
+    color: var(--color-compass-blue);
+    text-decoration: underline;
+  }
+  .btn-copy-url {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.7rem;
+    opacity: 0.4;
+    padding: 0 0.25rem;
+    vertical-align: middle;
+    transition: opacity 0.15s;
+  }
+  .btn-copy-url:hover { opacity: 0.8; }
 
-  /* Checklist (growth tasks) */
+  /* Growth tasks — grouped */
+  .task-group {
+    margin-bottom: 1.25rem;
+  }
+  .task-group-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-parchment);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .task-group-count {
+    font-size: 0.6rem;
+    color: var(--color-slate);
+    font-weight: normal;
+  }
   .checklist {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
   }
   .check-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
     padding: 0.5rem 0.75rem;
     background: var(--color-deep-water);
     border: 1px solid rgba(255,255,255,0.06);
@@ -577,20 +719,36 @@ const categoryLabels: Record<string, string> = {
     transition: background 0.15s;
   }
   .check-item:hover { background: rgba(255,255,255,0.03); }
+  .check-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
   .growth-check {
     accent-color: var(--color-fleece-gold);
     width: 16px;
     height: 16px;
     flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .check-content {
+    flex: 1;
+    min-width: 0;
   }
   .check-text {
-    flex: 1;
     font-size: 0.8rem;
     color: var(--color-starlight);
+    display: block;
   }
   .check-text.done {
     text-decoration: line-through;
     color: var(--color-slate);
+  }
+  .task-desc {
+    font-size: 0.7rem;
+    color: var(--color-slate);
+    margin: 0.25rem 0 0 0;
+    line-height: 1.4;
   }
 
   /* E-E-A-T scorecard */
@@ -651,6 +809,10 @@ const categoryLabels: Record<string, string> = {
   }
   .eeat-icon.pass { color: #86efac; }
   .eeat-icon.fail { color: #ef4444; }
+  .eeat-check-content {
+    flex: 1;
+    min-width: 0;
+  }
   .eeat-label {
     font-size: 0.8rem;
     color: var(--color-starlight);
@@ -661,8 +823,40 @@ const categoryLabels: Record<string, string> = {
     color: var(--color-slate);
     margin-left: 0.25rem;
   }
+  .eeat-action {
+    margin-top: 0.3rem;
+    padding: 0.35rem 0.5rem;
+    background: rgba(201,162,39,0.06);
+    border-left: 2px solid var(--color-fleece-gold);
+    border-radius: 0 3px 3px 0;
+  }
+  .eeat-action-text {
+    font-size: 0.7rem;
+    color: var(--color-starlight);
+    display: block;
+    line-height: 1.4;
+  }
+  .eeat-task-link {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-fleece-gold);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0.2rem;
+  }
+  .eeat-task-link:hover { text-decoration: underline; }
 
-  /* Review bars */
+  /* Review solicitation */
+  .review-actions-bar {
+    margin-bottom: 0.75rem;
+  }
+  .btn-add-contact {
+    border-color: var(--color-fleece-gold);
+    color: var(--color-fleece-gold);
+  }
+  .btn-add-contact:hover {
+    background: rgba(201,162,39,0.15);
+  }
   .review-bar {
     width: 100%;
     height: 4px;
@@ -831,6 +1025,19 @@ const categoryLabels: Record<string, string> = {
     });
   });
 
+  // Copy blog URL buttons
+  document.querySelectorAll('.btn-copy-url').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const url = (btn as HTMLElement).dataset.url || '';
+      navigator.clipboard.writeText(url).then(() => {
+        (btn as HTMLElement).textContent = '\u2713';
+        setTimeout(() => { (btn as HTMLElement).textContent = '\u{1F4CB}'; }, 1500);
+      });
+    });
+  });
+
   // Review solicitation
   document.querySelectorAll('.btn-review-contact').forEach(btn => {
     btn.addEventListener('click', async () => {
@@ -857,5 +1064,22 @@ const categoryLabels: Record<string, string> = {
       if (res.ok) location.reload();
       else alert('Update failed');
     });
+  });
+
+  // Add contact
+  document.getElementById('btn-add-contact')?.addEventListener('click', async () => {
+    const name = prompt('Contact name:');
+    if (!name) return;
+    const email = prompt('Email (optional):') || '';
+    const targetPlatform = prompt('Platform (G2 or Capterra):');
+    if (!targetPlatform) return;
+
+    const res = await fetch('/api/review-solicitation/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, targetPlatform })
+    });
+    if (res.ok) location.reload();
+    else alert('Failed to add contact');
   });
 </script>
