@@ -14,7 +14,7 @@ interface GitHubFile {
 
 async function getFile(path: string): Promise<GitHubFile> {
   const res = await fetch(
-    `https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,
+    `https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}&_t=${Date.now()}`,
     { headers: { Authorization: `token ${getToken()}`, Accept: 'application/vnd.github.v3+json' } }
   );
   if (!res.ok) throw new Error(`GitHub GET ${path}: ${res.status}`);

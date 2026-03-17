@@ -263,8 +263,18 @@ const excluded = candidates.filter((c: any) => c.decision === 'exclude');
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
     });
-    if (res.ok) location.reload();
-    else alert('Update failed');
+    if (!res.ok) return alert('Update failed');
+
+    // Optimistic UI: remove card from current section instead of reloading
+    const card = document.querySelector(`.content-card[data-slug="${slug}"]`);
+    if (card) {
+      const section = card.closest('section');
+      card.remove();
+      // Remove section if no cards left in it
+      if (section && section.querySelectorAll('.content-card').length === 0) {
+        section.remove();
+      }
+    }
   }
 
   document.querySelectorAll('.btn-approve').forEach(btn => {
@@ -329,8 +339,13 @@ const excluded = candidates.filter((c: any) => c.decision === 'exclude');
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ updates })
     });
-    if (res.ok) location.reload();
-    else alert('Update failed');
+    if (!res.ok) return alert('Update failed');
+
+    // Optimistic UI: remove decided rows from the table
+    for (const { keyword } of updates) {
+      const row = document.querySelector(`tr[data-keyword="${keyword}"]`);
+      if (row) row.remove();
+    }
   }
 </script>
 
