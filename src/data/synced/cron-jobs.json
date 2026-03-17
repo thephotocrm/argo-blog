@@ -427,7 +427,7 @@
       "description": "Daily health check of the entire Argo SEO automation system — monitors cron jobs, content pipeline, data freshness, and flags issues",
       "enabled": true,
       "createdAtMs": 1773778800000,
-      "updatedAtMs": 1773636706949,
+      "updatedAtMs": 1773709346571,
       "schedule": {
         "kind": "cron",
         "expr": "0 20 * * *",
@@ -446,15 +446,14 @@
         "bestEffort": true
       },
       "state": {
-        "nextRunAtMs": 1773709200000,
-        "lastRunAtMs": 1773636586672,
+        "nextRunAtMs": 1773795600000,
+        "lastRunAtMs": 1773709200007,
         "lastRunStatus": "ok",
         "lastStatus": "ok",
-        "lastDurationMs": 120277,
+        "lastDurationMs": 146564,
         "lastDeliveryStatus": "delivered",
         "consecutiveErrors": 0,
-        "lastDelivered": true,
-        "runningAtMs": 1773709200006
+        "lastDelivered": true
       }
     }
   ]
