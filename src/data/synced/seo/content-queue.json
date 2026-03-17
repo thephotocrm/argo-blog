@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-03-16",
+  "lastUpdated": "2026-03-17",
   "items": [
     {
       "slug": "how-to-price-photography",
@@ -8,9 +8,10 @@
       "content_type": "cluster",
       "pillar": "photography-pricing",
       "keyword": "how to price photography",
-      "status": "pending_review",
+      "status": "published",
       "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/how-to-price-photography.md",
       "created_at": "2026-03-15",
+      "published_at": "2026-03-17",
       "word_count": 1350
     },
     {
@@ -19,9 +20,10 @@
       "content_type": "cluster",
       "pillar": "client-workflow-automation",
       "keyword": "photography client management",
-      "status": "pending_review",
+      "status": "published",
       "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/photography-client-management.md",
       "created_at": "2026-03-15",
+      "published_at": "2026-03-17",
       "word_count": 1400
     },
     {
@@ -30,9 +32,10 @@
       "content_type": "cluster",
       "pillar": "photography-crm-comparison",
       "keyword": "honeybook vs dubsado for photographers",
-      "status": "pending_review",
+      "status": "published",
       "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/honeybook-vs-dubsado-for-photographers.md",
       "created_at": "2026-03-15",
+      "published_at": "2026-03-17",
       "word_count": 1350
     },
     {
@@ -53,9 +56,10 @@
       "content_type": "cluster",
       "pillar": "photography-business-guide",
       "keyword": "how to run a photography business",
-      "status": "pending_review",
+      "status": "published",
       "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/how-to-run-a-photography-business.md",
       "created_at": "2026-03-16",
+      "published_at": "2026-03-17",
       "word_count": 1634
     },
     {
@@ -64,9 +68,10 @@
       "content_type": "cluster",
       "pillar": "photography-crm-comparison",
       "keyword": "honeybook alternative for photographers",
-      "status": "pending_review",
+      "status": "published",
       "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/honeybook-alternative-for-photographers.md",
       "created_at": "2026-03-16",
+      "published_at": "2026-03-17",
       "word_count": 1397
     },
     {
@@ -75,9 +80,10 @@
       "content_type": "cluster",
       "pillar": "client-workflow-automation",
       "keyword": "photography workflow automation",
-      "status": "pending_review",
+      "status": "published",
       "file_path": "~/OneDrive/Desktop/argo-blog/src/content/blog/photography-workflow-automation.md",
       "created_at": "2026-03-16",
+      "published_at": "2026-03-17",
       "word_count": 1620
     },
     {
