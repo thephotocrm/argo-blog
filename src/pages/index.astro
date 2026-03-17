@@ -7,79 +7,85 @@ const posts = (await getCollection('blog'))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
 const featuredPost = posts[0];
-const gridPosts = posts.slice(1, 10);
-const recentPosts = posts.slice(0, 4);
+const smallTiles = posts.slice(1, 4);
+const gridPosts = posts.slice(4, 13);
+const allTags = [...new Set(posts.flatMap(p => p.data.tags || []))];
 ---
 
 <Base
   title="Argo Studio Blog — Photography Business Resources"
   description="Practical guides, pricing strategies, and workflow tips for photographers who run their own business."
 >
-  <!-- Hero section with featured post -->
-  <section class="hero-featured">
+  <!-- Featured Tiles -->
+  <section class="featured-tiles">
     <div class="container-wide">
-      <div class="hero-content">
-        <div class="hero-text">
-          <p class="overline">Resources for Photographers</p>
-          <h1>Inspiration for your photography business</h1>
-          <p class="hero-sub">
-            Guides, strategies, and tools from photographers who have been where you are.
-          </p>
-          <a href="/tools/pricing-calculator" class="hero-cta">Start planning your business</a>
-        </div>
+      <div class="tiles-grid">
+        {featuredPost && (
+          <a href={`/blog/${featuredPost.id}`} class="tile tile-large">
+            <div class="tile-image" style={featuredPost.data.image ? `background-image: url(${featuredPost.data.image})` : ''}>
+              <div class="tile-gradient"></div>
+              <div class="tile-content">
+                <span class="tile-cat">{featuredPost.data.tags?.[0] || 'Photography'}</span>
+                <h2 class="tile-title">{featuredPost.data.title}</h2>
+                <p class="tile-excerpt">{featuredPost.data.description}</p>
+                <div class="tile-meta">
+                  <span class="tile-author">{featuredPost.data.author || 'Argo Studio'}</span>
+                  <span class="tile-date">{new Date(featuredPost.data.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        )}
+        {smallTiles.map((post) => (
+          <a href={`/blog/${post.id}`} class="tile tile-small">
+            <div class="tile-image" style={post.data.image ? `background-image: url(${post.data.image})` : ''}>
+              <div class="tile-gradient"></div>
+              <div class="tile-content">
+                <span class="tile-cat">{post.data.tags?.[0] || 'Photography'}</span>
+                <h3 class="tile-title">{post.data.title}</h3>
+                <div class="tile-meta">
+                  <span class="tile-author">{post.data.author || 'Argo Studio'}</span>
+                  <span class="tile-date">{new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- Featured large post -->
-  {featuredPost && (
-    <section class="featured-post-section">
+  <!-- Tag Pills -->
+  {allTags.length > 0 && (
+    <section class="tags-section">
       <div class="container-wide">
-        <a href={`/blog/${featuredPost.id}`} class="featured-card">
-          <div class="featured-image">
-            <div class="featured-image-placeholder" style={featuredPost.data.image ? `background-image: url(${featuredPost.data.image}); background-size: cover; background-position: center;` : ''}>
-              <span class="featured-tag">{featuredPost.data.tags?.[0] || 'Photography Business'}</span>
-            </div>
+        <div class="tags-row">
+          <span class="tags-label">Read by Topic</span>
+          <div class="tags-list">
+            {allTags.slice(0, 8).map((tag) => (
+              <span class="tag-pill">{tag}</span>
+            ))}
           </div>
-          <div class="featured-details">
-            <h2 class="featured-title">{featuredPost.data.title}</h2>
-            <p class="featured-desc">{featuredPost.data.description}</p>
-            <div class="featured-meta">
-              <span class="featured-author">{featuredPost.data.author || 'Argo Studio'}</span>
-              <span class="meta-sep">·</span>
-              <time datetime={featuredPost.data.date}>
-                {new Date(featuredPost.data.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-              </time>
-            </div>
-            <span class="view-post">View Post →</span>
-          </div>
-        </a>
+        </div>
       </div>
     </section>
   )}
 
-  <!-- Blog post grid -->
-  <section class="posts-section">
-    <div class="container-wide">
-      <div class="section-header">
-        <h2>Latest Articles</h2>
-      </div>
-      {gridPosts.length > 0 ? (
+  <!-- Blog Post Card Grid -->
+  {gridPosts.length > 0 && (
+    <section class="posts-section">
+      <div class="container-wide">
+        <div class="section-header">
+          <h2>Latest Articles</h2>
+        </div>
         <div class="posts-grid">
           {gridPosts.map((post) => (
             <a href={`/blog/${post.id}`} class="post-card">
-              <div class="card-image">
-                <div class="card-image-placeholder" style={post.data.image ? `background-image: url(${post.data.image}); background-size: cover; background-position: center;` : ''}>
-                  <span class="card-category">{post.data.tags?.[0] || 'Photography Business'}</span>
-                </div>
+              <div class="card-image" style={post.data.image ? `background-image: url(${post.data.image})` : ''}>
+                <span class="card-cat">{post.data.tags?.[0] || 'Photography'}</span>
               </div>
               <div class="card-body">
-                <div class="card-tags">
-                  {post.data.tags?.slice(0, 2).map((tag: string) => (
-                    <span class="card-tag">{tag}</span>
-                  ))}
-                </div>
-                <h3>{post.data.title}</h3>
+                <h3 class="card-title">{post.data.title}</h3>
                 <p class="card-desc">{post.data.description}</p>
                 <div class="card-footer">
                   <span class="card-author">{post.data.author || 'Argo Studio'}</span>
@@ -87,20 +93,15 @@ const recentPosts = posts.slice(0, 4);
                     {new Date(post.data.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </time>
                 </div>
-                <span class="card-link">View Post →</span>
               </div>
             </a>
           ))}
         </div>
-      ) : (
-        <div class="empty-state">
-          <p>Content is on its way. Check back soon.</p>
-        </div>
-      )}
-    </div>
-  </section>
+      </div>
+    </section>
+  )}
 
-  <!-- Tools section -->
+  <!-- Tools -->
   <section class="tools-section">
     <div class="container-wide">
       <div class="tools-header">
@@ -130,195 +131,251 @@ const recentPosts = posts.slice(0, 4);
 </Base>
 
 <style>
-  /* Hero */
-  .hero-featured {
-    padding: 4rem 0 3rem;
-    background: var(--color-card-bg);
-    border-bottom: 1px solid var(--color-border);
+  /* Featured Tiles */
+  .featured-tiles {
+    padding: 2rem 0 0;
   }
-  .hero-content {
-    max-width: 700px;
-  }
-  .hero-text h1 {
-    font-size: 3.25rem;
-    line-height: 1.1;
-    margin-top: 0.75rem;
-    letter-spacing: -0.02em;
-  }
-  .hero-sub {
-    margin-top: 1.25rem;
-    color: var(--color-slate);
-    font-size: 1.15rem;
-    line-height: 1.6;
-    max-width: 500px;
-  }
-  .hero-cta {
-    display: inline-block;
-    margin-top: 1.75rem;
-    padding: 0.85rem 2rem;
-    background: var(--color-fleece-gold);
-    color: var(--color-night);
-    border-radius: 4px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    transition: opacity 0.15s;
-  }
-  .hero-cta:hover {
-    text-decoration: none;
-    opacity: 0.9;
-  }
-
-  /* Featured post */
-  .featured-post-section {
-    padding: 3rem 0;
-  }
-  .featured-card {
+  .tiles-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 2.5rem;
-    color: var(--color-night);
-    transition: transform 0.2s;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 240px);
+    gap: 1rem;
   }
-  .featured-card:hover {
+  .tile {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
     text-decoration: none;
-    transform: translateY(-2px);
+    color: #fff;
+    display: block;
   }
-  .featured-image-placeholder {
-    background: linear-gradient(135deg, var(--color-deep-water) 0%, #2a2f4a 100%);
-    border-radius: 8px;
-    height: 400px;
-    display: flex;
-    align-items: flex-end;
+  .tile:hover { text-decoration: none; }
+  .tile:hover .tile-image { transform: scale(1.03); }
+  .tile-large {
+    grid-column: 1 / 3;
+    grid-row: 1 / 3;
+  }
+  .tile-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-color: #c4c4c4;
+    transition: transform 0.4s ease;
+    position: relative;
+  }
+  .tile-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 30%, rgba(0,0,0,0.7) 100%);
+  }
+  .tile-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 1.5rem;
-  }
-  .featured-tag {
-    background: var(--color-fleece-gold);
-    color: var(--color-night);
-    padding: 0.35rem 0.85rem;
-    border-radius: 3px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .featured-details {
+    z-index: 2;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 1rem 0;
+    gap: 0.5rem;
   }
-  .featured-title {
-    font-size: 2.25rem;
-    line-height: 1.15;
-    margin: 0;
+  .tile-large .tile-content {
+    padding: 2rem;
+    gap: 0.6rem;
   }
-  .featured-desc {
-    margin-top: 1rem;
-    color: var(--color-slate);
-    font-size: 1.05rem;
-    line-height: 1.6;
-  }
-  .featured-meta {
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-    color: var(--color-slate);
-  }
-  .featured-author {
-    font-weight: 700;
-    color: var(--color-night);
-  }
-  .meta-sep { margin: 0 0.5rem; }
-  .view-post {
+  .tile-cat {
     display: inline-block;
-    margin-top: 1.25rem;
-    font-weight: 700;
+    width: fit-content;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     color: var(--color-fleece-gold);
-    font-size: 1rem;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+  }
+  .tile-title {
+    font-family: var(--font-display);
+    color: #fff;
+    margin: 0;
+    line-height: 1.15;
+  }
+  .tile-large .tile-title {
+    font-size: 2rem;
+  }
+  .tile-small .tile-title {
+    font-size: 1.15rem;
+  }
+  .tile-excerpt {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.5;
+    margin: 0;
+    max-width: 500px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .tile-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+  }
+  .tile-author { font-weight: 600; color: rgba(255,255,255,0.9); }
+
+  @media (max-width: 1024px) {
+    .tiles-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: 300px repeat(3, 200px);
+    }
+    .tile-large {
+      grid-column: 1 / -1;
+      grid-row: 1 / 2;
+    }
+  }
+  @media (max-width: 640px) {
+    .tiles-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+    .tile-large { grid-column: 1; grid-row: auto; }
+    .tile-image { min-height: 240px; }
+    .tile-large .tile-title { font-size: 1.5rem; }
   }
 
-  /* Posts grid */
+  /* Tag Pills */
+  .tags-section {
+    padding: 2.5rem 0;
+  }
+  .tags-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .tags-label {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+    white-space: nowrap;
+  }
+  .tags-list {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tag-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 1rem;
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-night);
+    transition: all 0.2s;
+  }
+  .tag-pill:hover {
+    border-color: var(--color-fleece-gold);
+    color: var(--color-fleece-gold);
+  }
+
+  /* Posts Grid */
   .posts-section {
-    padding: 2rem 0 4rem;
+    padding: 0 0 4rem;
   }
   .section-header {
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--color-night);
+    margin-bottom: 1.5rem;
   }
   .section-header h2 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--color-night);
     margin: 0;
-    font-size: 1.5rem;
   }
   .posts-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
   }
   .post-card {
     display: flex;
     flex-direction: column;
-    background: var(--color-card-bg);
-    border-radius: 8px;
+    background: #ffffff;
+    border-radius: 10px;
     overflow: hidden;
+    text-decoration: none;
     color: var(--color-night);
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
     border: 1px solid var(--color-border);
+    transition: transform 0.25s, box-shadow 0.25s;
   }
   .post-card:hover {
     text-decoration: none;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
   }
-  .card-image-placeholder {
-    background: linear-gradient(135deg, var(--color-deep-water) 0%, #2a2f4a 100%);
-    height: 220px;
+  .card-image {
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-placeholder, #e8e8e8);
+    position: relative;
     display: flex;
     align-items: flex-end;
-    padding: 1rem;
+    padding: 0.75rem;
   }
-  .card-category {
-    background: rgba(255,255,255,0.15);
-    color: var(--color-parchment);
-    padding: 0.25rem 0.65rem;
-    border-radius: 3px;
-    font-size: 0.7rem;
+  .card-cat {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(0,0,0,0.5);
     backdrop-filter: blur(4px);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
   }
   .card-body {
-    padding: 1.5rem;
+    padding: 1.25rem;
     display: flex;
     flex-direction: column;
     flex: 1;
   }
-  .card-tags {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  .card-tag {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--color-fleece-gold);
-  }
-  .card-body h3 {
-    margin: 0;
+  .card-title {
+    font-family: var(--font-display);
     font-size: 1.25rem;
-    line-height: 1.3;
+    line-height: 1.25;
+    color: var(--color-night);
+    margin: 0;
   }
   .card-desc {
-    margin-top: 0.65rem;
-    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
     color: var(--color-slate);
     line-height: 1.55;
     flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .card-footer {
     margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -329,12 +386,12 @@ const recentPosts = posts.slice(0, 4);
     font-weight: 600;
     color: var(--color-night);
   }
-  .card-link {
-    display: block;
-    margin-top: 1rem;
-    font-weight: 700;
-    color: var(--color-fleece-gold);
-    font-size: 0.9rem;
+
+  @media (max-width: 1024px) {
+    .posts-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .posts-grid { grid-template-columns: 1fr; }
   }
 
   /* Tools */
@@ -342,78 +399,56 @@ const recentPosts = posts.slice(0, 4);
     padding: 3rem 0 4rem;
     border-top: 1px solid var(--color-border);
   }
-  .tools-header {
-    margin-bottom: 2rem;
-  }
+  .tools-header { margin-bottom: 1.5rem; }
   .tools-header h2 {
-    margin: 0;
+    font-family: var(--font-display);
     font-size: 1.75rem;
+    color: var(--color-night);
+    margin: 0;
   }
   .tools-sub {
     margin-top: 0.5rem;
     color: var(--color-slate);
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
   .tools-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
   .tool-card {
     display: block;
     padding: 2rem;
-    background: var(--color-deep-water);
-    border-radius: 8px;
-    color: var(--color-parchment);
-    transition: transform 0.2s;
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    color: var(--color-night);
+    text-decoration: none;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    transition: transform 0.25s, box-shadow 0.25s;
   }
   .tool-card:hover {
     text-decoration: none;
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
   }
   .tool-icon {
     color: var(--color-fleece-gold);
     margin-bottom: 1rem;
   }
   .tool-card h3 {
-    margin-top: 0.5rem;
+    margin: 0.5rem 0 0;
     font-size: 1.2rem;
-    color: var(--color-parchment);
+    color: var(--color-night);
   }
   .tool-card p:last-child {
-    margin-top: 0.65rem;
-    font-size: 0.9rem;
-    color: var(--color-starlight);
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-slate);
     line-height: 1.55;
   }
 
-  .empty-state {
-    text-align: center;
-    padding: 3rem;
-    color: var(--color-slate);
-  }
-
-  @media (max-width: 1024px) {
-    .posts-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .featured-card {
-      grid-template-columns: 1fr;
-    }
-    .featured-image-placeholder {
-      height: 280px;
-    }
-  }
-
   @media (max-width: 640px) {
-    .hero-text h1 {
-      font-size: 2.25rem;
-    }
-    .posts-grid {
-      grid-template-columns: 1fr;
-    }
-    .featured-title {
-      font-size: 1.75rem;
-    }
+    .tools-grid { grid-template-columns: 1fr; }
   }
 </style>
