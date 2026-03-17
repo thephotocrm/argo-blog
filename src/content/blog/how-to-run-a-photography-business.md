@@ -3,6 +3,7 @@ title: "How to Run a Photography Business in 2026"
 description: "How to run a photography business that actually pays the bills. Practical advice on pricing, clients, workflow, and growth from working photographers."
 date: "2026-03-16"
 author: "Argo Studio"
+image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80"
 tags: ["photography-business", "business-management", "freelance-photography"]
 pillar: "photography-business-guide"
 keywords: ["how to run a photography business", "photography business tips", "photography business management"]

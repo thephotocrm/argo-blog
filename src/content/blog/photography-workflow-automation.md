@@ -3,6 +3,7 @@ title: "Photography Workflow Automation: A Guide"
 description: "Photography workflow automation that saves hours weekly. Learn which tasks to automate, the tools to use, and how to set up sequences that run themselves."
 date: "2026-03-16"
 author: "Argo Studio"
+image: "https://images.unsplash.com/photo-1504805572947-34fad45aed93?w=800&q=80"
 tags: ["photography-workflow", "automation", "client-management"]
 pillar: "client-workflow-automation"
 keywords: ["photography workflow automation", "photography client workflow", "automate photography business"]
