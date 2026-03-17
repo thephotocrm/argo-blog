@@ -51,7 +51,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <style is:global>
@@ -59,17 +59,20 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
         --color-night: #161616;
         --color-frost: #fafafa;
         --color-card-bg: #ffffff;
-        --color-border: #e6e6e6;
+        --color-border: #dbdbdb;
         --color-slate: #737373;
-        --color-fleece-gold: #c9a227;
-        --color-pale-gold: #e2cc6b;
+        --color-fleece-gold: #206bea;
+        --color-pale-gold: #3b7ded;
         --color-starlight: #a3a3a3;
         --color-parchment: #f5f5f5;
         --color-placeholder: #e8e8e8;
-        --color-compass-blue: #4a6fa5;
-        --color-accent: #c9a227;
+        --color-compass-blue: #206bea;
+        --color-accent: #206bea;
+        --color-accent-hover: #3b7ded;
         --color-deep-water: #1a1a2e;
-        --font-display: 'Instrument Serif', serif;
+        --color-layout-bg: #fff;
+        --color-secondary-button-bg: #e1e7f0;
+        --font-display: 'Bricolage Grotesque', sans-serif;
         --font-body: 'Inter', sans-serif;
         --font-mono: 'Space Mono', monospace;
         --container-wide: 1200px;
@@ -93,8 +96,9 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 
       h1, h2, h3, h4 {
         font-family: var(--font-display);
-        font-weight: 400;
-        line-height: 1.15;
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: -0.06em;
       }
 
       h1 { font-size: 2.75rem; }
@@ -102,7 +106,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
       h3 { font-size: 1.35rem; margin-top: 2rem; margin-bottom: 0.75rem; }
 
       a {
-        color: var(--color-compass-blue);
+        color: var(--color-accent);
         text-decoration: none;
       }
 
@@ -116,11 +120,12 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
       }
 
       .overline {
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
+        font-family: var(--font-body);
+        font-size: 0.6875rem;
+        font-weight: 700;
         letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: var(--color-fleece-gold);
+        color: var(--color-slate);
       }
 
       .container {
@@ -246,7 +251,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
         letter-spacing: -0.02em;
         transition: color 0.2s;
       }
-      .header-nav a:hover { color: var(--color-slate); text-decoration: none; }
+      .header-nav a:hover { color: var(--color-accent); text-decoration: none; }
       .header-actions {
         display: flex;
         align-items: center;
@@ -256,15 +261,15 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
         display: inline-flex;
         align-items: center;
         padding: 0.5rem 1.25rem;
-        background: var(--color-fleece-gold);
+        background: var(--color-accent);
         color: #fff;
         border-radius: 8px;
         font-weight: 600;
         font-size: 0.875rem;
         text-decoration: none;
-        transition: opacity 0.2s;
+        transition: background 0.2s;
       }
-      .nav-cta:hover { text-decoration: none; opacity: 0.85; }
+      .nav-cta:hover { text-decoration: none; background: var(--color-accent-hover); }
 
       /* Newsletter */
       .newsletter-section {
@@ -278,11 +283,12 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
         margin: 0 auto;
       }
       .newsletter-label {
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
+        font-family: var(--font-body);
+        font-size: 0.6875rem;
+        font-weight: 700;
         letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: var(--color-fleece-gold);
+        color: var(--color-slate);
         margin-bottom: 0.75rem;
       }
       .newsletter-heading {
@@ -316,11 +322,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
         outline: none;
         transition: border-color 0.2s;
       }
-      .newsletter-form input:focus { border-color: var(--color-fleece-gold); }
+      .newsletter-form input:focus { border-color: var(--color-accent); }
       .newsletter-form input::placeholder { color: var(--color-starlight); }
       .newsletter-form button {
         padding: 0.75rem 1.5rem;
-        background: var(--color-fleece-gold);
+        background: var(--color-accent);
         color: #fff;
         border: none;
         border-radius: 8px;
@@ -328,10 +334,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
         font-weight: 600;
         font-size: 0.875rem;
         cursor: pointer;
-        transition: opacity 0.2s;
+        transition: background 0.2s;
         white-space: nowrap;
       }
-      .newsletter-form button:hover { opacity: 0.85; }
+      .newsletter-form button:hover { background: var(--color-accent-hover); }
 
       /* Footer */
       .site-footer {
@@ -378,7 +384,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
         font-weight: 500;
         transition: color 0.2s;
       }
-      .footer-col a:hover { color: var(--color-fleece-gold); text-decoration: none; }
+      .footer-col a:hover { color: var(--color-accent); text-decoration: none; }
       .footer-bottom {
         margin-top: 2.5rem;
         padding-top: 1.5rem;
