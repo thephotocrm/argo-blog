@@ -1,7 +1,7 @@
 ---
 title: "HoneyBook Alternatives for Photographers (2026)"
 description: "HoneyBook alternative for photographers who want lower costs, better customization, or photography-specific features. Honest comparison of top options."
-date: 2026-03-16
+date: "2026-03-16"
 author: "Argo Studio"
 tags: ["photography-crm", "honeybook-alternative", "business-tools"]
 pillar: "photography-crm-comparison"
