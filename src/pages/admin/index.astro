@@ -4,7 +4,7 @@ export const prerender = false;
 import Dashboard from '../../components/admin/Dashboard.astro';
 import StatsCards from '../../components/admin/StatsCards.astro';
 
-import { getContentQueue, getAuthorityOutbox, getCreators, getCronJobs, getKeywordCandidates, getIndexingStatus, getGscHistory, getDirectorySubmissions, getLinkBuilding, getGrowthTasks, getDistributionStatus } from '../../lib/data';
+import { getContentQueueLive, getAuthorityOutboxLive, getCreatorsLive, getCronJobs, getKeywordCandidatesLive, getIndexingStatus, getGscHistory, getDirectorySubmissions, getLinkBuilding, getGrowthTasks, getDistributionStatus } from '../../lib/data';
 
 import keywordData from '../../data/seo/keyword-research.json';
 
@@ -13,12 +13,12 @@ import { getCollection } from 'astro:content';
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const publishedPosts = allPosts.length;
 
-// Marketing pipeline data
-const liveQueue = getContentQueue();
-const outbox = getAuthorityOutbox();
-const creators = getCreators();
+// Marketing pipeline data (live from GitHub for writable data)
+const liveQueue = await getContentQueueLive();
+const outbox = await getAuthorityOutboxLive();
+const creators = await getCreatorsLive();
 const cronData = getCronJobs();
-const candidates = getKeywordCandidates();
+const candidates = await getKeywordCandidatesLive();
 const indexingStatus = getIndexingStatus();
 const gscHistory = getGscHistory();
 

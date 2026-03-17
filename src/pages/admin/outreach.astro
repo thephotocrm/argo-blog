@@ -2,15 +2,15 @@
 export const prerender = false;
 
 import Dashboard from '../../components/admin/Dashboard.astro';
-import { getAuthorityOutbox, getCreators, getDiscoveryState } from '../../lib/data';
+import { getAuthorityOutboxLive, getCreatorsLive, getDiscoveryState } from '../../lib/data';
 
-const outbox = getAuthorityOutbox();
+const outbox = await getAuthorityOutboxLive();
 const items = outbox.items || [];
 const redditPending = items.filter((i: any) => i.type === 'reddit_answer' && i.status === 'pending_review');
 const haroPending = items.filter((i: any) => i.type === 'haro_pitch' && i.status === 'pending_review');
 const completed = items.filter((i: any) => i.status !== 'pending_review');
 
-const creatorsData = getCreators();
+const creatorsData = await getCreatorsLive();
 const discoveryState = getDiscoveryState();
 const creators = creatorsData.creators || [];
 const qualified = creators.filter((c: any) => c.outreachStatus === 'qualified');

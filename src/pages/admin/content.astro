@@ -5,10 +5,9 @@ import Dashboard from '../../components/admin/Dashboard.astro';
 import ContentPipeline from '../../components/admin/ContentPipeline.astro';
 import KeywordTable from '../../components/admin/KeywordTable.astro';
 import ContentDecay from '../../components/admin/ContentDecay.astro';
-import { getContentQueue, getContentLog, getKeywordCandidates } from '../../lib/data';
+import { getContentQueueLive, getContentLog, getKeywordCandidatesLive } from '../../lib/data';
 
 import keywordData from '../../data/seo/keyword-research.json';
-import contentQueue from '../../data/seo/content-queue.json';
 
 import decayData from '../../data/seo/dashboard/decay.json';
 
@@ -20,8 +19,8 @@ const statusCounts = {
 };
 const decay = decayData?.data || {};
 
-// Live data from OpenClaw for review queue
-const liveQueue = getContentQueue();
+// Live data from GitHub (reads fresh on every SSR request)
+const liveQueue = await getContentQueueLive();
 const contentLog = getContentLog();
 const items = liveQueue.items || [];
 const pending = items.filter((i: any) => i.status === 'pending_review');
@@ -32,7 +31,7 @@ const needsRevision = items.filter((i: any) => i.status === 'needs_revision');
 const logEntries = contentLog.entries || [];
 
 // Keyword candidates
-const candidatesData = getKeywordCandidates();
+const candidatesData = await getKeywordCandidatesLive();
 const candidates = candidatesData.candidates || [];
 const unvalidated = candidates.filter((c: any) => c.decision === null);
 const included = candidates.filter((c: any) => c.decision === 'include');

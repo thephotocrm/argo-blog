@@ -2,10 +2,10 @@
 export const prerender = false;
 
 import Dashboard from '../../components/admin/Dashboard.astro';
-import { getTechSeoTasks, getLatestSerpSnapshot, getLatestContentGaps, getCompetitorChangelog } from '../../lib/data';
+import { getTechSeoTasksLive, getLatestSerpSnapshot, getLatestContentGaps, getCompetitorChangelog } from '../../lib/data';
 import { marked } from 'marked';
 
-const techSeoTasks = getTechSeoTasks();
+const techSeoTasks = await getTechSeoTasksLive();
 const serp = getLatestSerpSnapshot();
 const gaps = getLatestContentGaps();
 const competitors = getCompetitorChangelog();

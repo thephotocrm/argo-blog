@@ -1,4 +1,4 @@
-// Static JSON imports from synced data (works on Vercel)
+// Static JSON imports from synced data (works on Vercel for public pages)
 import contentQueueData from '../data/synced/seo/content-queue.json';
 import authorityOutboxData from '../data/synced/seo/authority-outbox.json';
 import creatorsData from '../data/synced/creators.json';
@@ -21,7 +21,42 @@ import distributionStatusData from '../data/synced/seo/distribution-status.json'
 import eeatScorecardData from '../data/synced/seo/eeat-scorecard.json';
 import reviewSolicitationData from '../data/synced/seo/review-solicitation.json';
 
-// Data accessors — read from static imports (deployed via git sync)
+import { readGitHubJSON } from './github-data';
+
+// --- Live GitHub readers for admin SSR pages (read fresh data on every request) ---
+// These bypass the static import so admin pages always see the latest committed state.
+
+async function readLiveOrFallback(repoPath: string, fallback: any): Promise<any> {
+  try {
+    const { data } = await readGitHubJSON(repoPath);
+    return data;
+  } catch {
+    return fallback;
+  }
+}
+
+export async function getContentQueueLive() {
+  return readLiveOrFallback('src/data/synced/seo/content-queue.json', contentQueueData || { items: [] });
+}
+
+export async function getAuthorityOutboxLive() {
+  return readLiveOrFallback('src/data/synced/seo/authority-outbox.json', authorityOutboxData || { items: [] });
+}
+
+export async function getCreatorsLive() {
+  return readLiveOrFallback('src/data/synced/creators.json', creatorsData || { creators: [] });
+}
+
+export async function getKeywordCandidatesLive() {
+  return readLiveOrFallback('src/data/synced/seo/keyword-candidates.json', keywordCandidatesData || { candidates: [] });
+}
+
+export async function getTechSeoTasksLive() {
+  return readLiveOrFallback('src/data/synced/seo/tech-seo-tasks.json', techSeoTasksData || { tasks: [] });
+}
+
+// --- Static data accessors (for public pages & non-writable admin data) ---
+
 export function getContentQueue() {
   return contentQueueData || { items: [] };
 }
