@@ -13,7 +13,8 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   try {
     const { data, sha } = await readGitHubJSON(FILE_PATH);
 
-    const creator = data.creators.find((c: any) => c.id === params.id);
+    const decodedId = decodeURIComponent(params.id!);
+    const creator = data.creators.find((c: any) => c.id === decodedId);
     if (!creator) return new Response(JSON.stringify({ error: 'Creator not found' }), { status: 404 });
 
     const body = await request.json();
@@ -21,7 +22,7 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
     if (body.followUpCount !== undefined) creator.followUpCount = body.followUpCount;
     data.lastUpdated = new Date().toISOString();
 
-    await writeGitHubJSON(FILE_PATH, data, sha, `creators: update ${params.id}`);
+    await writeGitHubJSON(FILE_PATH, data, sha, `creators: update ${decodedId}`);
 
     return new Response(JSON.stringify(creator), { status: 200 });
   } catch (err: any) {

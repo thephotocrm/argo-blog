@@ -13,7 +13,8 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
   try {
     const { data, sha } = await readGitHubJSON(FILE_PATH);
 
-    const item = data.items.find((i: any) => i.id === params.id);
+    const decodedId = decodeURIComponent(params.id!);
+    const item = data.items.find((i: any) => i.id === decodedId);
     if (!item) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404 });
 
     const body = await request.json();
@@ -24,7 +25,7 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
 
     data.lastUpdated = new Date().toISOString().split('T')[0];
 
-    await writeGitHubJSON(FILE_PATH, data, sha, `link-building: update ${params.id} → ${body.status || 'updated'}`);
+    await writeGitHubJSON(FILE_PATH, data, sha, `link-building: update ${decodedId} → ${body.status || 'updated'}`);
 
     return new Response(JSON.stringify(item), { status: 200 });
   } catch (err: any) {
