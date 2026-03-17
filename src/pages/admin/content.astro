@@ -6,6 +6,7 @@ import ContentPipeline from '../../components/admin/ContentPipeline.astro';
 import KeywordTable from '../../components/admin/KeywordTable.astro';
 import ContentDecay from '../../components/admin/ContentDecay.astro';
 import { getContentQueueLive, getContentLog, getKeywordCandidatesLive } from '../../lib/data';
+import { getCollection } from 'astro:content';
 
 import keywordData from '../../data/seo/keyword-research.json';
 
@@ -23,11 +24,21 @@ const decay = decayData?.data || {};
 const liveQueue = await getContentQueueLive();
 const contentLog = getContentLog();
 const items = liveQueue.items || [];
-const pending = items.filter((i: any) => i.status === 'pending_review');
-const approved = items.filter((i: any) => i.status === 'approved');
-const published = items.filter((i: any) => i.status === 'published');
+
+// Auto-reconcile: if a blog post has draft:false, it's live — don't show as pending
+const blogPosts = await getCollection('blog');
+const liveSlugs = new Set(blogPosts.filter(p => !p.data.draft).map(p => p.id));
+
+const pending = items.filter((i: any) => i.status === 'pending_review' && !liveSlugs.has(i.slug));
+const approved = items.filter((i: any) => i.status === 'approved' && !liveSlugs.has(i.slug));
+const needsRevision = items.filter((i: any) => i.status === 'needs_revision' && !liveSlugs.has(i.slug));
+// Posts that are live but queue hasn't caught up — treat as published
+const reconciledPublished = items.filter((i: any) =>
+  i.status === 'published' ||
+  ((i.status === 'pending_review' || i.status === 'approved' || i.status === 'needs_revision') && liveSlugs.has(i.slug))
+);
+const published = reconciledPublished;
 const autoApproved = items.filter((i: any) => i.status === 'auto_approved');
-const needsRevision = items.filter((i: any) => i.status === 'needs_revision');
 const logEntries = contentLog.entries || [];
 
 // Keyword candidates
