@@ -49,6 +49,14 @@ async function putFile(path: string, content: string, sha: string, message: stri
   }
 }
 
+export async function readGitHubFile(path: string): Promise<{ content: string; sha: string }> {
+  return getFile(path);
+}
+
+export async function writeGitHubFile(path: string, content: string, sha: string, message: string): Promise<void> {
+  return putFile(path, content, sha, message);
+}
+
 export async function readGitHubJSON(repoPath: string): Promise<any> {
   const file = await getFile(repoPath);
   return { data: JSON.parse(file.content), sha: file.sha };

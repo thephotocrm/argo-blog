@@ -6,7 +6,7 @@ author: "Argo Studio"
 tags: ["photography-workflow", "automation", "client-management"]
 pillar: "client-workflow-automation"
 keywords: ["photography workflow automation", "photography client workflow", "automate photography business"]
-draft: true
+draft: false
 ---
 
 # Photography Workflow Automation: A Practical Guide for Photographers

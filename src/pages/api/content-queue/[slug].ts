@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { readGitHubJSON, writeGitHubJSON } from '../../../lib/github-data';
+import { readGitHubJSON, writeGitHubJSON, readGitHubFile, writeGitHubFile } from '../../../lib/github-data';
 
 export const prerender = false;
 
@@ -22,6 +22,25 @@ export const PATCH: APIRoute = async ({ params, request, cookies }) => {
     data.lastUpdated = new Date().toISOString().split('T')[0];
 
     await writeGitHubJSON(FILE_PATH, data, sha, `content-queue: update ${params.slug} → ${body.status}`);
+
+    // Flip draft frontmatter when approving or reverting a post
+    if (body.status === 'approved' || body.status === 'needs_revision') {
+      const mdPath = `src/content/blog/${params.slug}.md`;
+      try {
+        const mdFile = await readGitHubFile(mdPath);
+        const draftValue = body.status === 'approved' ? 'false' : 'true';
+        const updated = mdFile.content.replace(
+          /^(draft:\s*)(true|false)$/m,
+          `$1${draftValue}`
+        );
+        if (updated !== mdFile.content) {
+          const action = body.status === 'approved' ? 'publish' : 'unpublish';
+          await writeGitHubFile(mdPath, updated, mdFile.sha, `${action}: ${params.slug}`);
+        }
+      } catch {
+        // Post .md may not exist yet — non-blocking
+      }
+    }
 
     // Request Google indexing when a post is published
     if (body.status === 'published') {
