@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-03-17",
+  "lastUpdated": "2026-03-19",
   "items": [
     {
       "id": "2026-03-16T04:56:00Z-reddit_answer-1",
@@ -17,7 +17,7 @@
     {
       "id": "2026-03-16T04:56:00Z-reddit_answer-2",
       "type": "reddit_answer",
-      "status": "pending_review",
+      "status": "skipped",
       "created": "2026-03-16T04:56:00Z",
       "subreddit": "r/smallbusiness",
       "thread_title": "Honestly, what is the best CRM for small business in 2026? I needed for 5 person team",
