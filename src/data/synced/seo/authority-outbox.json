@@ -29,7 +29,7 @@
     {
       "id": "2026-03-16T04:56:00Z-reddit_answer-3",
       "type": "reddit_answer",
-      "status": "pending_review",
+      "status": "skipped",
       "created": "2026-03-16T04:56:00Z",
       "subreddit": "r/smallbusiness",
       "thread_title": "CRM software? Help",
