@@ -1,6 +1,7 @@
 ---
 import Base from './Base.astro';
 import SignupCTA from '../components/SignupCTA.astro';
+import EmailSignup from '../components/EmailSignup.astro';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -197,7 +198,8 @@ const articleSchema = {
         </aside>
       </div>
     </div>
-  </article>
+  <EmailSignup />
+</article>
 
   <!-- You may also like -->
   {relatedPosts.length > 0 && (
