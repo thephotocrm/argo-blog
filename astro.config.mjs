@@ -8,7 +8,9 @@ export default defineConfig({
   site: 'https://blog.argostudio.co',
   adapter: vercel(),
   integrations: [
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes('/admin/'),
+    }),
     mdx(),
   ],
 });
