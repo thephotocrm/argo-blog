@@ -1,0 +1,64 @@
+---
+// Email signup form that posts to the CRM's SEO subscriber API
+---
+
+<div class="signup-form bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6 my-8">
+  <h3 class="text-lg font-bold text-gray-900 mb-1">Get photography business tips in your inbox</h3>
+  <p class="text-sm text-gray-600 mb-4">Join photographers who are growing their business with better workflows, pricing strategies, and client management tips.</p>
+  <form id="seo-signup-form" class="flex gap-2">
+    <input
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      required
+      class="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
+    />
+    <button
+      type="submit"
+      class="px-6 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors whitespace-nowrap"
+    >
+      Subscribe
+    </button>
+  </form>
+  <p id="signup-message" class="text-sm mt-2 hidden"></p>
+  <p class="text-xs text-gray-400 mt-2">No spam. Unsubscribe anytime.</p>
+</div>
+
+<script>
+  document.getElementById('seo-signup-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const msg = document.getElementById('signup-message');
+    const btn = form.querySelector('button');
+    
+    btn.disabled = true;
+    btn.textContent = 'Subscribing...';
+    
+    try {
+      const res = await fetch('https://app.argostudio.co/api/seo/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          source: window.location.pathname,
+        }),
+      });
+      const data = await res.json();
+      msg.textContent = data.message || 'Thanks for subscribing!';
+      msg.className = 'text-sm mt-2 text-green-600';
+      if (data.success) {
+        form.email.value = '';
+        btn.textContent = 'Subscribed ✓';
+      } else {
+        btn.textContent = 'Subscribe';
+        btn.disabled = false;
+      }
+    } catch (err) {
+      msg.textContent = 'Something went wrong. Please try again.';
+      msg.className = 'text-sm mt-2 text-red-600';
+      btn.textContent = 'Subscribe';
+      btn.disabled = false;
+    }
+  });
+</script>
